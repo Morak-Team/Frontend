@@ -1,4 +1,3 @@
-// src/apis/kakaoLogin/postKakaoToken.js
 import axios from "axios";
 
 export const postKakaoToken = async (code) => {
