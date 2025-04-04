@@ -1,0 +1,25 @@
+name: Build Check
+
+on:
+  pull_request:
+    branches:
+      - "**" # 모든 브랜치에 대해 PR 생성 시 빌드 체크
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22.0.0" # 프로젝트에서 사용하는 Node.js 버전 설정
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build project
+        run: yarn build
