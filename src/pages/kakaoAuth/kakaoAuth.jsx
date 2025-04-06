@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postKakaoToken } from "@/apis/kakaoLogin/postKakaoToken";
-import { getKakaoData } from "@/apis/kakaoLogin/getKakaoData";
+import { postKakaoToken } from "@apis/kakaoLogin/postKakaoToken";
+import { getKakaoData } from "@apis/kakaoLogin/getKakaoData";
 
 const KakaoAuth = () => {
   const navigate = useNavigate();
