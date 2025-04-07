@@ -2,7 +2,17 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"],
+      "@hooks/*": ["hooks/*"],
+      "@constants/*": ["constants/*"],
+      "@apis/*": ["apis/*"],
+      "@routes/*": ["routes/*"],
+      "@styles": ["styles"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }
