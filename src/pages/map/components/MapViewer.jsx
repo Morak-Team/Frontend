@@ -11,7 +11,7 @@ const MapViewer = () => {
       if (window.naver && mapRef.current) {
         new window.naver.maps.Map(mapRef.current, {
           center: new window.naver.maps.LatLng(37.5665, 126.978), // 서울시청
-          zoom: 11.5,
+          zoom: 12,
         });
       }
     };
