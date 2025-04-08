@@ -2,9 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { motion, animate } from "framer-motion";
 import PlaceContent from "./PlaceContent";
 
-const MIN_HEIGHT = 120;
-const MAX_HEIGHT = window.innerHeight;
-
 const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
   const [height, setHeight] = useState(MIN_HEIGHT);
@@ -12,7 +9,25 @@ const PlaceBottomSheet = ({ place, onClose }) => {
 
   const sheetRef = useRef(null);
   const startY = useRef(0);
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  const MIN_HEIGHT = 120;
+  const [MAX_HEIGHT, setMAX_HEIGHT] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => setMAX_HEIGHT(window.innerHeight);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // 드래그 시작 위치 저장
   const handleTouchStart = (e) => {
