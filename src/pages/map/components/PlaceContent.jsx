@@ -8,7 +8,6 @@ const PlaceContent = ({
   onToggleLike,
   isDetail = false,
   showMapLink = true,
-  showReviewButton = false,
 }) => {
   return (
     <>
