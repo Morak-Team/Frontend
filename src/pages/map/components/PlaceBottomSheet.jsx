@@ -1,0 +1,123 @@
+import { useState, useRef, useEffect } from "react";
+import { motion, animate } from "framer-motion";
+import PlaceContent from "./PlaceContent";
+
+const MIN_HEIGHT = 120;
+const MAX_HEIGHT = window.innerHeight;
+
+const PlaceBottomSheet = ({ place, onClose }) => {
+  const [liked, setLiked] = useState(place.liked || false);
+  const [height, setHeight] = useState(MIN_HEIGHT);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const sheetRef = useRef(null);
+  const startY = useRef(0);
+  const isMobile = window.innerWidth <= 768;
+
+  // 드래그 시작 위치 저장
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
+    startY.current = e.touches[0].clientY;
+  };
+
+  // 스크롤 잠금
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isExpanded]);
+
+  const handleTouchEnd = (e) => {
+    if (!isMobile) return;
+
+    const endY = e.changedTouches[0].clientY;
+    const delta = endY - startY.current;
+
+    if (delta < -50) {
+      animateHeight(MAX_HEIGHT);
+      setIsExpanded(true);
+    } else if (delta > 50) {
+      animateHeight(MIN_HEIGHT);
+      setIsExpanded(false);
+    }
+  };
+
+  const handleClickExpand = () => {
+    if (!isMobile && !isExpanded) {
+      animateHeight(MAX_HEIGHT);
+      setIsExpanded(true);
+    }
+  };
+
+  const animateHeight = (toHeight) => {
+    animate(height, toHeight, {
+      duration: 0.3,
+      onUpdate: (latest) => setHeight(latest),
+    });
+  };
+
+  return (
+    <motion.div
+      ref={sheetRef}
+      className="fixed bottom-0 left-0 w-full z-50 bg-white rounded-t-2xl shadow-xl"
+      style={{ height }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={handleClickExpand}
+    >
+      <div className="relative w-full flex justify-center items-center py-3 cursor-pointer">
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
+
+        {isExpanded && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // 클릭 이벤트 전파 방지
+              onClose();
+            }}
+            className="absolute right-2 top-6 p-4"
+          >
+            <img
+              src="/svgs/ic_X.svg"
+              alt="닫기 버튼"
+              className="w-8 h-8 cursor-pointer"
+            />
+          </button>
+        )}
+      </div>
+
+      <div
+        className={`px-5 pt-4 pb-6 ${
+          isExpanded ? "h-full overflow-y-auto pt-20" : "overflow-hidden"
+        }`}
+      >
+        <PlaceContent
+          name={place.name}
+          category={place.category}
+          distance={place.distance}
+          address={place.address}
+          images={place.images}
+          liked={liked}
+          onToggleLike={() => setLiked((prev) => !prev)}
+          isDetail={isExpanded}
+          showMapLink={isExpanded}
+          showReviewButton={isExpanded}
+        />
+
+        {isExpanded && (
+          <div className="mt-10 flex justify-between">
+            <h3 className="font-semibold text-xl mb-2">리뷰</h3>
+            <button className="text-sm text-orange-500">✏️ 리뷰 쓰기</button>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+export default PlaceBottomSheet;
