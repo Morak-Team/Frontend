@@ -80,7 +80,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
               e.stopPropagation(); // 클릭 이벤트 전파 방지
               onClose();
             }}
-            className="absolute right-2 top-6 p-4"
+            className="absolute right-2 top-4 p-4"
           >
             <img
               src="/svgs/ic_X.svg"
@@ -92,7 +92,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
       </div>
 
       <div
-        className={`px-5 pt-4 pb-6 ${
+        className={`px-5 pb-6 mt-2 ${
           isExpanded ? "h-full overflow-y-auto pt-24" : "overflow-hidden"
         }`}
       >
@@ -106,7 +106,6 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           onToggleLike={() => setLiked((prev) => !prev)}
           isDetail={isExpanded}
           showMapLink={isExpanded}
-          showReviewButton={isExpanded}
         />
 
         {isExpanded && (
