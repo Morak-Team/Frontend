@@ -93,7 +93,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
 
       <div
         className={`px-5 pt-4 pb-6 ${
-          isExpanded ? "h-full overflow-y-auto pt-20" : "overflow-hidden"
+          isExpanded ? "h-full overflow-y-auto pt-24" : "overflow-hidden"
         }`}
       >
         <PlaceContent
