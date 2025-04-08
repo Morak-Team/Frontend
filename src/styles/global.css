@@ -5,6 +5,7 @@
 @layer base {
   html {
     font-size: 16px;
+    scroll-behavior: smooth;
 
     @media (min-width: 450px) and (max-width: 600px) {
       font-size: 13px;
@@ -13,5 +14,16 @@
     @media (max-width: 450px) {
       font-size: 10px;
     }
+  }
+
+  body {
+    line-height: 1;
+    max-width: 760px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
   }
 }
