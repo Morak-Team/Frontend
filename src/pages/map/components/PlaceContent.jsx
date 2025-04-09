@@ -57,7 +57,7 @@ const PlaceContent = ({
         ))}
       </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex w-64 h-12 rounded-2xl bg-gray-100 items-center justify-center mt-4">
         {showMapLink && (
           <a
             href={`https://map.naver.com/v5/search/${name}`}

@@ -13,7 +13,6 @@ const MapViewer = ({ places, onMarkerClick }) => {
             zoom: 12,
           });
 
-          // 마커 추가
           places.forEach((place) => {
             const marker = new window.naver.maps.Marker({
               position: new window.naver.maps.LatLng(
@@ -29,7 +28,6 @@ const MapViewer = ({ places, onMarkerClick }) => {
           });
         }
       })
-      // 오류 처리 추가
       .catch((error) => {
         console.error("지도 로딩 중 오류 발생:", error);
       });

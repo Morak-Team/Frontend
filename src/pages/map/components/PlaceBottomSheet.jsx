@@ -67,7 +67,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
   return (
     <motion.div
       ref={sheetRef}
-      className="fixed bottom-0 left-0 w-full z-50 bg-white rounded-t-2xl shadow-xl"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-2xl shadow-xl"
       style={{ height }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -82,7 +82,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
               e.stopPropagation();
               onClose();
             }}
-            className="absolute right-2 top-4 p-4"
+            className="absolute right-2 top-10 p-4"
           >
             <img
               src="/svgs/ic_X.svg"
