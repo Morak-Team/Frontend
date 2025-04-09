@@ -6,10 +6,10 @@ const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
   const [height, setHeight] = useState(120);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   const MIN_HEIGHT = 120;
-  const MAX_HEIGHT = useRef(window.innerHeight); 
+  const MAX_HEIGHT = useRef(window.innerHeight);
 
   const sheetRef = useRef(null);
   const startY = useRef(0);
@@ -19,6 +19,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
       setIsMobile(window.innerWidth <= 768);
       MAX_HEIGHT.current = window.innerHeight;
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
