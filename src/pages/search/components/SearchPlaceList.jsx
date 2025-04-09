@@ -1,12 +1,12 @@
 import PlaceCard from "./PlaceCard";
 
-const PlaceList = ({ places, onSelect }) => {
+const PlaceList = ({ places, onSelect, showEmptyMessage }) => {
   if (!places.length) {
-    return (
+    return showEmptyMessage ? (
       <div className="mt-16 text-center text-gray-400">
         검색 결과가 없습니다.
       </div>
-    );
+    ) : null;
   }
 
   return (

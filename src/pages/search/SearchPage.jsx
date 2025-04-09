@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
@@ -8,11 +8,20 @@ const SearchPage = () => {
   const [keyword, setKeyword] = useState("");
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [isSearched, setIsSearched] = useState(false);
+
+  // 입력값이 지워지면 검색 상태 초기화
+  useEffect(() => {
+    if (keyword.trim() === "") {
+      setIsSearched(false);
+      setFilteredPlaces([]);
+    }
+  }, [keyword]);
 
   const handleSearch = (text) => {
     if (!text.trim()) return;
-
     setKeyword(text);
+    setIsSearched(true);
 
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
@@ -39,15 +48,11 @@ const SearchPage = () => {
         />
       )}
 
-      <PlaceList places={filteredPlaces} onSelect={(p) => alert(p.name)} />
-
-      {keyword.length === 0 && recentSearches.length === 0 && (
-        <div className="flex justify-center items-center h-[20rem]">
-          <p className="text-center text-zinc-800 font-semibold">
-            새로운 가치 가게를 찾아보세요
-          </p>
-        </div>
-      )}
+      <PlaceList
+        places={filteredPlaces}
+        onSelect={(p) => alert(p.name)}
+        showEmptyMessage={isSearched}
+      />
     </div>
   );
 };
