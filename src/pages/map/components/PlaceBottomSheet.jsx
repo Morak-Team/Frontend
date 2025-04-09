@@ -4,58 +4,44 @@ import PlaceContent from "./PlaceContent";
 
 const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
-  const [height, setHeight] = useState(MIN_HEIGHT);
+  const [height, setHeight] = useState(120);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const sheetRef = useRef(null);
-  const startY = useRef(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const MIN_HEIGHT = 120;
-  const [MAX_HEIGHT, setMAX_HEIGHT] = useState(window.innerHeight);
+  const MAX_HEIGHT = useRef(window.innerHeight); 
 
-  useEffect(() => {
-    const handleResize = () => setMAX_HEIGHT(window.innerHeight);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const sheetRef = useRef(null);
+  const startY = useRef(0);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      MAX_HEIGHT.current = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 드래그 시작 위치 저장
-  const handleTouchStart = (e) => {
-    if (!isMobile) return;
-    startY.current = e.touches[0].clientY;
-  };
-
-  // 스크롤 잠금
   useEffect(() => {
-    if (isExpanded) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
+    document.body.style.overflow = isExpanded ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isExpanded]);
 
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
+    startY.current = e.touches[0].clientY;
+  };
+
   const handleTouchEnd = (e) => {
     if (!isMobile) return;
-
     const endY = e.changedTouches[0].clientY;
     const delta = endY - startY.current;
 
     if (delta < -50) {
-      animateHeight(MAX_HEIGHT);
+      animateHeight(MAX_HEIGHT.current);
       setIsExpanded(true);
     } else if (delta > 50) {
       animateHeight(MIN_HEIGHT);
@@ -65,7 +51,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
 
   const handleClickExpand = () => {
     if (!isMobile && !isExpanded) {
-      animateHeight(MAX_HEIGHT);
+      animateHeight(MAX_HEIGHT.current);
       setIsExpanded(true);
     }
   };
@@ -92,7 +78,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
         {isExpanded && (
           <button
             onClick={(e) => {
-              e.stopPropagation(); // 클릭 이벤트 전파 방지
+              e.stopPropagation();
               onClose();
             }}
             className="absolute right-2 top-4 p-4"
