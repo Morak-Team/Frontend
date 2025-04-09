@@ -1,25 +1,43 @@
 import Select from "react-select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { districtOptions, unitOptions } from "@/constants/myPage/areaOptions";
 
-const SelectArea = ({ onSelect, area }) => {
-  // 셀렉트 부분의 초깃값으로 부모 컴포넌트로부터 받아온 지역 정보를 넣어둡니다.
-  // 자식 컴포넌트에서 직접 관리할 지역 정보 상태 변수를 하나 선언합니다. 부모와 마찬가지로 구, 동으로 이루어진 객체입니다.
-  // 구 셀렉트 부분에 onChange 이벤트가 발생하면 구 부분을 업데이트합니다.
-  // 동 셀렉트 부분에 onChange 이벤트가 발생하면 동 부분을 업데이트합니다.
-  // 버튼을 하나 생성해, 수정하기 버튼을 만들고 해당 버튼에 onClick 이벤트를 걸어 클릭 이벤트가 발생하면 부모로부터 받아온 onSelect 함수를
-  // 실행하여 부모 컴포넌트의 지역 정보 상태 변수를 업데이트합니다.
-  // 버튼 클릭과 동시에, 서버로 api post 요청을 보내 데이터베이스의 유저 지역 정보를 업데이트합니다.
-
-  const [district, setDistrict] = useState(null);
-  const [areaInfo, setAreaInfo] = useState({
-    district: "서울",
-    unit: "방이동",
+const SelectArea = ({ onSelect, area: initialArea }) => {
+  const [area, setArea] = useState({
+    district: null,
+    unit: null,
   });
 
+  // 초기값 셋팅
+  useEffect(() => {
+    const initDistrict = districtOptions.find(
+      (opt) => opt.value === initialArea.district
+    );
+    const initUnit = unitOptions[initialArea.district]?.find(
+      (opt) => opt.value === initialArea.unit
+    );
+
+    setArea({ district: initDistrict, unit: initUnit });
+  }, [initialArea]);
+
+  // 구 선택 시 → 동 초기화
   const handleDistrictChange = (selected) => {
-    onSelect(selected?.value);
-    setDistrict(selected);
+    setArea({ district: selected, unit: null });
+  };
+
+  const handleUnitChange = (selected) => {
+    setArea((prev) => ({ ...prev, unit: selected }));
+  };
+
+  const handleSubmit = () => {
+    if (area.district && area.unit) {
+      onSelect({
+        district: area.district.value,
+        unit: area.unit.value,
+      });
+    } else {
+      alert("지역 정보를 모두 선택해 주세요.");
+    }
   };
 
   return (
@@ -27,13 +45,22 @@ const SelectArea = ({ onSelect, area }) => {
       <Select
         options={districtOptions}
         onChange={handleDistrictChange}
-        placeholder={"구를 선택하세요."}
+        value={area.district}
+        placeholder="구를 선택하세요."
       />
       <Select
-        options={district ? unitOptions[district.value] : []}
-        placeholder={"동을 선택하세요."}
-        isDisabled={!district}
+        options={area.district ? unitOptions[area.district.value] : []}
+        onChange={handleUnitChange}
+        value={area.unit}
+        isDisabled={!area.district}
+        placeholder="동을 선택하세요."
       />
+      <button
+        className="mt-10 border-blue-400 border p-3 rounded-md"
+        onClick={handleSubmit}
+      >
+        수정하기
+      </button>
     </>
   );
 };
