@@ -5,6 +5,7 @@ import Home from "@pages/home/Home";
 import KakaoAuth from "@pages/kakaoAuth/kakaoAuth";
 import MapPage from "@pages/map/MapPage";
 import MyPage from "@/pages/myPage/MyPage";
+import StoreReviewPage from "@/pages/review/StoreReviewPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/myPage",
         element: <MyPage />,
+      },
+      {
+        path: "/review/:storeId",
+        element: <StoreReviewPage />,
       },
     ],
   },
