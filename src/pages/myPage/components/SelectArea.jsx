@@ -17,7 +17,7 @@ const SelectArea = ({ onSelect, area: initialArea }) => {
       (opt) => opt.value === initialArea.unit
     );
 
-    setArea({ district: initDistrict, unit: initUnit });
+    setArea({ district: initDistrict || null, unit: initUnit || null });
   }, [initialArea]);
 
   // 구 선택 시 → 동 초기화
