@@ -24,7 +24,7 @@ export const getReviews = async (storeId) => {
   return res.data;
 };
 
-export const getInfinteReviews = async (storeId, page) => {
+export const getInfiniteReviews = async (storeId, page) => {
   const res = await api.get("/review", { params: { storeId, page } });
 
   return res.data;

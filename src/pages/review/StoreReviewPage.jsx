@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useInfintePractice } from "@/apis/review/queries";
+import { useInfinitePractice } from "@/apis/review/queries";
+import { useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { getTopRatedMovies } from "@/apis/review/getReviews";
@@ -15,7 +16,7 @@ const StoreReviewPage = () => {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useInfintePractice();
+  } = useInfinitePractice();
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && hasNextPage) {
