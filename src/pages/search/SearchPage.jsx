@@ -4,11 +4,26 @@ import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
 import samplePlaces from "@constants/map/socialEnterprise";
 
+const LOCAL_STORAGE_KEY = "recentSearches";
+
 const SearchPage = () => {
   const [keyword, setKeyword] = useState("");
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
+
+  // localStorage에서 최근 검색어 불러오기
+  useEffect(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (stored) {
+      setRecentSearches(JSON.parse(stored));
+    }
+  }, []);
+
+  // 최근 검색어 바뀔 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recentSearches));
+  }, [recentSearches]);
 
   // 입력값이 지워지면 검색 상태 초기화
   useEffect(() => {
@@ -26,9 +41,14 @@ const SearchPage = () => {
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
 
-    const result = samplePlaces.filter(
-      (place) => place.name.includes(text) || place.category.includes(text)
-    );
+    const result = samplePlaces.filter((place) => {
+      const searchText = text.toLowerCase();
+      return (
+        place.name.toLowerCase().includes(searchText) ||
+        place.category.toLowerCase().includes(searchText)
+      );
+    });
+
     setFilteredPlaces(result);
   };
 
