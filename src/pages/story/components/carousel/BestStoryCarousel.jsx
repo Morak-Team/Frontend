@@ -3,7 +3,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "@/styles/swiper.css";
-import SlideContent from "@/pages/story/components/SlideContent";
+import SlideContent from "@/pages/story/components/content/SlideContent";
 
 const BestStoryCarousel = () => {
   const sampleData = [

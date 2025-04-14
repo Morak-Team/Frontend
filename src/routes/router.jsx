@@ -10,6 +10,7 @@ import SearchPage from "@/pages/search/SearchPage";
 import StoryPage from "@/pages/story/StoryPage";
 import SupportPage from "@/pages/support/SupportPage";
 import ErrorPage from "@/pages/error/ErrorPage";
+import StoryDetail from "@/pages/story/components/StoryDetail";
 
 const router = createBrowserRouter([
   {
@@ -37,8 +38,12 @@ const router = createBrowserRouter([
         element: <StoreReviewPage />,
       },
       {
-        path: "/story/:storyId",
+        path: "/story",
         element: <StoryPage />,
+      },
+      {
+        path: "/story/:storyId",
+        element: <StoryDetail />,
       },
       {
         path: "/support",
