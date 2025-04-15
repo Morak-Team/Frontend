@@ -7,10 +7,15 @@ import MapPage from "@pages/map/MapPage";
 import MyPage from "@/pages/myPage/MyPage";
 import StoreReviewPage from "@/pages/review/StoreReviewPage";
 import SearchPage from "@/pages/search/SearchPage";
+import StoryPage from "@/pages/story/StoryPage";
+import SupportPage from "@/pages/support/SupportPage";
+import ErrorPage from "@/pages/error/ErrorPage";
+import StoryDetail from "@/pages/story/components/StoryDetail";
 
 const router = createBrowserRouter([
   {
     element: <LayoutWithTab />, // 하단 탭이 있는 Layout
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -31,6 +36,18 @@ const router = createBrowserRouter([
       {
         path: "/review/:storeId",
         element: <StoreReviewPage />,
+      },
+      {
+        path: "/story",
+        element: <StoryPage />,
+      },
+      {
+        path: "/story/:storyId",
+        element: <StoryDetail />,
+      },
+      {
+        path: "/support",
+        element: <SupportPage />,
       },
     ],
   },
