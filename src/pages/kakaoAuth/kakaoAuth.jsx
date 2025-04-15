@@ -43,25 +43,31 @@ const KakaoAuth = () => {
   }, [code, navigate]);
 
   const handleLoginClick = () => {
-    const REST_API_KEY = import.meta.env.VITE_REST_API;
-    const REDIRECT_URI = "http://localhost:5173/auth";
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile_nickname,profile_image`;
+    const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
     window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      {!code && (
-        <button onClick={handleLoginClick}>
-          <img
-            src="/images/kakao_login_button.png"
-            alt="카카오 로그인 버튼"
-            className="w-full"
-          />
-        </button>
-      )}
-      {code && <div className="text-lg">카카오 로그인 처리 중입니다...</div>}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+      <h1 className="text-3xl font-semibold">
+        간편하게 로그인하고 <br />
+        따뜻한 온기에 동참해보세요.
+      </h1>
+      <img
+        src="/images/img_illust.png"
+        alt="모락_illust"
+        className="w-[19.4rem] h-[19.4rem] rounded-[77px] object-cover my-20"
+      />
+      <button onClick={handleLoginClick} className="w-[30rem]">
+        <img
+          src="/images/kakao_login_large_wide.png"
+          alt="카카오 로그인 버튼"
+          className="w-full"
+        />
+      </button>
     </div>
   );
 };
