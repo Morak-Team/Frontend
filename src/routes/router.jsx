@@ -22,6 +22,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/auth",
+        element: <KakaoAuth />,
+      },
+      {
         path: "/map",
         element: <MapPage />,
       },
@@ -50,10 +54,6 @@ const router = createBrowserRouter([
         element: <SupportPage />,
       },
     ],
-  },
-  {
-    path: "/auth", // 탭 없는 별도 페이지
-    element: <KakaoAuth />,
   },
 ]);
 
