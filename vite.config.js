@@ -36,6 +36,7 @@ export default defineConfig({
   server: {
     open: true,
     host: true,
+    allowedHosts: [".ngrok-free.app"],
   },
   resolve: {
     alias: {
