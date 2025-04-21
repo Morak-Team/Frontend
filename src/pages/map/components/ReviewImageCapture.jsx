@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-const ReviewContent = ({ storeId }) => {
+const ReviewImageCapture = ({ storeId }) => {
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
@@ -28,10 +28,9 @@ const ReviewContent = ({ storeId }) => {
       setImageBlob(file);
       setCapturedImage(imageUrl);
       setFromGallery(true);
-      setVideoVisible(false); // ✅ 영상 끄기
+      setVideoVisible(false);
     }
 
-    // ✅ 입력값 초기화 (같은 파일 선택 가능하게)
     e.target.value = "";
   };
 
@@ -52,7 +51,7 @@ const ReviewContent = ({ storeId }) => {
         const imageUrl = URL.createObjectURL(blob);
         setImageBlob(blob);
         setCapturedImage(imageUrl);
-        setFromGallery(false); // ✅ 카메라에서 촬영한 경우
+        setFromGallery(false);
         setVideoVisible(false);
       }
     }, "image/jpeg");
@@ -190,4 +189,4 @@ const ReviewContent = ({ storeId }) => {
   );
 };
 
-export default ReviewContent;
+export default ReviewImageCapture;

@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, animate } from "framer-motion";
 import PlaceContent from "./PlaceContent";
-import { Link } from "react-router-dom";
-import ReviewContent from "@/pages/map/components/ReviewContent";
+import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 
 const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
@@ -12,67 +11,6 @@ const PlaceBottomSheet = ({ place, onClose }) => {
 
   // 가게 구별용 id
   const storeId = 1;
-
-  const videoRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const canvasRef = useRef(null);
-
-  const [videoVisible, setVideoVisible] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
-  const [imageBlob, setImageBlob] = useState(null);
-  const [fromGallery, setFromGallery] = useState(false);
-
-  const startCamera = async () => {
-    setVideoVisible(true);
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" },
-    });
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
-    }
-  };
-
-  const handleGallerySelect = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImageBlob(file);
-      setCapturedImage(imageUrl);
-      setFromGallery(true);
-      setVideoVisible(false); // ✅ 영상 끄기
-    }
-
-    // ✅ 입력값 초기화 (같은 파일 선택 가능하게)
-    e.target.value = "";
-  };
-
-  const handleCapture = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (!video || !canvas) return;
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext("2d");
-    ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const imageUrl = URL.createObjectURL(blob);
-        setImageBlob(blob);
-        setCapturedImage(imageUrl);
-        setFromGallery(false); // ✅ 카메라에서 촬영한 경우
-        setVideoVisible(false);
-      }
-    }, "image/jpeg");
-  };
-
-  const handleUsePhoto = () => {
-    // TODO: 이곳에 업로드 or 리뷰작성 등 후속 동작 추가 예정
-    console.log("✅ 사용하기 버튼 클릭됨. 사진 데이터로 처리 시작!");
-  };
 
   const MIN_HEIGHT = 120;
   const MAX_HEIGHT = useRef(window.innerHeight);
@@ -176,7 +114,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           showMapLink={isExpanded}
         />
         {/* 이 부분 컴포넌트로 빼기 */}
-        {isExpanded && <ReviewContent storeId={storeId} />}
+        {isExpanded && <ReviewImageCapture storeId={storeId} />}
       </div>
     </motion.div>
   );
