@@ -12,18 +12,46 @@ const ReviewImageCapture = ({ storeId }) => {
   const [fromGallery, setFromGallery] = useState(false);
 
   const startCamera = async () => {
-    setVideoVisible(true);
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" },
-    });
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
+    try {
+      setVideoVisible(true);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.log("카메라 접근 실패", error);
+      alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
     }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current?.srcObject) {
+      const stream = videoRef.current.srcObject;
+      stream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setVideoVisible(false);
   };
 
   const handleGallerySelect = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 선택 가능합니다.");
+        e.target.value = "";
+        fileInputRef.current?.click();
+        return;
+      }
+      const MAX_SIZE = 5 * 1024 * 1024;
+      if (file.size < MAX_SIZE) {
+        alert("파일 크기는 5MB 이하여야 합니다.");
+        e.target.value = "";
+        fileInputRef.current?.click();
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setImageBlob(file);
       setCapturedImage(imageUrl);
@@ -90,11 +118,7 @@ const ReviewImageCapture = ({ storeId }) => {
 
               {/* 닫기 버튼 */}
               <button
-                onClick={() => {
-                  const stream = videoRef.current?.srcObject;
-                  stream?.getTracks().forEach((track) => track.stop());
-                  setVideoVisible(false);
-                }}
+                onClick={stopCamera}
                 className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
               >
                 ✕

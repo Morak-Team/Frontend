@@ -113,7 +113,6 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
-        {/* 이 부분 컴포넌트로 빼기 */}
         {isExpanded && <ReviewImageCapture storeId={storeId} />}
       </div>
     </motion.div>
