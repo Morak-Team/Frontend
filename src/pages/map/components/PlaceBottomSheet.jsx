@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, animate } from "framer-motion";
 import PlaceContent from "./PlaceContent";
-import { Link } from "react-router-dom";
+import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 
 const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
@@ -113,16 +113,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
-        {/* 이 부분 컴포넌트로 빼기 */}
-        {isExpanded && (
-          <div>
-            <div className="mt-10 flex justify-between">
-              <h3 className="font-semibold text-xl mb-2">리뷰</h3>
-              <button className="text-sm text-orange-500">✏️ 리뷰 쓰기</button>
-            </div>
-            <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
-          </div>
-        )}
+        {isExpanded && <ReviewImageCapture storeId={storeId} />}
       </div>
     </motion.div>
   );
