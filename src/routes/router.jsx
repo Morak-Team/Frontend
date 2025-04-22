@@ -11,6 +11,7 @@ import StoryPage from "@/pages/story/StoryPage";
 import SupportPage from "@/pages/support/SupportPage";
 import ErrorPage from "@/pages/error/ErrorPage";
 import StoryDetail from "@/pages/story/components/StoryDetail";
+import WritingReviewPage from "@/pages/writingReview/WritingReviewPage";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
         element: <SearchPage />,
       },
       {
-        path: "/myPage",
+        path: "/my-page",
         element: <MyPage />,
       },
       {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/support",
         element: <SupportPage />,
+      },
+      {
+        path: "/writing-review",
+        element: <WritingReviewPage />,
       },
     ],
   },
