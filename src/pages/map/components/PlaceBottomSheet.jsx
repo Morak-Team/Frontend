@@ -3,13 +3,15 @@ import { motion, animate } from "framer-motion";
 import PlaceContent from "./PlaceContent";
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 import { Link } from "react-router-dom";
+import ConfirmImage from "@/pages/map/components/ConfirmImage";
 
-const PlaceBottomSheet = ({ place, onClose }) => {
+const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   const [liked, setLiked] = useState(place.liked || false);
   const [height, setHeight] = useState(120);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [turnOnCamera, setTurnOnCamera] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // 가게 구별용 id
   const storeId = 1;
@@ -125,9 +127,26 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           </button>
         </div>
 
+        {/* 리뷰 작성 컴포넌트 */}
         {isExpanded && turnOnCamera && (
-          <ReviewImageCapture storeId={storeId} turnOnCamera={turnOnCamera} />
+          <ReviewImageCapture
+            storeId={storeId}
+            turnOnCamera={turnOnCamera}
+            onCloseCamera={() => setTurnOnCamera(false)}
+            onCaptureSuccess={() => setShowConfirm(true)}
+          />
         )}
+
+        {showConfirm && (
+          <ConfirmImage
+            onReject={() => {
+              sessionStorage.removeItem("reviewResult");
+              setShowConfirm(false);
+              setTurnOnCamera(true); // ✅ 재촬영 흐름
+            }}
+          />
+        )}
+
         <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
       </div>
     </motion.div>

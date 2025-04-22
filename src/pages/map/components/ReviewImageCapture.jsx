@@ -1,12 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getPresignedUrl } from "@/apis/review/getPresignedUrl";
 import { uploadImageToS3 } from "@/apis/review/uploadImageToS3";
 import { useMutation } from "@tanstack/react-query";
 import { postImageKey } from "@/apis/review/postImageKey";
 import { useNavigate } from "react-router-dom";
 
-const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
+const ReviewImageCapture = ({
+  storeId,
+  turnOnCamera,
+  onCloseCamera,
+  onCaptureSuccess,
+}) => {
   const navigate = useNavigate();
 
   const videoRef = useRef(null);
@@ -18,25 +22,25 @@ const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
   const [imageBlob, setImageBlob] = useState(null);
   const [fromGallery, setFromGallery] = useState(false);
 
+  const startCamera = async () => {
+    try {
+      setVideoVisible(true);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.log("카메라 접근 실패", error);
+      alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
+    }
+  };
+
   useEffect(() => {
-    const startCamera = async () => {
-      if (!turnOnCamera) {
-        return;
-      }
-      try {
-        setVideoVisible(true);
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" },
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.log("카메라 접근 실패", error);
-        alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
-      }
-    };
-    startCamera();
+    if (turnOnCamera) {
+      startCamera();
+    }
   }, [turnOnCamera]);
 
   const stopCamera = () => {
@@ -48,6 +52,14 @@ const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
     setVideoVisible(false);
   };
 
+  const handleCloseCamera = () => {
+    stopCamera(); // 스트림 종료
+    setVideoVisible(false);
+    setCapturedImage(null);
+    setImageBlob(null);
+    if (onCloseCamera) onCloseCamera();
+  };
+
   const handleGallerySelect = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -57,13 +69,6 @@ const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
         fileInputRef.current?.click();
         return;
       }
-      // const MAX_SIZE = 5 * 1024 * 1024;
-      // if (file.size < MAX_SIZE) {
-      //   alert("파일 크기는 5MB 이하여야 합니다.");
-      //   e.target.value = "";
-      //   fileInputRef.current?.click();
-      //   return;
-      // }
 
       const imageUrl = URL.createObjectURL(file);
       setImageBlob(file);
@@ -115,45 +120,42 @@ const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
 
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
+    onCaptureSuccess?.();
+    handleCloseCamera();
 
-    let originalFileName = "unknown";
-    let type = imageBlob.type;
-    let kakaoId = "123";
+    // let originalFileName = "unknown";
+    // let type = imageBlob.type;
+    // let kakaoId = "123";
 
-    if (imageBlob.name) {
-      originalFileName = imageBlob.name.split(".")[0]; // 파일 이름에서 확장자 제거
-    } else {
-      originalFileName = `photo_${Date.now()}`; // Blob일 경우 임의 생성
-    }
-    try {
-      const { url, key } = await getPresignedUrl(
-        originalFileName,
-        type,
-        kakaoId
-      ); // 서버에서 URL과 key 받기
-      const success = await uploadImageToS3(url, imageBlob);
-      if (success) {
-        console.log("S3 업로드 성공!", key);
-        const result = await postImageKey(key);
+    // if (imageBlob.name) {
+    //   originalFileName = imageBlob.name.split(".")[0]; // 파일 이름에서 확장자 제거
+    // } else {
+    //   originalFileName = `photo_${Date.now()}`; // Blob일 경우 임의 생성
+    // }
+    // try {
+    //   const { url, key } = await getPresignedUrl(
+    //     originalFileName,
+    //     type,
+    //     kakaoId
+    //   ); // 서버에서 URL과 key 받기
+    //   const success = await uploadImageToS3(url, imageBlob);
+    //   if (success) {
+    //     console.log("S3 업로드 성공!", key);
+    //     const result = await postImageKey(key);
 
-        if (result.status == 200) {
-          sessionStorage.setItem("reviewResult", JSON.stringify({ result }));
-          navigate("/write-review");
-        }
-      }
-    } catch (error) {
-      console.error("이미지 처리 실패", error);
-    }
+    //     if (result.status == 200) {
+    //       sessionStorage.setItem("reviewResult", JSON.stringify({ result }));
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.error("이미지 처리 실패", error);
+    // }
   };
 
   return (
     <>
       <div>
-        <div className="mt-10 flex justify-between">
-          {/* <button className="text-sm text-orange-500" onClick={startCamera}>
-            ✏️ 리뷰 쓰기
-          </button> */}
-
+        <div>
           {/* 숨겨진 input */}
           <input
             ref={fileInputRef}
@@ -173,7 +175,7 @@ const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
 
               {/* 닫기 버튼 */}
               <button
-                onClick={stopCamera}
+                onClick={handleCloseCamera}
                 className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
               >
                 ✕
