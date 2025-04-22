@@ -145,7 +145,7 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
             onReject={() => {
               sessionStorage.removeItem("reviewResult");
               setShowConfirm(false);
-              setTurnOnCamera(true); // ✅ 재촬영 흐름
+              setTurnOnCamera(true);
             }}
           />
         )}
