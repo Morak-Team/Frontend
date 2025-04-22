@@ -53,9 +53,11 @@ const MapPage = () => {
       {/* 카테고리 바 */}
       <CategoryBar
         onSelect={(category) => {
-          // 카테고리 선택 시 필터링 로직
-          const filtered = samplePlaces.filter((p) => p.category === category);
+          const filtered = samplePlaces.filter(
+            (p) => p.businessType === category
+          );
           setFilteredPlaces(filtered);
+          setSelectedPlace(null); // 기존 선택된 장소 초기화
         }}
       />
 
