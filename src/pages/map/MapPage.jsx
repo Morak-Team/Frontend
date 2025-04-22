@@ -7,12 +7,27 @@ import samplePlaces from "@constants/map/socialEnterprise";
 const MapPage = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [filteredPlaces, setFilteredPlaces] = useState(samplePlaces);
-
+  const [userCoords, setUserCoords] = useState(null);
+  const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
     navigate("/map/search");
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setUserCoords({ lat: latitude, lng: longitude });
+        },
+        (err) => {
+          console.error("위치 정보를 가져오는 데 실패했습니다:", err);
+        }
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -24,7 +39,24 @@ const MapPage = () => {
         <img src="/svgs/ic_Search.svg" alt="검색 아이콘" className="w-5 h-5" />
       </div>
 
-      <MapViewer places={filteredPlaces} onMarkerClick={setSelectedPlace} />
+      {/* 현위치 버튼 */}
+      <button
+        onClick={() => setMoveToCurrentLocation(true)}
+        className="fixed bottom-40 right-8 z-50 w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center"
+      >
+        <img
+          src="/svgs/ic_location.svg"
+          alt="현재 위치 버튼"
+        />
+      </button>
+
+      <MapViewer
+        places={filteredPlaces}
+        onMarkerClick={setSelectedPlace}
+        userCoords={userCoords}
+        moveToCurrentLocation={moveToCurrentLocation}
+        onMoveComplete={() => setMoveToCurrentLocation(false)}
+      />
 
       {selectedPlace && (
         <PlaceBottomSheet
@@ -35,5 +67,4 @@ const MapPage = () => {
     </>
   );
 };
-
 export default MapPage;
