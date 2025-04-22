@@ -13,6 +13,10 @@ const ReviewImageCapture = ({
 }) => {
   const navigate = useNavigate();
 
+  useEffect(() => () => stopCamera(), []);
+
+  const streamRef = useRef(null);
+
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
@@ -23,11 +27,13 @@ const ReviewImageCapture = ({
   const [fromGallery, setFromGallery] = useState(false);
 
   const startCamera = async () => {
+    stopCamera();
     try {
       setVideoVisible(true);
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
+      streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -40,13 +46,28 @@ const ReviewImageCapture = ({
   useEffect(() => {
     if (turnOnCamera) {
       startCamera();
+    } else {
+      stopCamera();
     }
   }, [turnOnCamera]);
 
   const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const stream = videoRef.current.srcObject;
-      stream.getTracks().forEach((track) => track.stop());
+    const video = videoRef.current;
+    if (video && video.srcObject) {
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+
+    // 스트림이 살아 있으면 확실히 종료
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+
+    // video 엘리먼트가 남아 있다면 연결 해제
+    if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
     setVideoVisible(false);

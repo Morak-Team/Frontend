@@ -133,7 +133,10 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
             storeId={storeId}
             turnOnCamera={turnOnCamera}
             onCloseCamera={() => setTurnOnCamera(false)}
-            onCaptureSuccess={() => setShowConfirm(true)}
+            onCaptureSuccess={() => {
+              setTurnOnCamera(false);
+              setShowConfirm(true);
+            }}
           />
         )}
 
