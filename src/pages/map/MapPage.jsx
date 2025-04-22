@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
 import samplePlaces from "@constants/map/socialEnterprise";
@@ -11,10 +11,20 @@ const MapPage = () => {
   const [userCoords, setUserCoords] = useState(null);
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearchClick = () => {
     navigate("/map/search");
   };
+
+  useEffect(() => {
+    if (location.state?.resetMap) {
+      setSelectedPlace(null);
+      setFilteredPlaces(samplePlaces);
+      setMoveToCurrentLocation(false);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -62,6 +72,7 @@ const MapPage = () => {
         userCoords={userCoords}
         moveToCurrentLocation={moveToCurrentLocation}
         onMoveComplete={() => setMoveToCurrentLocation(false)}
+        resetMap={location.state?.resetMap}
       />
       {selectedPlace && (
         <PlaceBottomSheet

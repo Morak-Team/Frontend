@@ -7,6 +7,7 @@ const MapViewer = ({
   userCoords,
   moveToCurrentLocation,
   onMoveComplete,
+  resetMap,
 }) => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
@@ -43,15 +44,27 @@ const MapViewer = ({
 
   // 지도를 현재 위치로 이동
   useEffect(() => {
-    if (!mapInstance.current || !userCoords) return;
+    if (resetMap && mapInstance.current) {
+      mapInstance.current.setCenter(
+        new window.naver.maps.LatLng(37.5665, 126.978)
+      );
+      mapInstance.current.setZoom(12);
 
-    if (moveToCurrentLocation) {
+      if (userMarkerRef.current) {
+        userMarkerRef.current.setMap(null);
+        userMarkerRef.current = null;
+      }
+    }
+  }, [resetMap]);
+
+  useEffect(() => {
+    if (moveToCurrentLocation && userCoords && mapInstance.current) {
       const newCenter = new window.naver.maps.LatLng(
         userCoords.lat,
         userCoords.lng
       );
-      mapInstance.current.setZoom(20);
       mapInstance.current.setCenter(newCenter);
+      mapInstance.current.setZoom(20);
 
       if (userMarkerRef.current) {
         userMarkerRef.current.setMap(null);
@@ -62,15 +75,8 @@ const MapViewer = ({
         position: newCenter,
         map: mapInstance.current,
         icon: {
-          content: `
-      <div style="
-        width: 20px;
-        height: 20px;
-        background: #35ABFF;
-        border-radius: 9999px;
-        filter: drop-shadow(0px 0px 12px rgba(53, 171, 255, 0.71));
-      "></div>
-    `,
+          content:
+            '<div style="width:20px;height:20px;background:#35ABFF;border-radius:9999px;filter:drop-shadow(0px 0px 12px rgba(53, 171, 255, 0.71))"></div>',
           anchor: new window.naver.maps.Point(10, 10),
         },
       });
