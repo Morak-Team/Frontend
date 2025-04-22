@@ -3,7 +3,7 @@ import axios from "axios";
 export const uploadImageToS3 = async (url, file) => {
   const res = await axios.put(url, file, {
     headers: {
-      "Content-Type:": file.type,
+      "Content-Type": file.type,
     },
   });
 

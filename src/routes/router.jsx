@@ -11,7 +11,7 @@ import StoryPage from "@/pages/story/StoryPage";
 import SupportPage from "@/pages/support/SupportPage";
 import ErrorPage from "@/pages/error/ErrorPage";
 import StoryDetail from "@/pages/story/components/StoryDetail";
-import WriteReviewPage from "@/pages/\bwriteReview/WriteReviewPage";
+import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
 
 const router = createBrowserRouter([
   {
