@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { motion, animate } from "framer-motion";
 import PlaceContent from "./PlaceContent";
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
+import { Link } from "react-router-dom";
 
 const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
   const [height, setHeight] = useState(120);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [turnOnCamera, setTurnOnCamera] = useState(false);
 
   // 가게 구별용 id
   const storeId = 1;
@@ -113,7 +115,20 @@ const PlaceBottomSheet = ({ place, onClose }) => {
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
-        {isExpanded && <ReviewImageCapture storeId={storeId} />}
+        <div className="mt-10 flex justify-between">
+          <h3 className="font-semibold text-xl mb-2">리뷰</h3>
+          <button
+            className="text-sm text-orange-500"
+            onClick={() => setTurnOnCamera(true)}
+          >
+            ✏️ 리뷰 쓰기
+          </button>
+        </div>
+
+        {isExpanded && turnOnCamera && (
+          <ReviewImageCapture storeId={storeId} turnOnCamera={turnOnCamera} />
+        )}
+        <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
       </div>
     </motion.div>
   );

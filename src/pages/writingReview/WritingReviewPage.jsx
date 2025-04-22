@@ -9,10 +9,25 @@ const WritingReviewPage = () => {
     }
   }, []);
 
-  if (!data) return <p>결과가 없습니다.</p>;
+  const recapture = () => {};
+
+  //   if (!data) return <p>결과가 없습니다.</p>;
+
   return (
     <>
-      <p>{data}</p>
+      <div className="flex justify-center">
+        <div>
+          <h1 className="text-2xl font-bold mt-20">
+            태백 농협 하나로마트에 다녀오셨군요!
+          </h1>
+          <button
+            className="text-2xl font-bold mt-20 border border-black p-10"
+            onClick={recapture}
+          >
+            아니에요
+          </button>
+        </div>
+      </div>
     </>
   );
 };

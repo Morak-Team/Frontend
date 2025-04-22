@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <SupportPage />,
       },
       {
-        path: "/writing-review",
+        path: "/write-review",
         element: <WritingReviewPage />,
       },
     ],

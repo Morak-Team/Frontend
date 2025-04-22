@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getPresignedUrl } from "@/apis/review/getPresignedUrl";
 import { uploadImageToS3 } from "@/apis/review/uploadImageToS3";
@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postImageKey } from "@/apis/review/postImageKey";
 import { useNavigate } from "react-router-dom";
 
-const ReviewImageCapture = ({ storeId }) => {
+const ReviewImageCapture = ({ storeId, turnOnCamera }) => {
   const navigate = useNavigate();
 
   const videoRef = useRef(null);
@@ -18,20 +18,26 @@ const ReviewImageCapture = ({ storeId }) => {
   const [imageBlob, setImageBlob] = useState(null);
   const [fromGallery, setFromGallery] = useState(false);
 
-  const startCamera = async () => {
-    try {
-      setVideoVisible(true);
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+  useEffect(() => {
+    const startCamera = async () => {
+      if (!turnOnCamera) {
+        return;
       }
-    } catch (error) {
-      console.log("카메라 접근 실패", error);
-      alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
-    }
-  };
+      try {
+        setVideoVisible(true);
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.log("카메라 접근 실패", error);
+        alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
+      }
+    };
+    startCamera();
+  }, [turnOnCamera]);
 
   const stopCamera = () => {
     if (videoRef.current?.srcObject) {
@@ -93,7 +99,7 @@ const ReviewImageCapture = ({ storeId }) => {
   };
 
   const {
-    mutate: uploadImageToS3,
+    mutate: uploadToS3API,
     isPending,
     isSuccess,
     isError,
@@ -144,10 +150,9 @@ const ReviewImageCapture = ({ storeId }) => {
     <>
       <div>
         <div className="mt-10 flex justify-between">
-          <h3 className="font-semibold text-xl mb-2">리뷰</h3>
-          <button className="text-sm text-orange-500" onClick={startCamera}>
+          {/* <button className="text-sm text-orange-500" onClick={startCamera}>
             ✏️ 리뷰 쓰기
-          </button>
+          </button> */}
 
           {/* 숨겨진 input */}
           <input
@@ -257,7 +262,6 @@ const ReviewImageCapture = ({ storeId }) => {
             </div>
           )}
         </div>
-        <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
       </div>
     </>
   );
