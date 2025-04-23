@@ -4,13 +4,14 @@ import LayoutWithTab from "@/components/layout/LayoutWithTab";
 import Home from "@pages/home/Home";
 import KakaoAuth from "@pages/kakaoAuth/kakaoAuth";
 import MapPage from "@pages/map/MapPage";
-import MyPage from "@/pages/myPage/MyPage";
-import StoreReviewPage from "@/pages/review/StoreReviewPage";
-import SearchPage from "@/pages/search/SearchPage";
-import StoryPage from "@/pages/story/StoryPage";
-import SupportPage from "@/pages/support/SupportPage";
-import ErrorPage from "@/pages/error/ErrorPage";
-import StoryDetail from "@/pages/story/components/StoryDetail";
+import MyPage from "@pages/myPage/MyPage";
+import StoreReviewPage from "@pages/review/StoreReviewPage";
+import SearchPage from "@pages/search/SearchPage";
+import StoryPage from "@pages/story/StoryPage";
+import SupportPage from "@pages/support/SupportPage";
+import ErrorPage from "@pages/error/ErrorPage";
+import StoryDetail from "@pages/story/components/StoryDetail";
+import SignUp from "@pages/join/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         element: <SupportPage />,
       },
     ],
+  },
+  {
+    path: "/signup", // 탭 없는 별도 페이지
+    element: <SignUp />,
   },
 ]);
 
