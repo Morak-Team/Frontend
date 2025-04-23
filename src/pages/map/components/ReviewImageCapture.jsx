@@ -1,7 +1,20 @@
-import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { postRecipt } from "@/apis/review/postRecipt";
+import { useNavigate } from "react-router-dom";
 
-const ReviewImageCapture = ({ storeId }) => {
+const ReviewImageCapture = ({
+  storeId,
+  turnOnCamera,
+  onCloseCamera,
+  onCaptureSuccess,
+}) => {
+  const navigate = useNavigate();
+
+  useEffect(() => () => stopCamera(), []);
+
+  const streamRef = useRef(null);
+
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
@@ -12,11 +25,13 @@ const ReviewImageCapture = ({ storeId }) => {
   const [fromGallery, setFromGallery] = useState(false);
 
   const startCamera = async () => {
+    stopCamera();
     try {
       setVideoVisible(true);
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
+      streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -26,13 +41,42 @@ const ReviewImageCapture = ({ storeId }) => {
     }
   };
 
+  useEffect(() => {
+    if (turnOnCamera) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+  }, [turnOnCamera]);
+
   const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const stream = videoRef.current.srcObject;
-      stream.getTracks().forEach((track) => track.stop());
+    const video = videoRef.current;
+    if (video && video.srcObject) {
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+
+    // 스트림이 살아 있으면 확실히 종료
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+
+    // video 엘리먼트가 남아 있다면 연결 해제
+    if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
     setVideoVisible(false);
+  };
+
+  const handleCloseCamera = () => {
+    stopCamera(); // 스트림 종료
+    setVideoVisible(false);
+    setCapturedImage(null);
+    setImageBlob(null);
+    if (onCloseCamera) onCloseCamera();
   };
 
   const handleGallerySelect = (e) => {
@@ -40,13 +84,6 @@ const ReviewImageCapture = ({ storeId }) => {
     if (file) {
       if (!file.type.startsWith("image/")) {
         alert("이미지 파일만 선택 가능합니다.");
-        e.target.value = "";
-        fileInputRef.current?.click();
-        return;
-      }
-      const MAX_SIZE = 5 * 1024 * 1024;
-      if (file.size < MAX_SIZE) {
-        alert("파일 크기는 5MB 이하여야 합니다.");
         e.target.value = "";
         fileInputRef.current?.click();
         return;
@@ -85,20 +122,40 @@ const ReviewImageCapture = ({ storeId }) => {
     }, "image/jpeg");
   };
 
-  const handleUsePhoto = () => {
-    // TODO: 이곳에 업로드 or 리뷰작성 등 후속 동작 추가 예정
-    console.log("✅ 사용하기 버튼 클릭됨. 사진 데이터로 처리 시작!");
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: postRecipt,
+    retry: 2,
+  });
+
+  const handleUsePhoto = async () => {
+    if (!imageBlob) return;
+
+    stopCamera();
+
+    mutate(imageBlob, {
+      onSuccess: (data) => {
+        console.log("인증 성공!", data);
+        onCaptureSuccess?.(); // ✅ 성공 시 호출
+        handleCloseCamera(); // ✅ 카메라 종료
+      },
+      onError: (error) => {
+        console.error("인증 실패", error);
+        alert("이미지 업로드에 실패했습니다. 다시 시도해 주세요.");
+
+        // ✅ 실패 시 다시 촬영 흐름
+        setCapturedImage(null);
+        setImageBlob(null);
+        setFromGallery(false);
+        setVideoVisible(true); // 카메라 다시 활성화
+        startCamera(); // 새 스트림 요청
+      },
+    });
   };
 
   return (
     <>
       <div>
-        <div className="mt-10 flex justify-between">
-          <h3 className="font-semibold text-xl mb-2">리뷰</h3>
-          <button className="text-sm text-orange-500" onClick={startCamera}>
-            ✏️ 리뷰 쓰기
-          </button>
-
+        <div>
           {/* 숨겨진 input */}
           <input
             ref={fileInputRef}
@@ -118,7 +175,7 @@ const ReviewImageCapture = ({ storeId }) => {
 
               {/* 닫기 버튼 */}
               <button
-                onClick={stopCamera}
+                onClick={handleCloseCamera}
                 className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
               >
                 ✕
@@ -154,6 +211,15 @@ const ReviewImageCapture = ({ storeId }) => {
                 alt="촬영된 이미지"
                 className="w-full h-full object-cover"
               />
+
+              {/* ✅ isPending일 때 띄우는 오버레이 */}
+              {isPending && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[10000]">
+                  <p className="text-white text-xl font-bold animate-pulse">
+                    📷 사진 검증 중입니다...
+                  </p>
+                </div>
+              )}
 
               {/* 상단 우측 버튼: 다시 찍기 또는 다시 선택하기 */}
               {fromGallery ? (
@@ -207,7 +273,6 @@ const ReviewImageCapture = ({ storeId }) => {
             </div>
           )}
         </div>
-        <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
       </div>
     </>
   );
