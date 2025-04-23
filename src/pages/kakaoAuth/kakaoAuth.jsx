@@ -1,41 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postKakaoToken } from "@apis/kakaoLogin/postKakaoToken";
-import { getKakaoData } from "@apis/kakaoLogin/getKakaoData";
 
 const KakaoAuth = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState(null);
 
+  // 인가 코드 추출
   useEffect(() => {
     const urlCode = new URL(window.location.href).searchParams.get("code");
     if (urlCode) setCode(urlCode);
   }, []);
 
+  // 백엔드에 인가코드 전달 → 로그인 처리 요청
   useEffect(() => {
     const loginWithKakao = async () => {
       if (!code) return;
 
       try {
-        const tokenRes = await postKakaoToken(code);
-        const accessToken = tokenRes.access_token;
-        if (!accessToken) throw new Error("Access token 없음");
-
-        const userRes = await getKakaoData(accessToken);
-        const { id, properties } = userRes;
-
-        const nickname = properties?.nickname || "비회원";
-        const profileImage = properties?.profile_image || "";
-
-        localStorage.setItem("userId", id);
-        localStorage.setItem("userName", nickname);
-        localStorage.setItem("profileImage", profileImage);
-        document.cookie = `jwtToken=${accessToken}; path=/;`;
-
-        navigate("/");
+        await postKakaoToken(code); // 백엔드에서 JWT 쿠키 발급 처리
+        navigate("/"); // 또는 navigate("/signup") ← 유저 상태에 따라
       } catch (err) {
         console.error("카카오 로그인 실패", err);
-        navigate("/auth");
+        navigate("/auth"); // 로그인 실패 시 다시 로그인 유도
       }
     };
 
@@ -51,23 +38,35 @@ const KakaoAuth = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-      <h1 className="text-3xl font-semibold">
-        간편하게 로그인하고 <br />
-        따뜻한 온기에 동참해보세요.
-      </h1>
-      <img
-        src="/images/img_illust.png"
-        alt="모락_illust"
-        className="w-[19.4rem] h-[19.4rem] rounded-[77px] object-cover my-20"
-      />
-      <button onClick={handleLoginClick} className="w-[30rem]">
-        <img
-          src="/images/kakao_login_large_wide.png"
-          alt="카카오 로그인 버튼"
-          className="w-full"
-        />
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white">
+      {!code && (
+        <>
+          <h1 className="text-4xl sm:text-3xl font-semibold leading-relaxed text-center">
+            간편하게 로그인하고 <br />
+            따뜻한 온기에 동참해보세요.
+          </h1>
+
+          <img
+            src="/images/img_illust.png"
+            alt="모락_illust"
+            className="w-full max-w-[18rem] aspect-square rounded-[3rem] object-cover my-12"
+            draggable={false}
+          />
+
+          <button
+            onClick={handleLoginClick}
+            className="w-full max-w-[20rem] hover:opacity-90"
+          >
+            <img
+              src="/images/kakao_login_large_wide.png"
+              alt="카카오 로그인 버튼"
+              className="w-full"
+              draggable={false}
+            />
+          </button>
+        </>
+      )}
+      {code && <div className="text-lg">카카오 로그인 처리 중입니다...</div>}
     </div>
   );
 };
