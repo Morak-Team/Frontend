@@ -37,3 +37,21 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+@layer utilities {
+  .regular {
+    @apply font-pretendard font-normal;
+  }
+
+  .medium {
+    @apply font-pretendard font-medium;
+  }
+
+  .semibold {
+    @apply font-pretendard font-semibold;
+  }
+
+  .bold {
+    @apply font-pretendard font-bold;
+  }
+}

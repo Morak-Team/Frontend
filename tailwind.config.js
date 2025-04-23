@@ -5,6 +5,9 @@ export default {
     extend: {
       colors: {},
       fontSize: {},
+      fontFamily: {
+        pretendard: ["Pretendard", "sans-serif"],
+      },
     },
   },
   plugins: [],
