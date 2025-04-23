@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { getPresignedUrl } from "@/apis/review/getPresignedUrl";
-import { uploadImageToS3 } from "@/apis/review/uploadImageToS3";
 import { useMutation } from "@tanstack/react-query";
-import { postImageKey } from "@/apis/review/postImageKey";
+import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
 
 const ReviewImageCapture = ({
@@ -124,53 +122,34 @@ const ReviewImageCapture = ({
     }, "image/jpeg");
   };
 
-  const {
-    mutate: uploadToS3API,
-    isPending,
-    isSuccess,
-    isError,
-  } = useMutation({
-    mutationFn: uploadImageToS3,
-    onSuccess: () => {
-      console.log("업로드 성공!");
-    },
-    onError: (error) => {
-      console.log("업로드 실패");
-    },
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: postRecipt,
+    retry: 2,
   });
 
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
-    onCaptureSuccess?.();
-    handleCloseCamera();
 
-    // let originalFileName = "unknown";
-    // let type = imageBlob.type;
-    // let kakaoId = "123";
+    stopCamera();
 
-    // if (imageBlob.name) {
-    //   originalFileName = imageBlob.name.split(".")[0]; // 파일 이름에서 확장자 제거
-    // } else {
-    //   originalFileName = `photo_${Date.now()}`; // Blob일 경우 임의 생성
-    // }
-    // try {
-    //   const { url, key } = await getPresignedUrl(
-    //     originalFileName,
-    //     type,
-    //     kakaoId
-    //   ); // 서버에서 URL과 key 받기
-    //   const success = await uploadImageToS3(url, imageBlob);
-    //   if (success) {
-    //     console.log("S3 업로드 성공!", key);
-    //     const result = await postImageKey(key);
+    mutate(imageBlob, {
+      onSuccess: (data) => {
+        console.log("인증 성공!", data);
+        onCaptureSuccess?.(); // ✅ 성공 시 호출
+        handleCloseCamera(); // ✅ 카메라 종료
+      },
+      onError: (error) => {
+        console.error("인증 실패", error);
+        alert("이미지 업로드에 실패했습니다. 다시 시도해 주세요.");
 
-    //     if (result.status == 200) {
-    //       sessionStorage.setItem("reviewResult", JSON.stringify({ result }));
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error("이미지 처리 실패", error);
-    // }
+        // ✅ 실패 시 다시 촬영 흐름
+        setCapturedImage(null);
+        setImageBlob(null);
+        setFromGallery(false);
+        setVideoVisible(true); // 카메라 다시 활성화
+        startCamera(); // 새 스트림 요청
+      },
+    });
   };
 
   return (
@@ -232,6 +211,15 @@ const ReviewImageCapture = ({
                 alt="촬영된 이미지"
                 className="w-full h-full object-cover"
               />
+
+              {/* ✅ isPending일 때 띄우는 오버레이 */}
+              {isPending && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[10000]">
+                  <p className="text-white text-xl font-bold animate-pulse">
+                    📷 사진 검증 중입니다...
+                  </p>
+                </div>
+              )}
 
               {/* 상단 우측 버튼: 다시 찍기 또는 다시 선택하기 */}
               {fromGallery ? (
