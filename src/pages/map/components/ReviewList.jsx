@@ -23,10 +23,6 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
         <ReviewContent item={item} idx={idx} />
       ))}
 
-      {/* <div className="flex justify-center items-center text-xl mt-10">
-        <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
-      </div> */}
-
       <div className="mt-auto py-6">
         <div className="flex justify-center text-xl">
           <Link to={`/review/${storeId}`} className="text-orange-500">
