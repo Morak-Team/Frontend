@@ -1,7 +1,7 @@
 const SelectTag = ({ onNext }) => {
   return (
     <div className="w-full px-4 flex flex-col items-center text-center pb-[10rem]">
-      <h1 className="mb-6 bold">태백농협하나로마트는 어땠나요?</h1>
+      <h1 className="mb-6 bold h4">태백농협하나로마트는 어땠나요?</h1>
 
       <div className="w-40 h-40 bg-orange-100 rounded-full flex flex-col items-center justify-center mb-6">
         <p className="text-sm">얼마나 따뜻해지셨나요?</p>
