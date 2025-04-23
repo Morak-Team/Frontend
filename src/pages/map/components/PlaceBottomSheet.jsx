@@ -118,7 +118,11 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           showMapLink={isExpanded}
         />
         <div className="mt-10 flex justify-between">
-          <h3 className="font-semibold text-xl mb-2">리뷰</h3>
+          <div className="flex justify-center items-center gap-2">
+            <h3 className="font-semibold text-xl">리뷰</h3>
+            <span>27개</span>
+          </div>
+
           <button
             className="text-sm text-orange-500"
             onClick={() => setTurnOnCamera(true)}
