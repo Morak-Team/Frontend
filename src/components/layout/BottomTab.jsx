@@ -17,7 +17,7 @@ const BottomTab = () => {
             <Link to="/support">지원</Link>
           </div>
           <div className="w-[4.8rem] h-[4.6rem] flex justify-center items-center">
-            <Link to="/myPage">내 프로필</Link>
+            <Link to="/mypage">내 프로필</Link>
           </div>
         </div>
       </div>
