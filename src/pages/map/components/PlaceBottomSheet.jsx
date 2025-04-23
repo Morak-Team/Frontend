@@ -4,6 +4,7 @@ import PlaceContent from "./PlaceContent";
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 import { Link } from "react-router-dom";
 import ConfirmImage from "@/pages/map/components/ConfirmImage";
+import ReviewContent from "@/pages/map/components/ReviewContent";
 
 const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   const [liked, setLiked] = useState(place.liked || false);
@@ -117,7 +118,7 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
-        <div className="mt-10 flex justify-between">
+        {/* <div className="mt-10 flex justify-between">
           <div className="flex justify-center items-center gap-2">
             <h3 className="font-semibold text-xl">리뷰</h3>
             <span>27개</span>
@@ -129,7 +130,9 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           >
             ✏️ 리뷰 쓰기
           </button>
-        </div>
+        </div> */}
+
+        <ReviewContent setTurnOnCamera={setTurnOnCamera} />
 
         {/* 리뷰 작성 컴포넌트 */}
         {isExpanded && turnOnCamera && (
