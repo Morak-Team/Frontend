@@ -4,7 +4,7 @@ import PlaceContent from "./PlaceContent";
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 import { Link } from "react-router-dom";
 import ConfirmImage from "@/pages/map/components/ConfirmImage";
-import ReviewContent from "@/pages/map/components/ReviewContent";
+import ReviewList from "@/pages/map/components/ReviewList";
 
 const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   const [liked, setLiked] = useState(place.liked || false);
@@ -118,21 +118,9 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
-        {/* <div className="mt-10 flex justify-between">
-          <div className="flex justify-center items-center gap-2">
-            <h3 className="font-semibold text-xl">리뷰</h3>
-            <span>27개</span>
-          </div>
 
-          <button
-            className="text-sm text-orange-500"
-            onClick={() => setTurnOnCamera(true)}
-          >
-            ✏️ 리뷰 쓰기
-          </button>
-        </div> */}
-
-        <ReviewContent setTurnOnCamera={setTurnOnCamera} />
+        {/* 리뷰 컨텐츠 컴포넌트 */}
+        <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
 
         {/* 리뷰 작성 컴포넌트 */}
         {isExpanded && turnOnCamera && (
@@ -147,6 +135,7 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           />
         )}
 
+        {/* 업로드한 영수증 사진 검증 컴포넌트 */}
         {showConfirm && (
           <ConfirmImage
             onReject={() => {
@@ -156,8 +145,6 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
             }}
           />
         )}
-
-        <Link to={`/review/${storeId}`}>리뷰 전체보기</Link>
       </div>
     </motion.div>
   );
