@@ -94,7 +94,7 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
             className="absolute right-2 top-10 p-4"
           >
             <img
-              src="/svgs/ic_X.svg"
+              src="/svgs/Ic_X.svg"
               alt="닫기 버튼"
               className="w-8 h-8 cursor-pointer"
             />
