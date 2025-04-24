@@ -14,7 +14,6 @@ const Modal = ({ onClose }) => {
           />
         </button>
       </div>
-
       <p className="h2 mb-1">
         영수증을 찍어 <br /> 리뷰를 남겨보세요!
       </p>

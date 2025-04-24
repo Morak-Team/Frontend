@@ -19,7 +19,9 @@ export const getTopRatedMovies = async (page = 1) => {
 
 // --------------- 실제 사용할 함수들 (수정 예정)
 export const getReviews = async (storeId) => {
-  const res = await api.get("/review", { params: { storeId, limit: 5 } });
+  const res = await api.get("/reviews/get-all-company-reviews", {
+    params: { storeId, limit: 5 },
+  });
 
   return res.data;
 };
