@@ -3,19 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-
-    @media (min-width: 450px) and (max-width: 600px) {
-      font-size: 13px;
-    }
-
-    @media (max-width: 450px) {
-      font-size: 10px;
-    }
-  }
-
   body {
     line-height: 1;
     max-width: 760px;
@@ -35,5 +22,46 @@
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+}
+
+@layer utilities {
+  .h1 {
+    @apply text-[1.75rem] leading-[140%] font-semibold; /* 28px */
+  }
+  .h2 {
+    @apply text-[1.5rem] leading-[130%] font-semibold; /* 24px */
+  }
+  .h3 {
+    @apply text-[1.25rem] leading-[130%] font-semibold; /* 20px */
+  }
+  .h4 {
+    @apply text-[1.125rem] leading-[140%] font-semibold; /* 18px */
+  }
+
+  .b1 {
+    @apply text-[1rem] leading-[140%] font-semibold; /* 16px */
+  }
+  .b2 {
+    @apply text-[1rem] leading-[150%] font-medium;
+  }
+  .b3 {
+    @apply text-[1rem] leading-[130%] font-normal;
+  }
+  .b4 {
+    @apply text-[0.875rem] leading-[130%] font-semibold; /* 14px */
+  }
+  .b5 {
+    @apply text-[0.875rem] leading-[130%] font-medium;
+  }
+  .b6 {
+    @apply text-[0.875rem] leading-[130%] font-normal;
+  }
+
+  .caption1 {
+    @apply text-[0.75rem] leading-[150%] font-bold; /* 12px */
+  }
+  .caption2 {
+    @apply text-[0.75rem] leading-[150%] font-medium;
   }
 }
