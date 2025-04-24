@@ -12,9 +12,10 @@ const NameStep = ({ onNext }) => {
 
   const clearInput = () => setName("");
 
-  // 키보드 감지: visualViewport로 하단의 확인 버튼 위치 조정
   useEffect(() => {
-    const handleResize = () => {
+    const inputEl = document.getElementById("name");
+
+    const handleVisualViewportResize = () => {
       requestAnimationFrame(() => {
         const viewportHeight =
           window.visualViewport?.height || window.innerHeight;
@@ -23,12 +24,48 @@ const NameStep = ({ onNext }) => {
       });
     };
 
-    window.visualViewport?.addEventListener("resize", handleResize);
-    window.visualViewport?.addEventListener("scroll", handleResize);
+    const handleFocusFallback = () => {
+      setTimeout(() => {
+        const offset =
+          window.innerHeight - document.documentElement.clientHeight;
+        setBottomOffset(offset > 0 ? offset : 300);
+      }, 200);
+    };
+
+    const handleBlurFallback = () => {
+      setBottomOffset(0);
+    };
+
+    if ("visualViewport" in window) {
+      window.visualViewport.addEventListener(
+        "resize",
+        handleVisualViewportResize
+      );
+      window.visualViewport.addEventListener(
+        "scroll",
+        handleVisualViewportResize
+      );
+    } else {
+      inputEl?.addEventListener("focus", handleFocusFallback);
+      inputEl?.addEventListener("blur", handleBlurFallback);
+      window.addEventListener("resize", handleFocusFallback);
+    }
 
     return () => {
-      window.visualViewport?.removeEventListener("resize", handleResize);
-      window.visualViewport?.removeEventListener("scroll", handleResize);
+      if ("visualViewport" in window) {
+        window.visualViewport.removeEventListener(
+          "resize",
+          handleVisualViewportResize
+        );
+        window.visualViewport.removeEventListener(
+          "scroll",
+          handleVisualViewportResize
+        );
+      } else {
+        inputEl?.removeEventListener("focus", handleFocusFallback);
+        inputEl?.removeEventListener("blur", handleBlurFallback);
+        window.removeEventListener("resize", handleFocusFallback);
+      }
     };
   }, []);
 
