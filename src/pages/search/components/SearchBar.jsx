@@ -12,7 +12,7 @@ const SearchBar = ({ keyword, setKeyword, onSearch, showBottomBorder }) => {
       <div className="flex items-center space-x-2">
         <button onClick={() => navigate(-1)} className="shrink-0">
           <img
-            src="/svgs/Ic_Arrow_left.svg"
+            src="/svgs/Ic_Arrow_Left.svg"
             alt="뒤로가기"
             className="w-6 h-6"
           />

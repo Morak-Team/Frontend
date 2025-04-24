@@ -1,6 +1,6 @@
 import { useState } from "react";
 import IcProfile from "../../../../public/svgs/Ic_Profile.svg?react";
-import IcCheck from "../../../../public/svgs/Ic_Check_orange.svg?react";
+import IcCheck from "../../../../public/svgs/Ic_Check_Orange.svg?react";
 
 const profileColors = [
   "#D6D5D2", // gray
