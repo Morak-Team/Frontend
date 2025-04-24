@@ -1,15 +1,9 @@
-const categories = [
-  { name: "카페", icon: "/svgs/categoryBar/Ic_Cafe.svg" },
-  { name: "음식점", icon: "/svgs/categoryBar/Ic_Restaurent.svg" },
-  { name: "쇼핑", icon: "/svgs/categoryBar/Ic_Shopping.svg" },
-  { name: "복합공간", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "문화/예술", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "생활서비스", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "교육/지원", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "IT/디지털", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "제조/운송", icon: "/svgs/categoryBar/Ic_Community.svg" },
-  { name: "기타", icon: "/svgs/categoryBar/Ic_Community.svg" },
-];
+import { businessTypeIconMap } from "@constants/iconMap";
+
+const categories = Object.entries(businessTypeIconMap).map(([name, icon]) => ({
+  name,
+  icon,
+}));
 
 const CategoryBar = ({ onSelect }) => {
   return (
@@ -23,7 +17,7 @@ const CategoryBar = ({ onSelect }) => {
           >
             <img
               src={cate.icon}
-              alt="카테고리 아이콘"
+              alt={`${cate.name} 아이콘`}
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
             {cate.name}
