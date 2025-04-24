@@ -9,20 +9,6 @@ const ConfirmImage = ({ onReject }) => {
   const [isMapLoading, setIsMapLoading] = useState(false);
   const mapInstanceRef = useRef(null);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (error) => {
-        console.error("현재 위치를 가져오는데 실패했습니다:", error);
-      }
-    );
-  }, []);
-
   // 현재 위치 가져오기
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -93,44 +79,6 @@ const ConfirmImage = ({ onReject }) => {
       }
     };
   }, [location]);
-
-  //   useEffect(() => {
-  //     if (!location) return;
-
-  //     loadNaverMapScript()
-  //       .then(() => {
-  //         const naverLocation = new window.naver.maps.LatLng(
-  //           location.latitude,
-  //           location.longitude
-  //         );
-
-  //         const map = new window.naver.maps.Map(mapRef.current, {
-  //           center: naverLocation,
-  //           zoom: 16,
-  //         });
-
-  //         new window.naver.maps.Marker({
-  //           position: naverLocation,
-  //           map,
-  //           icon: {
-  //             url: "/svgs/review/pinIcon.svg",
-  //             size: new window.naver.maps.Size(26, 26),
-  //             scaledSize: new window.naver.maps.Size(26, 26),
-  //             anchor: new window.naver.maps.Point(26, 26),
-  //           },
-  //         });
-
-  //         window.naver.maps.Event.once(map, "init", () => {
-  //           setTimeout(() => {
-  //             map.setCenter(naverLocation);
-  //             map.refresh();
-  //           }, 0);
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         console.error("지도 로딩 실패:", error);
-  //       });
-  //   }, [location]);
 
   return (
     <div className="fixed min-h-screen inset-0 z-[9999] bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center">
