@@ -19,7 +19,7 @@ const MapViewer = ({
         if (mapRef.current) {
           mapInstance.current = new window.naver.maps.Map(mapRef.current, {
             center: new window.naver.maps.LatLng(37.5665, 126.978), // 중심: 서울 시청
-            zoom: 12,
+            zoom: 11.5,
           });
 
           places.forEach((place) => {
