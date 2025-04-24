@@ -6,6 +6,8 @@ const ConfirmImage = ({ onReject }) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [location, setLocation] = useState(null);
+  const [isMapLoading, setIsMapLoading] = useState(false);
+  const mapInstanceRef = useRef(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -21,11 +23,32 @@ const ConfirmImage = ({ onReject }) => {
     );
   }, []);
 
+  // 현재 위치 가져오기
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("현재 위치를 가져오는데 실패했습니다:", error);
+      }
+    );
+  }, []);
+
+  // 지도 로드 및 마커 표시
   useEffect(() => {
     if (!location) return;
 
+    let mounted = true;
+    setIsMapLoading(true);
+
     loadNaverMapScript()
       .then(() => {
+        if (!mounted) return;
+
         const naverLocation = new window.naver.maps.LatLng(
           location.latitude,
           location.longitude
@@ -36,6 +59,8 @@ const ConfirmImage = ({ onReject }) => {
           zoom: 16,
         });
 
+        mapInstanceRef.current = map;
+
         new window.naver.maps.Marker({
           position: naverLocation,
           map,
@@ -43,7 +68,7 @@ const ConfirmImage = ({ onReject }) => {
             url: "/svgs/review/pinIcon.svg",
             size: new window.naver.maps.Size(26, 26),
             scaledSize: new window.naver.maps.Size(26, 26),
-            anchor: new window.naver.maps.Point(26, 26),
+            anchor: new window.naver.maps.Point(13, 26),
           },
         });
 
@@ -51,13 +76,61 @@ const ConfirmImage = ({ onReject }) => {
           setTimeout(() => {
             map.setCenter(naverLocation);
             map.refresh();
+            setIsMapLoading(false);
           }, 0);
         });
       })
       .catch((error) => {
         console.error("지도 로딩 실패:", error);
+        setIsMapLoading(false);
       });
+
+    return () => {
+      mounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.destroy();
+        mapInstanceRef.current = null;
+      }
+    };
   }, [location]);
+
+  //   useEffect(() => {
+  //     if (!location) return;
+
+  //     loadNaverMapScript()
+  //       .then(() => {
+  //         const naverLocation = new window.naver.maps.LatLng(
+  //           location.latitude,
+  //           location.longitude
+  //         );
+
+  //         const map = new window.naver.maps.Map(mapRef.current, {
+  //           center: naverLocation,
+  //           zoom: 16,
+  //         });
+
+  //         new window.naver.maps.Marker({
+  //           position: naverLocation,
+  //           map,
+  //           icon: {
+  //             url: "/svgs/review/pinIcon.svg",
+  //             size: new window.naver.maps.Size(26, 26),
+  //             scaledSize: new window.naver.maps.Size(26, 26),
+  //             anchor: new window.naver.maps.Point(26, 26),
+  //           },
+  //         });
+
+  //         window.naver.maps.Event.once(map, "init", () => {
+  //           setTimeout(() => {
+  //             map.setCenter(naverLocation);
+  //             map.refresh();
+  //           }, 0);
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         console.error("지도 로딩 실패:", error);
+  //       });
+  //   }, [location]);
 
   return (
     <div className="fixed min-h-screen inset-0 z-[9999] bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center">
@@ -92,11 +165,22 @@ const ConfirmImage = ({ onReject }) => {
       </div>
 
       {/* 지도 표시 영역 */}
-      <div className="w-full">
+      {/* <div className="w-full">
+        
         <div
           ref={mapRef}
           className="w-80 sm:w-[77%] h-32 rounded-md mx-auto border"
         />
+      </div> */}
+
+      {/* 지도 표시 영역 */}
+      <div className="w-full">
+        <div className="relative w-80 sm:w-[77%] h-32 mx-auto">
+          {isMapLoading && (
+            <div className="absolute inset-0 z-10 rounded-md border bg-gray-100 animate-pulse" />
+          )}
+          <div ref={mapRef} className="w-full h-full rounded-md border" />
+        </div>
       </div>
 
       <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2 sm:w-[77%]">
