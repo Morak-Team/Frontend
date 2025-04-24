@@ -20,7 +20,7 @@ const PlaceContent = ({
             </span>
           </h3>
           <p className="text-sm font-semibold text-gray-600 mt-1">
-            {distance} · {address}
+            {distance} ∙ {address}
           </p>
           <p className="text-sm font-medium text-blue-500 mt-3">
             🧳 일자리제공

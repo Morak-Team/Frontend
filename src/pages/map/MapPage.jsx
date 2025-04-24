@@ -4,6 +4,8 @@ import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
 import samplePlaces from "@constants/map/socialEnterprise";
 import CategoryBar from "./components/CategoryBar";
+import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
+import { formatDistance } from "./utils/formatDistance";
 
 const MapPage = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -40,6 +42,26 @@ const MapPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (userCoords) {
+      const withDistance = samplePlaces.map((place) => {
+        const distInMeters = getDistanceFromLatLon(
+          userCoords.lat,
+          userCoords.lng,
+          place.coords.lat,
+          place.coords.lng
+        );
+
+        return {
+          ...place,
+          distance: formatDistance(distInMeters),
+        };
+      });
+
+      setFilteredPlaces(withDistance);
+    }
+  }, [userCoords]);
+
   return (
     <>
       <div
@@ -58,9 +80,9 @@ const MapPage = () => {
 
       <CategoryBar
         onSelect={(category) => {
-          const filtered = samplePlaces.filter(
-            (p) => p.businessType === category
-          );
+          const filtered = samplePlaces
+            .filter((p) => p.businessType === category)
+            .map((p) => ({ ...p, isSearchResult: true }));
           setFilteredPlaces(filtered);
           setSelectedPlace(null);
         }}
@@ -72,7 +94,7 @@ const MapPage = () => {
           className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
         >
           <img
-            src="/svgs/map/Ic_Location.svg"
+            src="/svgs/map/Ic_Current_Location.svg"
             alt="사용자 현재 위치 버튼"
             className="w-6 h-6"
           />

@@ -3,6 +3,8 @@ import SearchBar from "./components/SearchBar";
 import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
 import samplePlaces from "@constants/map/socialEnterprise";
+import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
+import { formatDistance } from "../map/utils/formatDistance";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -11,8 +13,8 @@ const SearchPage = () => {
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
+  const [userCoords, setUserCoords] = useState(null);
 
-  // localStorage에서 최근 검색어 불러오기
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
@@ -20,18 +22,30 @@ const SearchPage = () => {
     }
   }, []);
 
-  // 최근 검색어 바뀔 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recentSearches));
   }, [recentSearches]);
 
-  // 입력값이 지워지면 검색 상태 초기화
   useEffect(() => {
     if (keyword.trim() === "") {
       setIsSearched(false);
       setFilteredPlaces([]);
     }
   }, [keyword]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserCoords({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      (err) => {
+        console.error("위치 정보를 가져올 수 없습니다:", err);
+      }
+    );
+  }, []);
 
   const handleSearch = (text) => {
     if (!text.trim()) return;
@@ -41,13 +55,36 @@ const SearchPage = () => {
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
 
-    const result = samplePlaces.filter((place) => {
-      const searchText = text.toLowerCase();
-      return (
-        place.name.toLowerCase().includes(searchText) ||
-        place.category.toLowerCase().includes(searchText)
-      );
-    });
+    const result = samplePlaces
+      .map((place) => {
+        const searchText = text.toLowerCase();
+        const match =
+          place.name.toLowerCase().includes(searchText) ||
+          place.category.toLowerCase().includes(searchText);
+
+        if (!match) return null;
+
+        const distance = userCoords
+          ? getDistanceFromLatLon(
+              userCoords.lat,
+              userCoords.lng,
+              place.coords.lat,
+              place.coords.lng
+            )
+          : null;
+
+        return {
+          ...place,
+          distance,
+          formattedDistance:
+            distance !== null ? formatDistance(distance) : null,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => {
+        if (a.distance == null || b.distance == null) return 0;
+        return a.distance - b.distance;
+      });
 
     setFilteredPlaces(result);
   };
