@@ -22,15 +22,16 @@ const BottomTab = () => {
 
   return (
     <div className="w-full max-w-[760px] pt-3 pb-6 px-8 h-21 fixed bottom-0 bg-white flex justify-center items-center">
-      <div className="flex justify-between caption1 gap-9 sm:gap-16 w-full">
+      <div className="flex justify-between caption1 text-gray-5 gap-9 sm:gap-16 w-full">
         {tabs.map((tab, idx) => (
-          <div
+          <Link
             key={idx}
+            to={tab.path}
             className="flex flex-col flex-1 sm:w-20 h-14 justify-center items-center gap-1"
           >
             <img src={tab.icon} alt={tab.label} />
-            <Link to={tab.path}>{tab.label}</Link>
-          </div>
+            <span>{tab.label}</span>
+          </Link>
         ))}
       </div>
     </div>
