@@ -50,7 +50,7 @@ const MapPage = () => {
           내 주변 가치가게 찾기
         </span>
         <img
-          src="/svgs/Ic_Search.svg"
+          src="/svgs/map/Ic_Search.svg"
           alt="검색 아이콘"
           className="w-4 h-4 sm:w-5 sm:h-5"
         />
@@ -72,7 +72,7 @@ const MapPage = () => {
           className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
         >
           <img
-            src="/svgs/Ic_Location.svg"
+            src="/svgs/map/Ic_Location.svg"
             alt="사용자 현재 위치 버튼"
             className="w-6 h-6"
           />

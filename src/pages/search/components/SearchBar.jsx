@@ -29,7 +29,7 @@ const SearchBar = ({ keyword, setKeyword, onSearch, showBottomBorder }) => {
           />
           <button onClick={() => onSearch(keyword)} className="cursor-pointer">
             <img
-              src="/svgs/Ic_Search.svg"
+              src="/svgs/map/Ic_Search.svg"
               alt="검색 버튼"
               className="w-5 h-5 opacity-80"
             />

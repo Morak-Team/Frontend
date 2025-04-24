@@ -1,14 +1,14 @@
 const categories = [
-  { name: "카페", icon: "/svgs/Ic_Cafe.svg" },
-  { name: "음식점", icon: "/svgs/Ic_Restaurent.svg" },
-  { name: "쇼핑", icon: "/svgs/Ic_Shopping.svg" },
-  { name: "복합공간", icon: "/svgs/Ic_Community.svg" },
-  { name: "문화/예술", icon: "/svgs/Ic_Community.svg" },
-  { name: "생활서비스", icon: "/svgs/Ic_Community.svg" },
-  { name: "교육/지원", icon: "/svgs/Ic_Community.svg" },
-  { name: "IT/디지털", icon: "/svgs/Ic_Community.svg" },
-  { name: "제조/운송", icon: "/svgs/Ic_Community.svg" },
-  { name: "기타", icon: "/svgs/Ic_Community.svg" },
+  { name: "카페", icon: "/svgs/categoryBar/Ic_Cafe.svg" },
+  { name: "음식점", icon: "/svgs/categoryBar/Ic_Restaurent.svg" },
+  { name: "쇼핑", icon: "/svgs/categoryBar/Ic_Shopping.svg" },
+  { name: "복합공간", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "문화/예술", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "생활서비스", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "교육/지원", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "IT/디지털", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "제조/운송", icon: "/svgs/categoryBar/Ic_Community.svg" },
+  { name: "기타", icon: "/svgs/categoryBar/Ic_Community.svg" },
 ];
 
 const CategoryBar = ({ onSelect }) => {
