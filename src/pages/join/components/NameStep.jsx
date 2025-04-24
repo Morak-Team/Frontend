@@ -66,7 +66,7 @@ const NameStep = ({ onNext }) => {
       </section>
 
       <div
-        className="w-full max-w-[760px] fixed left-0"
+        className="w-full max-w-[760px] fixed left-1/2 transform -translate-x-1/2"
         style={{
           bottom: bottomOffset,
           transition:
