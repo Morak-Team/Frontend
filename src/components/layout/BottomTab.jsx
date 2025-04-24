@@ -14,7 +14,7 @@ const BottomTab = () => {
       icon: "/images/bottomTab/supportMenuIcon.png",
     },
     {
-      path: "/myPage",
+      path: "/mypage",
       label: "내 프로필",
       icon: "/images/bottomTab/profileMenuIcon.png",
     },
