@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const BottomTab = () => {
+  // 컨플릭트 해결
   return (
     <>
       <div className="w-full max-w-[760px] h-[8.4rem] fixed border-t bottom-0 bg-white">
