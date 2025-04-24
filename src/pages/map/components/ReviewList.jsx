@@ -6,9 +6,9 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
   return (
     <>
       <div className="mt-10 flex justify-between">
-        <div className="flex justify-center items-center gap-2">
-          <h3 className="font-semibold text-xl">리뷰</h3>
-          <span>27개</span>
+        <div className="flex justify-center items-center gap-1">
+          <h3 className="h3 text-gray-12">리뷰</h3>
+          <span className="text-gray-6 b1">27개</span>
         </div>
 
         <button

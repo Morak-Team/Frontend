@@ -27,7 +27,7 @@ const BottomTab = () => {
           <Link
             key={idx}
             to={tab.path}
-            className="flex flex-col flex-1 sm:w-20 h-14 justify-center items-center gap-1"
+            className="flex flex-col flex-1 sm:w-20 h-12 justify-center items-center gap-1"
           >
             <img src={tab.icon} alt={tab.label} />
             <span>{tab.label}</span>
