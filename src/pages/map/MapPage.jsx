@@ -47,7 +47,7 @@ const MapPage = () => {
         className="absolute top-24 left-1/2 -translate-x-1/2 z-50 w-[33.5rem] h-16 px-6 flex items-center justify-between bg-white rounded-2xl shadow cursor-pointer"
       >
         <span className="text-gray-400">내 주변 가치가게 찾기</span>
-        <img src="/svgs/ic_Search.svg" alt="검색 아이콘" className="w-5 h-5" />
+        <img src="/svgs/Ic_Search.svg" alt="검색 아이콘" className="w-5 h-5" />
       </div>
 
       {/* 카테고리 바 */}
@@ -66,7 +66,7 @@ const MapPage = () => {
         onClick={() => setMoveToCurrentLocation(true)}
         className="fixed bottom-40 right-8 z-50 w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center"
       >
-        <img src="/svgs/ic_location.svg" alt="사용자 현재 위치 버튼" />
+        <img src="/svgs/Ic_location.svg" alt="사용자 현재 위치 버튼" />
       </button>
       <MapViewer
         places={filteredPlaces}

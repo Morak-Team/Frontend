@@ -1,6 +1,25 @@
 import { Link } from "react-router-dom";
 
 const BottomTab = () => {
+  const tabs = [
+    { path: "/map", label: "지도", icon: "/images/bottomTab/mapMenuIcon.png" },
+    {
+      path: "/story",
+      label: "이야기",
+      icon: "/images/bottomTab/storyMenuIcon.png",
+    },
+    {
+      path: "/support",
+      label: "지원",
+      icon: "/images/bottomTab/supportMenuIcon.png",
+    },
+    {
+      path: "/mypage",
+      label: "내 프로필",
+      icon: "/images/bottomTab/profileMenuIcon.png",
+    },
+  ];
+
   return (
     <>
       <div className="w-full max-w-[760px] h-[8.4rem] fixed border-t bottom-0 bg-white">
@@ -21,7 +40,8 @@ const BottomTab = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
+  </>
   );
 };
 
