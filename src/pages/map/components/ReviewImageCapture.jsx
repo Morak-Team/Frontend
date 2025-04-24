@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
+import Modal from "@/pages/map/components/Modal";
 
 const ReviewImageCapture = ({
   storeId,
@@ -23,6 +24,17 @@ const ReviewImageCapture = ({
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBlob, setImageBlob] = useState(null);
   const [fromGallery, setFromGallery] = useState(false);
+
+  const [showIntroModal, setShowIntroModal] = useState(false);
+
+  useEffect(() => {
+    const hasSeenModal = localStorage.getItem("hasSeenCameraIntro");
+
+    if (!hasSeenModal) {
+      setShowIntroModal(true);
+      localStorage.setItem("hasSeenCameraIntro", "true");
+    }
+  }, []);
 
   const startCamera = async () => {
     stopCamera();
@@ -176,9 +188,13 @@ const ReviewImageCapture = ({
               {/* 닫기 버튼 */}
               <button
                 onClick={handleCloseCamera}
-                className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                className="absolute top-10 right-4 z-[10000]"
               >
-                ✕
+                <img
+                  src="/public/images/review/xButtonIcon.png"
+                  alt="닫기"
+                  className="w-8 h-8"
+                />
               </button>
 
               {/* 갤러리 버튼 (왼쪽 하단) */}
@@ -187,18 +203,26 @@ const ReviewImageCapture = ({
                 className="absolute bottom-4 left-4 z-[10000] bg-white/80 backdrop-blur-sm p-3 rounded-full shadow"
               >
                 <img
-                  src="/icons/gallery.svg"
+                  src="/public/images/review/galleryIcon.png"
                   alt="갤러리"
                   className="w-6 h-6"
                 />
               </button>
 
+              {showIntroModal && (
+                <Modal onClose={() => setShowIntroModal(false)} />
+              )}
+
               {/* 사진 찍기 버튼 (오른쪽 하단) */}
               <button
                 onClick={handleCapture}
-                className="absolute bottom-4 right-4 z-[10000] bg-white/80 backdrop-blur-sm p-3 rounded-full shadow"
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[10000] bg-white/80 backdrop-blur-sm p-3 rounded-full shadow"
               >
-                <img src="/icons/camera.svg" alt="카메라" className="w-6 h-6" />
+                <img
+                  src="/public/images/review/cameraIcon.png"
+                  alt="카메라"
+                  className="w-6 h-6"
+                />
               </button>
 
               <canvas ref={canvasRef} style={{ display: "none" }} />
