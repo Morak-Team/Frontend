@@ -48,8 +48,10 @@ const ConfirmImage = ({ onReject }) => {
         });
 
         window.naver.maps.Event.once(map, "init", () => {
-          map.setCenter(naverLocation);
-          map.refresh();
+          setTimeout(() => {
+            map.setCenter(naverLocation);
+            map.refresh();
+          }, 0);
         });
       })
       .catch((error) => {
@@ -58,7 +60,7 @@ const ConfirmImage = ({ onReject }) => {
   }, [location]);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-white flex flex-col max-w-[760px] mx-auto">
+    <div className="fixed inset-0 z-[9999] bg-white flex flex-col max-w-[760px] mx-auto overflow-y-auto pb-10 justify-center items-center">
       <div className="flex justify-end w-full mt-14 pr-5">
         <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
       </div>
@@ -75,11 +77,11 @@ const ConfirmImage = ({ onReject }) => {
       </div>
 
       <div className="flex gap-2 w-full justify-center items-center">
-        <div className="w-40 h-16 bg-gray-2 rounded-md flex justify-center items-center gap-8">
+        <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
           <p className="b1 text-gray-12">2월 14일</p>
           <button className="b4 text-orange-500">수정</button>
         </div>
-        <div className="w-40 h-16 bg-gray-2 rounded-md flex justify-center items-center gap-8">
+        <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
           <p className="b1 text-gray-12">오전 11: 45</p>
           <button className="b4 text-orange-500">수정</button>
         </div>
@@ -90,20 +92,36 @@ const ConfirmImage = ({ onReject }) => {
       </div>
 
       {/* 지도 표시 영역 */}
-      <div ref={mapRef} className="w-80 h-32 rounded-md mx-auto border" />
+      <div
+        ref={mapRef}
+        className="w-80 sm:w-[77%] h-32 rounded-md mx-auto border"
+      />
 
-      <button
-        onClick={() => navigate("/write-review")}
-        className="px-6 py-3 border border-black rounded text-lg"
-      >
-        맞아요
-      </button>
-      <button
-        onClick={onReject}
-        className="px-6 py-3 border border-black rounded text-lg"
-      >
-        아니에요
-      </button>
+      <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2">
+        <div className="flex gap-2 justify-start items-center">
+          <p className="h3 text-gray-12">태백농협하나로마트</p>
+          <p className="b4 text-gray-6">쇼핑</p>
+        </div>
+        <div className="flex gap-2 justify-start items-center">
+          <p className="b4 text-gray-12">541m</p>
+          <p className="b6 text-gray-12">강원도 태백시 번영로 254</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1 justify-center items-center mt-14">
+        <button
+          onClick={() => navigate("/write-review")}
+          className="px-6 py-3 border border-black rounded-md b1 text-gray-0 bg-orange-500 w-80 h-12 sm:w-[77%]"
+        >
+          맞아요
+        </button>
+        <button
+          onClick={onReject}
+          className="px-6 py-3 border border-black rounded-md b1 text-gray-12 bg-gray-0 w-80 h-12 sm:w-[77%]"
+        >
+          아니에요
+        </button>
+      </div>
     </div>
   );
 };
