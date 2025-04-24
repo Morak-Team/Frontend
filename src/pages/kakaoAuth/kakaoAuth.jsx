@@ -38,7 +38,7 @@ const KakaoAuth = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-white">
+    <div className="flex flex-col items-center justify-center min-h-screen pb-[8.4rem] px-4 bg-white">
       {!code && (
         <>
           <h1 className="text-4xl sm:text-3xl font-semibold leading-relaxed text-center">
@@ -53,10 +53,7 @@ const KakaoAuth = () => {
             draggable={false}
           />
 
-          <button
-            onClick={handleLoginClick}
-            className="w-full max-w-[20rem] hover:opacity-90"
-          >
+          <button onClick={handleLoginClick} className="w-full max-w-[30rem]">
             <img
               src="/images/kakao_login_large_wide.png"
               alt="카카오 로그인 버튼"
