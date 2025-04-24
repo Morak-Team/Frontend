@@ -1,8 +1,61 @@
 import { useNavigate } from "react-router-dom";
+import { loadNaverMapScript } from "@/pages/map/utils/loadMapScript";
+import { useEffect, useRef, useState } from "react";
 
 const ConfirmImage = ({ onReject }) => {
   const navigate = useNavigate();
-  const data = JSON.parse(sessionStorage.getItem("reviewResult") || "{}");
+  const mapRef = useRef(null);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("현재 위치를 가져오는데 실패했습니다:", error);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!location) return;
+
+    loadNaverMapScript()
+      .then(() => {
+        const naverLocation = new window.naver.maps.LatLng(
+          location.latitude,
+          location.longitude
+        );
+
+        const map = new window.naver.maps.Map(mapRef.current, {
+          center: naverLocation,
+          zoom: 16,
+        });
+
+        new window.naver.maps.Marker({
+          position: naverLocation,
+          map,
+          icon: {
+            url: "/svgs/review/pinIcon.svg",
+            size: new window.naver.maps.Size(26, 26),
+            scaledSize: new window.naver.maps.Size(26, 26),
+            anchor: new window.naver.maps.Point(26, 26),
+          },
+        });
+
+        window.naver.maps.Event.once(map, "init", () => {
+          map.setCenter(naverLocation);
+          map.refresh();
+        });
+      })
+      .catch((error) => {
+        console.error("지도 로딩 실패:", error);
+      });
+  }, [location]);
 
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col max-w-[760px] mx-auto">
@@ -12,9 +65,7 @@ const ConfirmImage = ({ onReject }) => {
 
       <div className="mt-6 mb-14">
         <p className="text-xl font-bold mb-6 text-center">
-          <span className="h2 text-orange-500">
-            {data.placeName || "이 장소"}
-          </span>
+          <span className="h2 text-orange-500">{"이 장소"}</span>
           <span className="h2 text-gray-12">에 다녀오셨군요!</span>
         </p>
       </div>
@@ -37,6 +88,9 @@ const ConfirmImage = ({ onReject }) => {
       <div className="mt-8 mb-3 text-center">
         <p className="b5 text-gray-9">이곳이 맞나요?</p>
       </div>
+
+      {/* 지도 표시 영역 */}
+      <div ref={mapRef} className="w-80 h-32 rounded-md mx-auto border" />
 
       <button
         onClick={() => navigate("/write-review")}
