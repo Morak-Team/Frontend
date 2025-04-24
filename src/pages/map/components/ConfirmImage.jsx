@@ -113,15 +113,6 @@ const ConfirmImage = ({ onReject }) => {
       </div>
 
       {/* 지도 표시 영역 */}
-      {/* <div className="w-full">
-        
-        <div
-          ref={mapRef}
-          className="w-80 sm:w-[77%] h-32 rounded-md mx-auto border"
-        />
-      </div> */}
-
-      {/* 지도 표시 영역 */}
       <div className="w-full">
         <div className="relative w-80 sm:w-[77%] h-32 mx-auto">
           {isMapLoading && (
