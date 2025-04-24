@@ -144,24 +144,27 @@ const ReviewImageCapture = ({
 
     stopCamera();
 
-    mutate(imageBlob, {
-      onSuccess: (data) => {
-        console.log("인증 성공!", data);
-        onCaptureSuccess?.(); // ✅ 성공 시 호출
-        handleCloseCamera(); // ✅ 카메라 종료
-      },
-      onError: (error) => {
-        console.error("인증 실패", error);
-        alert("이미지 업로드에 실패했습니다. 다시 시도해 주세요.");
+    onCaptureSuccess?.(); // ✅ 성공 시 호출
+    handleCloseCamera(); // ✅ 카메라 종료
 
-        // ✅ 실패 시 다시 촬영 흐름
-        setCapturedImage(null);
-        setImageBlob(null);
-        setFromGallery(false);
-        setVideoVisible(true); // 카메라 다시 활성화
-        startCamera(); // 새 스트림 요청
-      },
-    });
+    // mutate(imageBlob, {
+    //   onSuccess: (data) => {
+    //     console.log("인증 성공!", data);
+    //     onCaptureSuccess?.(); // ✅ 성공 시 호출
+    //     handleCloseCamera(); // ✅ 카메라 종료
+    //   },
+    //   onError: (error) => {
+    //     console.error("인증 실패", error);
+    //     alert("이미지 업로드에 실패했습니다. 다시 시도해 주세요.");
+
+    //     // ✅ 실패 시 다시 촬영 흐름
+    //     setCapturedImage(null);
+    //     setImageBlob(null);
+    //     setFromGallery(false);
+    //     setVideoVisible(true); // 카메라 다시 활성화
+    //     startCamera(); // 새 스트림 요청
+    //   },
+    // });
   };
 
   return (

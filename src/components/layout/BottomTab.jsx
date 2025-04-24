@@ -1,28 +1,40 @@
 import { Link } from "react-router-dom";
 
 const BottomTab = () => {
-  // 컨플릭트 해결
+  const tabs = [
+    { path: "/map", label: "지도", icon: "/svgs/bottomTab/mapMenuIcon.svg" },
+    {
+      path: "/story",
+      label: "이야기",
+      icon: "/svgs/bottomTab/storyMenuIcon.svg",
+    },
+    {
+      path: "/support",
+      label: "지원",
+      icon: "/svgs/bottomTab/supportMenuIcon.svg",
+    },
+    {
+      path: "/mypage",
+      label: "내 프로필",
+      icon: "/svgs/bottomTab/profileMenuIcon.svg",
+    },
+  ];
+
   return (
-    <>
-      <div className="w-full max-w-[760px] h-[8.4rem] fixed border-t bottom-0 bg-white">
-        <div className="flex w-full pl-[3.2rem] pr-[3.1rem] pt-[1.2rem] justify-between">
-          <div className="w-[4.8rem] h-[4.6rem] flex justify-center items-center">
-            <Link to="/map" state={{ resetMap: true }}>
-              지도
-            </Link>
-          </div>
-          <div className="w-[4.8rem] h-[4.6rem] flex justify-center items-center">
-            <Link to="/story">이야기</Link>
-          </div>
-          <div className="w-[4.8rem] h-[4.6rem] flex justify-center items-center">
-            <Link to="/support">지원</Link>
-          </div>
-          <div className="w-[4.8rem] h-[4.6rem] flex justify-center items-center">
-            <Link to="/mypage">내 프로필</Link>
-          </div>
-        </div>
+    <div className="w-full max-w-[760px] pt-3 pb-6 px-8 h-21 fixed bottom-0 bg-white flex justify-center items-center">
+      <div className="flex justify-between caption1 text-gray-5 gap-9 sm:gap-16 w-full">
+        {tabs.map((tab, idx) => (
+          <Link
+            key={idx}
+            to={tab.path}
+            className="flex flex-col flex-1 sm:w-20 h-12 justify-center items-center gap-1"
+          >
+            <img src={tab.icon} alt={tab.label} />
+            <span>{tab.label}</span>
+          </Link>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
