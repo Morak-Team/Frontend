@@ -34,7 +34,7 @@ const PlaceContent = ({
           className={`w-10 h-10 p-2 rounded-full ${isDetail ? "bg-gray-200" : ""}`}
         >
           <img
-            src={liked ? "/svgs/Ic_heart_fill.svg" : "/svgs/Ic_heart.svg"}
+            src={liked ? "/svgs/Ic_Heart_fill.svg" : "/svgs/Ic_Heart_empty.svg"}
             alt="좋아요 버튼"
             className="w-6 h-6"
           />

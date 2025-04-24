@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import XIcon from "/svgs/ic_X_Btn.svg";
+import XIcon from "/svgs/Ic_X_Btn.svg";
 
 const NameStep = ({ onNext }) => {
   const [name, setName] = useState("");

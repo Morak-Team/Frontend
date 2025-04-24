@@ -50,7 +50,6 @@ const MapPage = () => {
         <img src="/svgs/Ic_Search.svg" alt="검색 아이콘" className="w-5 h-5" />
       </div>
 
-      {/* 카테고리 바 */}
       <CategoryBar
         onSelect={(category) => {
           const filtered = samplePlaces.filter(
@@ -61,12 +60,11 @@ const MapPage = () => {
         }}
       />
 
-      {/* 현위치 버튼 */}
       <button
         onClick={() => setMoveToCurrentLocation(true)}
         className="fixed bottom-40 right-8 z-50 w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center"
       >
-        <img src="/svgs/Ic_location.svg" alt="사용자 현재 위치 버튼" />
+        <img src="/svgs/Ic_Location.svg" alt="사용자 현재 위치 버튼" />
       </button>
       <MapViewer
         places={filteredPlaces}
