@@ -194,7 +194,7 @@ const ReviewImageCapture = ({
                 className="absolute top-10 right-4 z-[10000]"
               >
                 <img
-                  src="/public/images/review/xButtonIcon.png"
+                  src="/svgs/review/camera/xButtonIcon.svg"
                   alt="닫기"
                   className="w-8 h-8"
                 />
@@ -206,7 +206,7 @@ const ReviewImageCapture = ({
                 className="absolute bottom-4 left-4 z-[10000] bg-white/80 backdrop-blur-sm p-3 rounded-full shadow"
               >
                 <img
-                  src="/public/images/review/galleryIcon.png"
+                  src="/svgs/review/camera/galleryIcon.svg"
                   alt="갤러리"
                   className="w-6 h-6"
                 />
@@ -219,10 +219,10 @@ const ReviewImageCapture = ({
               {/* 사진 찍기 버튼 (오른쪽 하단) */}
               <button
                 onClick={handleCapture}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[10000] bg-white/80 backdrop-blur-sm p-3 rounded-full shadow"
+                className="absolute bottom-4 p-5 left-1/2 -translate-x-1/2 z-[10000] bg-white/80 backdrop-blur-sm rounded-full shadow"
               >
                 <img
-                  src="/public/images/review/cameraIcon.png"
+                  src="/svgs/review/camera/cameraIcon.svg"
                   alt="카메라"
                   className="w-6 h-6"
                 />
