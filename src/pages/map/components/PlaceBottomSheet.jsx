@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, animate } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import PlaceContent from "./PlaceContent";
-import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
-import { Link } from "react-router-dom";
-import ConfirmImage from "@/pages/map/components/ConfirmImage";
-import ReviewList from "@/pages/map/components/ReviewList";
+import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
+import ConfirmImage from "@pages/map/components/ConfirmImage";
+import ReviewList from "@pages/map/components/ReviewList";
 
 const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   const [liked, setLiked] = useState(place.liked || false);
-  const [height, setHeight] = useState(120);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [turnOnCamera, setTurnOnCamera] = useState(false);
@@ -17,8 +15,9 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   // 가게 구별용 id
   const storeId = 1;
 
-  const MIN_HEIGHT = 120;
+  const MIN_HEIGHT = 220;
   const MAX_HEIGHT = useRef(window.innerHeight);
+  const controls = useAnimation();
 
   const sheetRef = useRef(null);
   const startY = useRef(0);
@@ -51,62 +50,61 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
     const delta = endY - startY.current;
 
     if (delta < -50) {
-      animateHeight(MAX_HEIGHT.current);
+      controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
     } else if (delta > 50) {
-      animateHeight(MIN_HEIGHT);
+      controls.start({ height: MIN_HEIGHT });
       setIsExpanded(false);
     }
   };
 
   const handleClickExpand = () => {
     if (!isMobile && !isExpanded) {
-      animateHeight(MAX_HEIGHT.current);
+      controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
     }
-  };
-
-  const animateHeight = (toHeight) => {
-    animate(height, toHeight, {
-      duration: 0.3,
-      onUpdate: (latest) => setHeight(latest),
-    });
   };
 
   return (
     <motion.div
       ref={sheetRef}
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-2xl shadow-xl"
-      style={{ height }}
+      className="fixed bottom-[84px] left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow-[0px_-2px_12px_0px_rgba(46,45,43,0.05)] overflow-hidden"
+      animate={controls}
+      initial={{ height: MIN_HEIGHT }}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={handleClickExpand}
     >
       <div className="relative w-full flex justify-center items-center py-3 cursor-pointer">
         <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
-
-        {isExpanded && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
-            className="absolute right-2 top-10 p-4"
-          >
-            <img
-              src="/svgs/Ic_X.svg"
-              alt="닫기 버튼"
-              className="w-8 h-8 cursor-pointer"
-            />
-          </button>
-        )}
       </div>
 
       <div
-        className={`px-5 pb-6 mt-2 ${
-          isExpanded ? "h-full overflow-y-auto pt-24" : "overflow-hidden"
+        className={`px-4 sm:px-6 pb-6 mt-2${
+          isExpanded
+            ? "h-full overflow-y-auto pt-10 sm:pt-12"
+            : "overflow-hidden h-[220px]"
         }`}
       >
+        {isExpanded && (
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="p-4 mt-6 -mr-4"
+            >
+              <img
+                src="/svgs/Ic_X.svg"
+                alt="닫기 버튼"
+                className="w-8 h-8 cursor-pointer"
+              />
+            </button>
+          </div>
+        )}
+
         <PlaceContent
           name={place.name}
           category={place.category}
@@ -119,31 +117,32 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
           showMapLink={isExpanded}
         />
 
-        {/* 리뷰 컨텐츠 컴포넌트 */}
-        <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
+        {isExpanded && (
+          <>
+            <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
 
-        {/* 리뷰 작성 컴포넌트 */}
-        {isExpanded && turnOnCamera && (
-          <ReviewImageCapture
-            storeId={storeId}
-            turnOnCamera={turnOnCamera}
-            onCloseCamera={() => setTurnOnCamera(false)}
-            onCaptureSuccess={() => {
-              setTurnOnCamera(false);
-              setShowConfirm(true);
-            }}
-          />
-        )}
+            {turnOnCamera && (
+              <ReviewImageCapture
+                storeId={storeId}
+                turnOnCamera={turnOnCamera}
+                onCloseCamera={() => setTurnOnCamera(false)}
+                onCaptureSuccess={() => {
+                  setTurnOnCamera(false);
+                  setShowConfirm(true);
+                }}
+              />
+            )}
 
-        {/* 업로드한 영수증 사진 검증 컴포넌트 */}
-        {showConfirm && (
-          <ConfirmImage
-            onReject={() => {
-              sessionStorage.removeItem("reviewResult");
-              setShowConfirm(false);
-              setTurnOnCamera(true);
-            }}
-          />
+            {showConfirm && (
+              <ConfirmImage
+                onReject={() => {
+                  sessionStorage.removeItem("reviewResult");
+                  setShowConfirm(false);
+                  setTurnOnCamera(true);
+                }}
+              />
+            )}
+          </>
         )}
       </div>
     </motion.div>
