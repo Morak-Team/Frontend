@@ -21,6 +21,9 @@ export default {
       fontFamily: {
         pretendard: ["Pretendard", "sans-serif"],
       },
+      spacing: {
+        21: "84px",
+      },
     },
   },
   plugins: [],

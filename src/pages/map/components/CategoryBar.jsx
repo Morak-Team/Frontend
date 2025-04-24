@@ -19,7 +19,7 @@ const CategoryBar = ({ onSelect }) => {
           <button
             key={cate.name}
             onClick={() => onSelect(cate.name)}
-            className="flex shrink-0 gap-2  items-center pl-4 pr-6 py-1.5 rounded-full text-sm font-medium text-gray-900 whitespace-nowrap  bg-white shadow"
+            className="flex shrink-0 gap-2 items-center pl-4 pr-6 py-1.5 rounded-full text-sm font-medium text-gray-900 whitespace-nowrap  bg-white shadow"
           >
             <img src={cate.icon} alt="카테고리 아이콘" className="w-8 h-8" />
             {cate.name}
