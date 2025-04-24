@@ -8,7 +8,7 @@ const WriteReviewPage = () => {
   const [step, setStep] = useState(1);
 
   return (
-    <div className="w-full h-[100vh] flex items-center justify-center bg-white overflow-hidden relative">
+    <div className="w-full min-h-screen flex items-center justify-center bg-white relative">
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
