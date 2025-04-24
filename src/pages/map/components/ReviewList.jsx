@@ -15,10 +15,7 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
           className="text-orange-500 flex justify-center items-center gap-1"
           onClick={() => setTurnOnCamera(true)}
         >
-          <img
-            src="/public/images/review/writeReviewIcon.svg"
-            className="w-4 h-4"
-          />
+          <img src="/svgs/review/writeReviewIcon.svg" className="w-4 h-4" />
           <p className="b5 text-orange-500">리뷰 쓰기</p>
         </button>
       </div>
@@ -28,10 +25,13 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
         <ReviewContent item={item} key={idx} />
       ))}
 
-      <div className="mt-auto">
-        <div className="flex justify-center b4 text-gray-9">
-          <Link to={`/review/${storeId}`}>리뷰 더보기</Link>
-        </div>
+      <div className="w-full flex justify-center mt-8">
+        <Link
+          to={`/review/${storeId}`}
+          className="b4 text-gray-9 bg-gray-2 px-6 py-2 rounded-full"
+        >
+          리뷰 더보기
+        </Link>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import SupportPage from "@/pages/support/SupportPage";
 import ErrorPage from "@/pages/error/ErrorPage";
 import StoryDetail from "@/pages/story/components/StoryDetail";
 import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
+import SignUp from "@pages/join/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/auth",
+        element: <KakaoAuth />,
       },
       {
         path: "/map",
@@ -57,8 +62,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/auth", // 탭 없는 별도 페이지
-    element: <KakaoAuth />,
+    path: "/signup", // 탭 없는 별도 페이지
+    element: <SignUp />,
   },
 ]);
 

@@ -28,6 +28,12 @@ const Home = () => {
         >
           마이 페이지로 이동
         </Link>
+        <Link
+          to="/signup"
+          className="px-4 py-2 bg-blue-300 rounded-lg text-center text-white font-semibold shadow-md hover:bg-green-600 transition"
+        >
+          회원가입 페이지로 이동
+        </Link>
       </div>
     </div>
   );

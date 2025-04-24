@@ -1,12 +1,14 @@
 import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   assetsInclude: ["**/*.node"],
   plugins: [
     react(),
+    svgr(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
