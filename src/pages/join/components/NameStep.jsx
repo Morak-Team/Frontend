@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import XIcon from "/svgs/ic_X_Btn.svg";
 
 const NameStep = ({ onNext }) => {
   const [name, setName] = useState("");
   const [bottomOffset, setBottomOffset] = useState(0);
+  const inputRef = useRef(null);
 
-  const handleNext = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!name.trim()) return;
     onNext(name);
   };
@@ -13,7 +15,7 @@ const NameStep = ({ onNext }) => {
   const clearInput = () => setName("");
 
   useEffect(() => {
-    const inputEl = document.getElementById("name");
+    const inputEl = inputRef.current;
 
     const handleVisualViewportResize = () => {
       requestAnimationFrame(() => {
@@ -70,23 +72,33 @@ const NameStep = ({ onNext }) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative"
+    >
       <section className="px-8">
         <h1 className="text-3xl font-semibold">이름을 입력해주세요.</h1>
         <p className="text-sm text-gray-500 mt-2">투명한 리뷰에 사용됩니다.</p>
 
         <div className="mt-8">
-          <label htmlFor="name" className="block text-sm text-gray-700 mb-1.5">
+          <label
+            id="name-label"
+            htmlFor="name"
+            className="block text-sm text-gray-700 mb-1.5"
+          >
             이름
           </label>
 
           <div className="relative w-full">
             <input
               id="name"
+              ref={inputRef}
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름을 입력하세요"
+              aria-labelledby="name-label"
+              aria-required="true"
               className="w-full py-3 border-b-2 border-gray-200 focus:border-orange-500 pr-10 outline-none placeholder-gray-300 text-2xl font-semibold transition-colors duration-200"
             />
             {name && (
@@ -111,7 +123,7 @@ const NameStep = ({ onNext }) => {
         }}
       >
         <button
-          onClick={handleNext}
+          type="submit"
           disabled={!name.trim()}
           className={`w-full py-6 text-center text-white text-lg font-semibold ${
             name.trim() ? "bg-orange-500" : "bg-gray-200 text-gray-400"
@@ -120,7 +132,7 @@ const NameStep = ({ onNext }) => {
           확인
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
