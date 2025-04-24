@@ -12,7 +12,7 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [turnOnCamera, setTurnOnCamera] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // 가게 구별용 id
   const storeId = 1;
