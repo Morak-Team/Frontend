@@ -2,21 +2,21 @@ import { Link } from "react-router-dom";
 
 const BottomTab = () => {
   const tabs = [
-    { path: "/map", label: "지도", icon: "/images/bottomTab/mapMenuIcon.png" },
+    { path: "/map", label: "지도", icon: "/images/bottomTab/mapMenuIcon.svg" },
     {
       path: "/story",
       label: "이야기",
-      icon: "/images/bottomTab/storyMenuIcon.png",
+      icon: "/images/bottomTab/storyMenuIcon.svg",
     },
     {
       path: "/support",
       label: "지원",
-      icon: "/images/bottomTab/supportMenuIcon.png",
+      icon: "/images/bottomTab/supportMenuIcon.svg",
     },
     {
       path: "/mypage",
       label: "내 프로필",
-      icon: "/images/bottomTab/profileMenuIcon.png",
+      icon: "/images/bottomTab/profileMenuIcon.svg",
     },
   ];
 
