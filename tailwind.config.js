@@ -41,6 +41,9 @@ export default {
         21: "84px",
       },
     },
+    borderWidth: {
+      1.6: "1.6px",
+    },
   },
   plugins: [],
 };
