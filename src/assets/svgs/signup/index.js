@@ -1,7 +1,6 @@
-import ImgGray from "./Img_Profile_Gray.svg?react";
-import ImgPink from "./Img_Profile_Pink.svg?react";
-import ImgBlue from "./Img_Profile_Blue.svg?react";
-import ImgOrange from "./Img_Profile_Orange.svg?react";
-import IcCheck from "./Ic_Check_Orange.svg?react";
-
-export { ImgGray, ImgPink, ImgBlue, ImgOrange, IcCheck };
+export { default as ImgGray } from "./Img_Profile_Gray.svg?react";
+export { default as ImgPink } from "./Img_Profile_Pink.svg?react";
+export { default as ImgBlue } from "./Img_Profile_Blue.svg?react";
+export { default as ImgOrange } from "./Img_Profile_Orange.svg?react";
+export { default as IcCheck } from "./Ic_Check_Orange.svg?react";
+export { default as IcNonCheck } from "./Ic_Check_Circle.svg?react";

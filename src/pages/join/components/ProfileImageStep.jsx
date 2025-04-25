@@ -6,28 +6,33 @@ import {
   ImgOrange,
   IcCheck,
 } from "@assets/svgs/signup/index";
+import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 
 const profileSvgs = [ImgGray, ImgPink, ImgBlue, ImgOrange];
 const profileColors = ["#D6D5D2", "#99958F", "#9BD5FF", "#FFA781"];
 
-const ProfileImageStep = () => {
+const ProfileImageStep = ({ onNext, onBack }) => {
   const [selected, setSelected] = useState(0);
 
   const handleConfirm = () => {
     const selectedColor = profileColors[selected];
     localStorage.setItem("signupProfileColor", selectedColor);
-    alert("프로필 선택 완료!");
+    onNext(SelectedProfile);
   };
 
   const SelectedProfile = profileSvgs[selected];
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen pt-24 sm:pt-32 px-6 bg-white relative">
-      <h1 className="text-2xl sm:text-4xl font-semibold mb-10 sm:mb-12 text-center">
+    <div className="flex flex-col gap-10 items-center justify-start h-screen pt-24 sm:pt-32 px-6 bg-white relative">
+      <h1 className="text-2xl sm:text-4xl font-semibold text-center">
         프로필사진을 설정해주세요.
       </h1>
 
-      <SelectedProfile className="w-24 h-24 sm:w-32 sm:h-32 mb-10 sm:mb-12" />
+      <div className="flex justify-center items-center mt-6 sm:mt-10">
+        <div className="w-24 h-24 sm:w-40 sm:h-40">
+          <SelectedProfile className="w-full h-full" />
+        </div>
+      </div>
 
       <div className="flex gap-3 sm:gap-4 flex-wrap justify-center">
         {profileSvgs.map((SvgComponent, index) => (
