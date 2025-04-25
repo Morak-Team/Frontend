@@ -3,10 +3,10 @@ import useUIStore from "@/store/uiStore";
 
 const BottomTab = () => {
   const navigate = useNavigate();
-  const { turnOnCamera, isBottomSheetOpen } = useUIStore();
+  const { turnOnCamera, isBottomSheetOpen, isWriteReview } = useUIStore();
 
   // BottomSheet 확장 or 카메라 켜짐 상태면 숨김
-  if (isBottomSheetOpen || turnOnCamera) return null;
+  if (isBottomSheetOpen || turnOnCamera || isWriteReview) return null;
 
   const tabs = [
     {
