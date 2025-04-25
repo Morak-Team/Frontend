@@ -9,11 +9,19 @@ const LocationStep = ({ onNext, onBack }) => {
 
   const handleChange = (e) => setLocation(e.target.value);
   const clearInput = () => setLocation("서울특별시 ");
-  const toggleCheck = () => setChecked((prev) => !prev);
+  const toggleCheck = () => {
+    setChecked((prev) => {
+      const next = !prev;
+      if (next) setLocation("");
+      return next;
+    });
+  };
 
-  const isUserTyped =
-    location.trim() !== "" && location.trim() !== "서울특별시";
+  const trimmed = location.trim();
+  const isUserTyped = trimmed !== "" && trimmed !== "서울특별시";
   const isActive = isUserTyped || checked;
+
+  const showWarning = trimmed === "" || !trimmed.startsWith("서울특별시");
 
   return (
     <div className="flex flex-col justify-start items-start h-screen pt-20 px-6 bg-white">
@@ -40,7 +48,7 @@ const LocationStep = ({ onNext, onBack }) => {
           value={location}
           onChange={handleChange}
           className={`w-full border-b-2 ${
-            location.trim() ? "border-orange-500" : "border-gray-300"
+            trimmed ? "border-orange-500" : "border-gray-300"
           } text-lg font-semibold py-2 pr-10 focus:outline-none`}
         />
         {location && (
@@ -53,6 +61,12 @@ const LocationStep = ({ onNext, onBack }) => {
           </button>
         )}
       </div>
+
+      {showWarning && (
+        <p className="text-sm text-orange-500 mt-2">
+          현재는 서울에 한해 사회적 기업들을 소개하고 있습니다.
+        </p>
+      )}
 
       <button
         onClick={toggleCheck}
