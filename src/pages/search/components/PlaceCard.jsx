@@ -1,17 +1,46 @@
+import { categoryIconMap, businessTypeIconMap } from "@constants/iconMap";
+
 const PlaceCard = ({ place, onClick }) => {
+  const categoryIcon = categoryIconMap[place.category];
+  const businessIcon = businessTypeIconMap[place.businessType];
+
   return (
     <div
-      className="py-[1.4rem] px-[1.6rem] bg-white hover:bg-gray-50 cursor-pointer"
       onClick={onClick}
+      className="flex justify-between items-start bg-white pr-5 pl-4 py-3 border-b border-black hover:bg-gray-50 cursor-pointer"
     >
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex items-start gap-4">
+        <img
+          src="/svgs/map/Ic_Location.svg"
+          alt="위치 아이콘"
+          className="w-6 h-6 mt-1"
+        />
+        <div className="flex flex-col">
           <h3 className="text-base font-semibold text-zinc-900">
             {place.name}
           </h3>
           <p className="text-sm text-zinc-500 mt-1">{place.address}</p>
         </div>
-        <span className="text-xs text-zinc-400">{place.distance}</span>
+      </div>
+
+      <div className="flex flex-col items-end">
+        <div className="flex gap-1 mb-1">
+          {categoryIcon && (
+            <img
+              src={categoryIcon}
+              alt={place.category}
+              className="w-6 h-6 rounded bg-orange-50 p-1"
+            />
+          )}
+          {businessIcon && (
+            <img
+              src={businessIcon}
+              alt={place.businessType}
+              className="w-6 h-6 rounded bg-blue-50 p-1"
+            />
+          )}
+        </div>
+        <span className="text-sm text-gray-600">{place.formattedDistance}</span>
       </div>
     </div>
   );

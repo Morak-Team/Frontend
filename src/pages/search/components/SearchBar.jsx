@@ -12,7 +12,7 @@ const SearchBar = ({ keyword, setKeyword, onSearch, showBottomBorder }) => {
       <div className="flex items-center space-x-2">
         <button onClick={() => navigate(-1)} className="shrink-0">
           <img
-            src="/svgs/Ic_arrow_left.svg"
+            src="/svgs/Ic_Arrow_Left.svg"
             alt="뒤로가기"
             className="w-6 h-6"
           />
@@ -29,7 +29,7 @@ const SearchBar = ({ keyword, setKeyword, onSearch, showBottomBorder }) => {
           />
           <button onClick={() => onSearch(keyword)} className="cursor-pointer">
             <img
-              src="/svgs/Ic_Search.svg"
+              src="/svgs/map/Ic_Search.svg"
               alt="검색 버튼"
               className="w-5 h-5 opacity-80"
             />
