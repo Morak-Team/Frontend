@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectTag from "@/pages/writeReview/components/SelectTag";
 import WriteText from "@/pages/writeReview/components/WriteText";
 import Complete from "@/pages/writeReview/components/Complete";
+import useUIStore from "@/store/uiStore";
 
 const WriteReviewPage = () => {
   const [step, setStep] = useState(1);
+  const { setIsWriteReview } = useUIStore();
+
+  useEffect(() => {
+    setIsWriteReview(true);
+    return () => {
+      setIsWriteReview(false);
+    };
+  }, []);
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-white relative">

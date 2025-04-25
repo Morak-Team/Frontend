@@ -4,28 +4,50 @@ const WriteText = ({ onNext, onBack }) => {
   const [text, setText] = useState("");
 
   return (
-    <div className="w-full max-w-[480px] px-4 flex flex-col items-center justify-center text-center">
-      <h1 className="text-2xl font-bold mb-6">
-        태백농협하나로마트는 어땠나요?
-      </h1>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="리뷰를 작성해주세요."
-        className="w-full h-40 p-4 text-base border rounded-md resize-none mb-4"
-      />
-      <div className="flex gap-4">
-        <button
-          onClick={onBack}
-          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-        >
-          이전
-        </button>
+    <div className="relative w-full min-h-screen bg-white flex justify-center">
+      <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
+        {/* 닫기 버튼 */}
+        <div className="flex justify-end">
+          <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
+        </div>
+
+        {/* 제목 */}
+        <div className="mt-6 mb-10">
+          <p className="text-xl font-bold text-center">
+            <span className="h2 text-orange-500">이 장소</span>
+            <span className="h2 text-gray-12">는 어떠셨나요?</span>
+          </p>
+        </div>
+
+        {/* 닉네임: 버튼 기준 너비로 제한 */}
+        <div className="flex justify-center">
+          <div className="w-80 sm:w-[77%]">
+            <div className="flex items-center gap-2">
+              <img src="/svgs/review/profileIcon.svg" className="w-6 h-6" />
+              <p className="b5">닉네임</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 텍스트 입력 */}
+        <div className="flex justify-center mt-4">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="리뷰를 작성해주세요."
+            className="w-80 sm:w-[77%] bg-gray-2 rounded-xl px-3 pt-3 pb-3 text-gray-900 min-h-[160px] resize-none outline-none 
+              placeholder:text-gray-400 placeholder:pl-1"
+          />
+        </div>
+      </div>
+
+      {/* 고정 하단 버튼 */}
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={onNext}
-          className="bg-orange-500 text-white px-6 py-2 rounded-md text-lg shadow"
+          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
         >
-          확인
+          다음
         </button>
       </div>
     </div>

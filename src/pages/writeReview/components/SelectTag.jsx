@@ -31,7 +31,7 @@ const SelectTag = ({ onNext }) => {
   console.log(selectedTags);
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
-      <div className="w-full max-w-[760px] px-5 pt-14 sm:pt-32 pb-24 overflow-y-auto">
+      <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         <div className="flex justify-end">
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
         </div>
