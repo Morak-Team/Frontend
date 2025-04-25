@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import useUIStore from "@/store/uiStore";
 
 const BottomTab = () => {
   const navigate = useNavigate();
+  const { turnOnCamera, isBottomSheetOpen } = useUIStore();
+
+  // BottomSheet 확장 or 카메라 켜짐 상태면 숨김
+  if (isBottomSheetOpen || turnOnCamera) return null;
 
   const tabs = [
     {

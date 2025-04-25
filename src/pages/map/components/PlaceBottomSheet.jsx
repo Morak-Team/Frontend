@@ -4,17 +4,20 @@ import PlaceContent from "./PlaceContent";
 import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
 import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
+import useUIStore from "@/store/uiStore";
 
-const PlaceBottomSheet = ({ place, onClose, recapture }) => {
+const PlaceBottomSheet = ({ place, onClose }) => {
   const [liked, setLiked] = useState(place.liked || false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [turnOnCamera, setTurnOnCamera] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // 가게 구별용 id
-  const storeId = 1;
+  const { turnOnCamera, setTurnOnCamera, setBottomSheetOpen } = useUIStore();
 
+  const bottomOffset =
+    turnOnCamera || isExpanded ? "bottom-0" : "bottom-[84px]";
+
+  const storeId = 1;
   const MIN_HEIGHT = 220;
   const MAX_HEIGHT = useRef(window.innerHeight);
   const controls = useAnimation();
@@ -34,10 +37,12 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
 
   useEffect(() => {
     document.body.style.overflow = isExpanded ? "hidden" : "auto";
+    setBottomSheetOpen(isExpanded);
     return () => {
       document.body.style.overflow = "auto";
+      setBottomSheetOpen(false);
     };
-  }, [isExpanded]);
+  }, [isExpanded, setBottomSheetOpen]);
 
   const handleTouchStart = (e) => {
     if (!isMobile) return;
@@ -68,10 +73,10 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
   return (
     <motion.div
       ref={sheetRef}
-      className="fixed bottom-[84px] left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow-[0px_-2px_12px_0px_rgba(46,45,43,0.05)] overflow-hidden"
+      className={`fixed ${bottomOffset} left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow overflow-hidden`} // ✅ overflow-hidden 추가
       animate={controls}
       initial={{ height: MIN_HEIGHT }}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
+      transition={{ duration: 0.35 }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={handleClickExpand}
@@ -81,10 +86,8 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
       </div>
 
       <div
-        className={`px-4 sm:px-6 pb-6 mt-2${
-          isExpanded
-            ? "h-full overflow-y-auto pt-10 sm:pt-12"
-            : "overflow-hidden h-[220px]"
+        className={`px-5 sm:px-6 pb-6 transition-all duration-300 h-full ${
+          isExpanded ? "max-h-[100vh] overflow-y-auto pt-10" : ""
         }`}
       >
         {isExpanded && (
@@ -94,23 +97,15 @@ const PlaceBottomSheet = ({ place, onClose, recapture }) => {
                 e.stopPropagation();
                 onClose();
               }}
-              className="p-4 mt-6 -mr-4"
+              className="p-4 -mt-4 -mr-4"
             >
-              <img
-                src="/svgs/Ic_X.svg"
-                alt="닫기 버튼"
-                className="w-8 h-8 cursor-pointer"
-              />
+              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-8 h-8" />
             </button>
           </div>
         )}
 
         <PlaceContent
-          name={place.name}
-          category={place.category}
-          distance={place.distance}
-          address={place.address}
-          images={place.images}
+          {...place}
           liked={liked}
           onToggleLike={() => setLiked((prev) => !prev)}
           isDetail={isExpanded}
