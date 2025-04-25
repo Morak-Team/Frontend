@@ -19,7 +19,6 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
           <p className="b5 text-orange-500">리뷰 쓰기</p>
         </button>
       </div>
-      <p className="b4 text-orange-500 mb-6">온도 98도</p>
 
       {reviewData.map((item, idx) => (
         <ReviewContent item={item} key={idx} />
