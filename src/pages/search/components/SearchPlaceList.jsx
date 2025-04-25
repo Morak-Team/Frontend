@@ -10,7 +10,7 @@ const PlaceList = ({ places, onSelect, showEmptyMessage }) => {
   }
 
   return (
-    <div className="divide-y divide-gray-100 overflow-hidden">
+    <div className="bg-white">
       {places.map((place) => (
         <PlaceCard
           key={place.id}

@@ -4,6 +4,8 @@ import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
 import samplePlaces from "@constants/map/socialEnterprise";
 import CategoryBar from "./components/CategoryBar";
+import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
+import { formatDistance } from "./utils/formatDistance";
 
 const MapPage = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -40,34 +42,65 @@ const MapPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (userCoords) {
+      const withDistance = samplePlaces.map((place) => {
+        const distInMeters = getDistanceFromLatLon(
+          userCoords.lat,
+          userCoords.lng,
+          place.coords.lat,
+          place.coords.lng
+        );
+
+        return {
+          ...place,
+          distance: formatDistance(distInMeters),
+        };
+      });
+
+      setFilteredPlaces(withDistance);
+    }
+  }, [userCoords]);
+
   return (
     <>
       <div
         onClick={handleSearchClick}
-        className="absolute top-24 left-1/2 -translate-x-1/2 z-50 w-[33.5rem] h-16 px-6 flex items-center justify-between bg-white rounded-2xl shadow cursor-pointer"
+        className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[33.5rem] h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between bg-white rounded-2xl shadow cursor-pointer"
       >
-        <span className="text-gray-400">내 주변 가치가게 찾기</span>
-        <img src="/svgs/Ic_Search.svg" alt="검색 아이콘" className="w-5 h-5" />
+        <span className="text-gray-400 text-sm sm:text-base">
+          내 주변 가치가게 찾기
+        </span>
+        <img
+          src="/svgs/map/Ic_Search.svg"
+          alt="검색 아이콘"
+          className="w-4 h-4 sm:w-5 sm:h-5"
+        />
       </div>
 
-      {/* 카테고리 바 */}
       <CategoryBar
         onSelect={(category) => {
-          const filtered = samplePlaces.filter(
-            (p) => p.businessType === category
-          );
+          const filtered = filteredPlaces
+            .filter((p) => p.businessType === category)
+            .map((p) => ({ ...p, isSearchResult: true }));
           setFilteredPlaces(filtered);
-          setSelectedPlace(null); // 기존 선택된 장소 초기화
+          setSelectedPlace(null);
         }}
       />
 
-      {/* 현위치 버튼 */}
-      <button
-        onClick={() => setMoveToCurrentLocation(true)}
-        className="fixed bottom-40 right-8 z-50 w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center"
-      >
-        <img src="/svgs/Ic_location.svg" alt="사용자 현재 위치 버튼" />
-      </button>
+      <div className="absolute bottom-28 sm:bottom-30 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-50 flex justify-end">
+        <button
+          onClick={() => setMoveToCurrentLocation(true)}
+          className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
+        >
+          <img
+            src="/svgs/map/Ic_Current_Location.svg"
+            alt="사용자 현재 위치 버튼"
+            className="w-6 h-6"
+          />
+        </button>
+      </div>
+
       <MapViewer
         places={filteredPlaces}
         onMarkerClick={setSelectedPlace}
@@ -76,6 +109,7 @@ const MapPage = () => {
         onMoveComplete={() => setMoveToCurrentLocation(false)}
         resetMap={location.state?.resetMap}
       />
+
       {selectedPlace && (
         <PlaceBottomSheet
           place={selectedPlace}
@@ -85,4 +119,5 @@ const MapPage = () => {
     </>
   );
 };
+
 export default MapPage;

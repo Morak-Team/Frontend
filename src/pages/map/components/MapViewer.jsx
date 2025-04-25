@@ -18,17 +18,27 @@ const MapViewer = ({
       .then(() => {
         if (mapRef.current) {
           mapInstance.current = new window.naver.maps.Map(mapRef.current, {
-            center: new window.naver.maps.LatLng(37.5665, 126.978), // 중심: 서울 시청
-            zoom: 12,
+            center: new window.naver.maps.LatLng(37.5665, 126.978),
+            zoom: 11.5,
           });
 
           places.forEach((place) => {
+            const iconUrl = place.isSearchResult
+              ? "/svgs/map/Ic_Map_Search_Marker.svg"
+              : "/svgs/map/Ic_Map_Marker.svg";
+
             const marker = new window.naver.maps.Marker({
               position: new window.naver.maps.LatLng(
                 place.coords.lat,
                 place.coords.lng
               ),
               map: mapInstance.current,
+              icon: {
+                url: iconUrl,
+                size: new window.naver.maps.Size(32, 32),
+                scaledSize: new window.naver.maps.Size(32, 32),
+                anchor: new window.naver.maps.Point(16, 32),
+              },
             });
 
             window.naver.maps.Event.addListener(marker, "click", () => {
@@ -42,13 +52,12 @@ const MapViewer = ({
       });
   }, [places, onMarkerClick]);
 
-  // 지도를 현재 위치로 이동
   useEffect(() => {
     if (resetMap && mapInstance.current) {
       mapInstance.current.setCenter(
         new window.naver.maps.LatLng(37.5665, 126.978)
       );
-      mapInstance.current.setZoom(12);
+      mapInstance.current.setZoom(11.5);
 
       if (userMarkerRef.current) {
         userMarkerRef.current.setMap(null);
@@ -64,13 +73,12 @@ const MapViewer = ({
         userCoords.lng
       );
       mapInstance.current.setCenter(newCenter);
-      mapInstance.current.setZoom(20);
+      mapInstance.current.setZoom(18.5);
 
       if (userMarkerRef.current) {
         userMarkerRef.current.setMap(null);
       }
 
-      // 사용자 현재 위치 마커 생성
       userMarkerRef.current = new window.naver.maps.Marker({
         position: newCenter,
         map: mapInstance.current,

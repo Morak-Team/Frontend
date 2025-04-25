@@ -8,6 +8,7 @@
       "@utils/*": ["utils/*"],
       "@assets/*": ["assets/*"],
       "@hooks/*": ["hooks/*"],
+      "@store/*": ["store/*"],
       "@constants/*": ["constants/*"],
       "@apis/*": ["apis/*"],
       "@routes/*": ["routes/*"],

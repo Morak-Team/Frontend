@@ -13,7 +13,7 @@ const RecentSearchList = ({ recentSearches, onSearch, setRecentSearches }) => {
         >
           <div className="flex items-center space-x-2">
             <img
-              src="/svgs/ic_Search.svg"
+              src="/svgs/map/Ic_Search.svg"
               alt="검색"
               className="w-5 h-5 opacity-30"
             />
@@ -26,7 +26,7 @@ const RecentSearchList = ({ recentSearches, onSearch, setRecentSearches }) => {
             }}
           >
             <img
-              src="/svgs/ic_X.svg"
+              src="/svgs/Ic_X.svg"
               alt="삭제"
               className="w-4 h-4 opacity-60"
             />
