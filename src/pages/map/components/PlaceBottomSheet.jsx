@@ -74,7 +74,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
     <motion.div
       ref={sheetRef}
       className={`fixed ${bottomOffset} left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow ${
-        turnOnCamera ? "" : "overflow-hidden"
+        turnOnCamera || showConfirm ? "" : "overflow-hidden"
       }`} // ✅ overflow-hidden 추가
       animate={controls}
       initial={{ height: MIN_HEIGHT }}
