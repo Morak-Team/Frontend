@@ -1,11 +1,13 @@
 import { useState } from "react";
-
+import UploadingModal from "@/pages/writeReview/components/UploadingModal";
 const WriteText = ({ onNext, onBack }) => {
   const [text, setText] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
+        {isUploading && <UploadingModal message="리뷰를 등록중입니다..." />}
         {/* 닫기 버튼 */}
         <div className="flex justify-end">
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
