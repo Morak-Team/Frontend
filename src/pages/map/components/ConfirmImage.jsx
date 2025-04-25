@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
+
 import { loadNaverMapScript } from "@/pages/map/utils/loadMapScript";
 import { useEffect, useRef, useState } from "react";
+import DatePickerSheet from "@/pages/map/components/DatePickerSheet";
+import TimePickerSheet from "@/pages/map/components/TimePickerSheet";
+import Picker from "@/pages/map/components/Picker";
 
 const ConfirmImage = ({ onReject }) => {
   const navigate = useNavigate();
@@ -8,6 +12,27 @@ const ConfirmImage = ({ onReject }) => {
   const [location, setLocation] = useState(null);
   const [isMapLoading, setIsMapLoading] = useState(false);
   const mapInstanceRef = useRef(null);
+  const [pickerValue, setPickerValue] = useState({ month: "2", day: "14" });
+
+  const [month, setMonth] = useState("2월");
+  const [day, setDay] = useState("14일");
+  const [selectedMonth, setSelectedMonth] = useState("2월");
+  const [selectedDay, setSelectedDay] = useState("14일");
+
+  const [showPickerType, setShowPickerType] = useState(null); // null, "date", "time"
+
+  const [selectedDate, setSelectedDate] = useState({
+    month: "2월",
+    day: "14일",
+  });
+  const [selectedTime, setSelectedTime] = useState({
+    period: "오후",
+    hour: "1시",
+    minute: "45분",
+  });
+
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+  const days = Array.from({ length: 31 }, (_, i) => `${i + 1}일`);
 
   // 현재 위치 가져오기
   useEffect(() => {
@@ -81,7 +106,11 @@ const ConfirmImage = ({ onReject }) => {
   }, [location]);
 
   return (
-    <div className="fixed min-h-screen inset-0 z-[9999] bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center">
+    <div
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
+      className="fixed min-h-screen inset-0 z-[9999] bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center"
+    >
       <div className="flex justify-end w-full mt-14 sm:mt-32 pr-5">
         <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
       </div>
@@ -100,13 +129,56 @@ const ConfirmImage = ({ onReject }) => {
       <div className="flex gap-2 w-full justify-center items-center">
         <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
           <p className="b1 text-gray-12">2월 14일</p>
-          <button className="b4 text-orange-500">수정</button>
+          <button
+            className="b4 text-orange-500"
+            onClick={() => setShowPickerType("date")}
+          >
+            수정
+          </button>
         </div>
         <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
           <p className="b1 text-gray-12">오전 11: 45</p>
-          <button className="b4 text-orange-500">수정</button>
+          <button
+            className="b4 text-orange-500"
+            onClick={() => setShowPickerType("time")}
+          >
+            수정
+          </button>
         </div>
       </div>
+
+      {showPickerType === "date" && (
+        <DatePickerSheet
+          initialMonth={selectedDate.month}
+          initialDay={selectedDate.day}
+          onClose={() => setShowPickerType(null)}
+          onConfirm={({ month, day }) => {
+            setSelectedDate({ month, day });
+          }}
+        />
+      )}
+
+      {showPickerType === "time" && (
+        <TimePickerSheet
+          initialPeriod={selectedTime.period}
+          initialHour={selectedTime.hour}
+          initialMinute={selectedTime.minute}
+          onClose={() => setShowPickerType(null)}
+          onConfirm={({ period, hour, minute }) => {
+            setSelectedTime({ period, hour, minute });
+          }}
+        />
+      )}
+      {/* 
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex justify-center gap-6">
+          <Picker list={months} onSelectedChange={setSelectedMonth} />
+          <Picker list={days} onSelectedChange={setSelectedDay} />
+        </div>
+        <div className="mt-4 text-gray-700 text-lg">
+          선택된 날짜: {selectedMonth} {selectedDay}
+        </div>
+      </div> */}
 
       <div className="mt-8 mb-3 text-center">
         <p className="b5 text-gray-9">이곳이 맞나요?</p>

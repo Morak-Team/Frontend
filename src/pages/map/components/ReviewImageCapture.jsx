@@ -143,20 +143,26 @@ const ReviewImageCapture = ({
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
 
-    mutate(imageBlob, {
-      onSuccess: (data) => {
-        onCaptureSuccess?.(); // 성공 시
-        handleCloseCamera();
-      },
-      onError: () => {
-        setShowReceiptError(true); // 실패 시 모달 표시
-      },
-    });
+    onCaptureSuccess?.(); // 성공 시
+    handleCloseCamera();
+
+    // mutate(imageBlob, {
+    //   onSuccess: (data) => {
+    //     onCaptureSuccess?.(); // 성공 시
+    //     handleCloseCamera();
+    //   },
+    //   onError: () => {
+    //     setShowReceiptError(true); // 실패 시 모달 표시
+    //   },
+    // });
   };
 
   return (
     <>
-      <div>
+      <div
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+      >
         <div>
           {/* 숨겨진 input */}
           <input
