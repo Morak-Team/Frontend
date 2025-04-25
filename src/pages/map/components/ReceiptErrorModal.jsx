@@ -1,4 +1,3 @@
-// ReceiptErrorModal.jsx
 const ReceiptErrorModal = ({ message, subMessage, onClose }) => {
   return (
     <div className="fixed inset-0 z-[10001] bg-black/40 flex justify-center items-center">
