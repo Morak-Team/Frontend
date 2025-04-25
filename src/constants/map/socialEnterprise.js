@@ -45,7 +45,7 @@ const samplePlaces = [
       "결식이웃지원 도시락 사업을 통해 공공급식 사회서비스의 품질 개선과 양극화 해소, 근로빈곤층의 빈곤 완화를 위한 지속 가능한 일자리를 창출합니다.",
     distance: "541m",
     review: "방문자 리뷰 27",
-    address: "서울특별시 용산구 독서당로 46 (한남동, 한남아이파크) 비1층",
+    address: "서울 마포구 양화로 85 8, 9호",
     homepage: "http://happydosirak.org",
     phone: "02-6010-6100",
     images: ["/images/sample4.jpeg"],
