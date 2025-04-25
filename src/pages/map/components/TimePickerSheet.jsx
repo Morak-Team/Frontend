@@ -1,5 +1,6 @@
 import Picker from "./Picker";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const TimePickerSheet = ({
   onClose,
@@ -16,9 +17,24 @@ const TimePickerSheet = ({
   const [hour, setHour] = useState(initialHour || "1시");
   const [minute, setMinute] = useState(initialMinute || "0분");
 
+  console.log(period, hour, minute);
+
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-40 flex justify-center items-end">
-      <div className="w-full bg-white rounded-t-xl pt-4 pb-6 px-6">
+      {/* 바깥 영역 클릭 시 닫기 */}
+      <div className="absolute inset-0" onClick={onClose} />
+
+      {/* ✅ 슬라이드 애니메이션 바텀시트 */}
+      <motion.div
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ duration: 0.3 }}
+        className="relative w-full bg-white rounded-t-xl pt-4 pb-6 px-6 z-10"
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-end mb-4">
           <button onClick={onClose}>
             <img src="/svgs/review/xIcon.svg" className="w-6 h-6" />
@@ -40,7 +56,7 @@ const TimePickerSheet = ({
         >
           확인
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 };
