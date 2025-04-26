@@ -78,9 +78,8 @@ const NameStep = ({ onNext, onBack }) => {
       className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative"
     >
       <button
-        type="button"
         onClick={onBack}
-        className="absolute top-6 left-6 z-10"
+        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
         aria-label="뒤로가기"
       >
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />

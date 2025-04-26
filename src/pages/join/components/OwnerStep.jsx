@@ -18,8 +18,8 @@ const OwnerStep = ({ onNext, onBack }) => {
 
   return (
     <div className="flex flex-col justify-start h-screen bg-white px-6 pt-20">
-      <button onClick={onBack} className="mb-8">
-        <img src={BackIcon} alt="뒤로가기 버튼" className="w-8 h-8" />
+      <button onClick={onBack} className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10">
+        <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
       <h1 className="text-2xl font-semibold mb-10">

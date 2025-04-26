@@ -13,7 +13,7 @@ const GoHome = ({ onNext, onBack }) => {
         backgroundImage: `url('/images/Img_Background.png')`,
       }}
     >
-      <button onClick={onBack} className="absolute top-6 left-6">
+      <button onClick={onBack} className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10">
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
