@@ -38,6 +38,13 @@ export default defineConfig({
   server: {
     open: true,
     host: true,
+    proxy: {
+      "/api": {
+        target: "http://52.78.110.178:8080",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
     allowedHosts: [".ngrok-free.app"],
   },
   resolve: {

@@ -1,8 +1,8 @@
-import axios from "axios";
+import kakaoInstance from "@apis/kakaoLogin/api";
 
 export const postKakaoToken = async (code) => {
   try {
-    const res = await axios.post(
+    const res = await kakaoInstance.post(
       "/api/auth/kakao",
       { code },
       { withCredentials: true }, // JWT 쿠키 받기 위해 필요
