@@ -1,18 +1,32 @@
 const Complete = () => {
   return (
-    <div className="w-full max-w-[480px] px-4 flex flex-col items-center justify-center text-center">
-      <h1 className="text-2xl font-bold text-orange-500 mb-2">
-        리뷰 쓰기 완료!
-      </h1>
-      <p className="mb-6 text-sm text-gray-600">
-        소중한 온기가 전달되었어요 :)
-      </p>
-      <div className="w-full h-48 bg-gray-100 rounded-md mb-6 flex items-center justify-center">
-        <p className="text-gray-500">온기 리포트 무언가에 추가되는 모습</p>
+    <div className="relative w-full min-h-screen bg-white flex justify-center">
+      <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
+        {/* 닫기 버튼 */}
+        <div className="flex justify-end">
+          <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
+        </div>
+
+        {/* 제목 */}
+        <div className="mt-6 mb-10 text-center">
+          <p className="text-xl font-bold">
+            <span className="h1 text-orange-500">리뷰 쓰기</span>
+            <span className="h1 text-gray-12"> 완료!</span>
+          </p>
+          <p className="b5 text-gray-9 mt-2">소중한 온기가 전해졌어요 :)</p>
+        </div>
+
+        <div className="flex justify-center items-center">
+          <img src="/svgs/review/temperLogo.svg" />
+        </div>
+
+        {/* 고정 하단 버튼 */}
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
+          <button className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black">
+            확인
+          </button>
+        </div>
       </div>
-      <button className="bg-orange-500 text-white px-6 py-2 rounded-md text-lg shadow">
-        확인
-      </button>
     </div>
   );
 };

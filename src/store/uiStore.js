@@ -6,6 +6,9 @@ const useUIStore = create((set) => ({
 
   isBottomSheetOpen: false,
   setBottomSheetOpen: (value) => set({ isBottomSheetOpen: value }),
+
+  isWriteReview: false,
+  setIsWriteReview: (value) => set({ isWriteReview: value }),
 }));
 
 export default useUIStore;

@@ -10,6 +10,11 @@ const ReviewContent = ({ item }) => {
         <img src="/svgs/review/profileIcon.svg" className="w-6 h-6" />
         <h1 className="b5 text-gray-12">{item.nickname}</h1>
       </div>
+
+      <div className="flex gap-1 justify-center items-center">
+        <img src="/svgs/review/fireIcon.svg" className="w-4 h-4" />
+        <p className="b1 text-orange-500">98도</p>
+      </div>
       <p className="b5 text-gray-11">{item.text}</p>
       <div
         ref={scrollRef}
