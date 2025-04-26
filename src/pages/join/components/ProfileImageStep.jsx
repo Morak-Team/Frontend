@@ -41,7 +41,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
         </div>
       </div>
 
-      <div className="flex w-full gap-3 sm:gap-4 overflow-x-auto flex-nowrap justify-start no-scrollbar px-1 mt-6">
+      <div className="flex w-full gap-3 sm:gap-4 overflow-x-auto flex-nowrap justify-center no-scrollbar px-1 mt-6">
         {profileSvgs.map((SvgComponent, index) => (
           <div
             key={index}
