@@ -73,7 +73,7 @@ const SignUpPage = () => {
             className="absolute top-0 left-0 w-full h-full"
           >
             <ProfileImageStep
-              onNext={(profileImageUrl) => goNext({ profileImageUrl })}
+              onNext={(profileImageColor) => goNext({ profileImageColor })}
               onBack={goBack}
             />
           </motion.div>
