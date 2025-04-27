@@ -1,44 +1,58 @@
 import { useState } from "react";
-import IcProfile from "../../../../public/svgs/Ic_Profile.svg?react";
-import IcCheck from "../../../../public/svgs/Ic_Check_Orange.svg?react";
+import {
+  ImgGray,
+  ImgPink,
+  ImgBlue,
+  ImgOrange,
+  IcCheck,
+} from "@assets/svgs/signup/index";
+import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 
-const profileColors = [
-  "#D6D5D2", // gray
-  "#99958F", // brown
-  "#9BD5FF", // blue
-  "#FFA781", // orange
-];
+const profileSvgs = [ImgGray, ImgPink, ImgBlue, ImgOrange];
+const profileColors = ["gray", "pink", "blue", "orange"];
 
-const ProfileImageStep = () => {
+const ProfileImageStep = ({ onNext, onBack }) => {
   const [selected, setSelected] = useState(0);
+  const SelectedProfile = profileSvgs[selected];
 
   const handleConfirm = () => {
     const selectedColor = profileColors[selected];
+
     localStorage.setItem("signupProfileColor", selectedColor);
-    alert("프로필 선택 완료!");
+
+    onNext(selectedColor);
   };
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen pt-32 bg-white relative">
-      <h1 className="text-4xl font-semibold mb-12">
+    <div className="flex flex-col h-screen px-6 bg-white overflow-hidden relative">
+      <button
+        onClick={onBack}
+        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
+        aria-label="뒤로가기"
+      >
+        <img src={BackIcon} alt="뒤로가기" className="w-6 h-6 sm:w-7 sm:h-7" />
+      </button>
+
+      <h1 className="pt-24 sm:pt-32 text-2xl sm:text-4xl font-semibold text-center">
         프로필사진을 설정해주세요.
       </h1>
 
-      <IcProfile
-        style={{ color: profileColors[selected] }}
-        className="w-40 h-40 mb-12"
-      />
+      <div className="flex justify-center items-center mt-6 sm:mt-10">
+        <div className="w-24 h-24 sm:w-40 sm:h-40">
+          <SelectedProfile className="w-full h-full" />
+        </div>
+      </div>
 
-      <div className="flex gap-4">
-        {profileColors.map((color, index) => (
+      <div className="flex w-full gap-3 sm:gap-4 overflow-x-auto flex-nowrap justify-center no-scrollbar px-1 mt-6">
+        {profileSvgs.map((SvgComponent, index) => (
           <div
             key={index}
-            className="relative rounded-full"
+            className="relative rounded-full cursor-pointer shrink-0"
             onClick={() => setSelected(index)}
           >
-            <IcProfile style={{ color }} className="w-32 h-32 rounded-full" />
+            <SvgComponent className="w-20 h-20 sm:w-24 sm:h-24 rounded-full" />
             {selected === index && (
-              <div className="absolute top-2 right-2 w-8 h-8">
+              <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8">
                 <IcCheck className="w-full h-full text-orange-500" />
               </div>
             )}
@@ -46,12 +60,16 @@ const ProfileImageStep = () => {
         ))}
       </div>
 
-      <button
-        onClick={handleConfirm}
-        className="w-full py-4 bg-orange-500 text-white text-lg font-semibold fixed bottom-0 left-0"
-      >
-        확인
-      </button>
+      <div className="flex-grow" />
+
+      <div className="w-full flex justify-center pb-6">
+        <button
+          onClick={handleConfirm}
+          className="w-full max-w-[33.4rem] h-12 px-4 bg-[#FF6F31] text-white font-semibold rounded-2xl"
+        >
+          확인
+        </button>
+      </div>
     </div>
   );
 };
