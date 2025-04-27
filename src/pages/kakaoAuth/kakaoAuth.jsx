@@ -38,10 +38,10 @@ const KakaoAuth = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center min-h-screen pb-20 px-5 bg-white">
+    <div className="flex flex-col justify-center items-center min-h-screen pb-20 px-5 bg-white">
       {!code && (
         <>
-          <h1 className="text-2xl sm:text-3xl font-semibold leading-relaxed text-left">
+          <h1 className="text-2xl sm:text-3xl font-semibold leading-relaxed self-start text-left">
             간편하게 로그인하고 <br />
             따뜻한 온기에 동참해보세요.
           </h1>
@@ -49,7 +49,7 @@ const KakaoAuth = () => {
           <img
             src="/images/Img_Start_Morak.png"
             alt="모락_illust"
-            className="w-full max-w-[34rem] aspect-square rounded-2xl object-cover my-14"
+            className="w-full aspect-square rounded-2xl object-cover my-14"
             draggable={false}
           />
 
