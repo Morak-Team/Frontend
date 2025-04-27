@@ -30,7 +30,11 @@ const SignUpPage = () => {
   const goHome = () => navigate("/");
 
   const handleSignup = async (role) => {
-    const finalData = { ...signupData, role: role.toUpperCase() };
+    const finalData = {
+      ...signupData,
+      role: role.toUpperCase(),
+      profileImageUrl: signupData.profileImageColor,
+    };
     try {
       await signup(finalData);
       setStep((prev) => prev + 1);
