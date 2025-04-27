@@ -15,7 +15,7 @@ const SignUpPage = () => {
 
   const [signupData, setSignupData] = useState({
     name: "",
-    profileImageUrl: "",
+    profileImageColor: "",
     location: "",
     role: "",
   });
@@ -36,7 +36,6 @@ const SignUpPage = () => {
       setStep((prev) => prev + 1);
     } catch (error) {
       console.error("회원가입 실패:", error);
-      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     }
   };
 

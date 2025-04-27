@@ -17,8 +17,10 @@ const ProfileImageStep = ({ onNext, onBack }) => {
 
   const handleConfirm = () => {
     const selectedColor = profileColors[selected];
+
     localStorage.setItem("signupProfileColor", selectedColor);
-    onNext(SelectedProfile);
+
+    onNext(selectedColor);
   };
 
   return (
