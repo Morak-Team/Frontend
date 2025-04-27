@@ -9,11 +9,13 @@ const GoHome = ({ onNext, onBack }) => {
     <div
       className="flex flex-col justify-between h-screen bg-cover bg-no-repeat bg-center px-6 pt-6 pb-10 relative"
       style={{
-        // 임시 배경이미지
-        backgroundImage: `url('/images/Img_Background.png')`,
+        backgroundImage: `url('/images/Img_Join.svg')`,
       }}
     >
-      <button onClick={onBack} className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10">
+      <button
+        onClick={onBack}
+        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
+      >
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
