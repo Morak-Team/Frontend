@@ -143,18 +143,18 @@ const ReviewImageCapture = ({
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
 
-    onCaptureSuccess?.(); // 성공 시
-    handleCloseCamera();
+    // onCaptureSuccess?.(); // 성공 시
+    // handleCloseCamera();
 
-    // mutate(imageBlob, {
-    //   onSuccess: (data) => {
-    //     onCaptureSuccess?.(); // 성공 시
-    //     handleCloseCamera();
-    //   },
-    //   onError: () => {
-    //     setShowReceiptError(true); // 실패 시 모달 표시
-    //   },
-    // });
+    mutate(imageBlob, {
+      onSuccess: (data) => {
+        onCaptureSuccess?.(); // 성공 시
+        handleCloseCamera();
+      },
+      onError: () => {
+        setShowReceiptError(true); // 실패 시 모달 표시
+      },
+    });
   };
 
   return (
@@ -277,9 +277,13 @@ const ReviewImageCapture = ({
                     setVideoVisible(true);
                     startCamera();
                   }}
-                  className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                  className="absolute bottom-4 left-4 z-[10000] w-32 h-12 flex gap-2 justify-center items-center text-white text-xl p-2 bg-black/50 rounded"
                 >
-                  🔁 다시 찍기
+                  <img
+                    src="/svgs/review/camera/retryIcon.svg"
+                    className="w-6 h-6"
+                  />
+                  <p className="b1">다시 찍기</p>
                 </button>
               )}
 
@@ -288,7 +292,8 @@ const ReviewImageCapture = ({
                 onClick={handleUsePhoto}
                 className="absolute bottom-4 right-4 z-[10000] px-4 py-2 bg-orange-500 text-white rounded shadow font-semibold"
               >
-                ✅ 사용하기
+                <img src="/svgs/review/camera/checkIcon.svg" />
+                사용하기
               </button>
 
               {/* ✅ 오류 모달 (가장 마지막에 렌더링되도록) */}

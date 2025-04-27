@@ -5,12 +5,29 @@ import {
   getReviews,
 } from "@/apis/review/getReviews";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getReviewCount, getTemperature } from "@/apis/review/getReviewDetail";
 
 // 바텀 시트 내부에서 보이는 약 5개 정도의 리뷰를 가져오는 쿼리
 export const useStoreReviews = (storeId) => {
   return useQuery({
     queryKey: ["reviews", storeId],
     queryFn: () => getReviews(storeId),
+  });
+};
+
+// 가게의 온도를 가져오는 쿼리
+export const useGetStoreTemperature = (storeId) => {
+  return useQuery({
+    queryKey: ["temperature", storeId],
+    queryFn: () => getTemperature(storeId),
+  });
+};
+
+// 가게의 리뷰 개수를 가져오는 쿼리
+export const useGetStoreReviewCount = (storeId) => {
+  return useQuery({
+    queryKey: ["reviewCount", storeId],
+    queryFn: () => getReviewCount(storeId),
   });
 };
 

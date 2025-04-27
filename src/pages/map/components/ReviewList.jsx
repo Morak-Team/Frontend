@@ -1,8 +1,12 @@
 import { reviewData } from "@/constants/review/reviewData";
 import ReviewContent from "@/pages/map/components/ReviewContent";
 import { Link } from "react-router-dom";
+import { useGetStoreReviewCount } from "@/apis/review/queries";
 
 const ReviewList = ({ setTurnOnCamera, storeId }) => {
+  const { data, isLoading } = useGetStoreReviewCount();
+
+  console.log(data);
   return (
     <div className="mb-20">
       <div className="mt-10 flex justify-between mb-3">
