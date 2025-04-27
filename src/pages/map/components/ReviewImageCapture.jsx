@@ -252,9 +252,13 @@ const ReviewImageCapture = ({
                         fileInputRef.current.click();
                       }
                     }}
-                    className="absolute top-4 left-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                    className="absolute bottom-4 flex gap-2 w-32 h-12 justify-center items-center left-4 z-[10000] text-primary-8 text-xl p-2 bg-primary-3 rounded"
                   >
-                    🔁 다시 선택하기
+                    <img
+                      src="/svgs/review/camera/retryIcon.svg"
+                      className="w-6 h-6"
+                    />
+                    <p className="b1">다시 선택</p>
                   </button>
 
                   {/* 다시 찍기 (오른쪽) */}
@@ -265,9 +269,13 @@ const ReviewImageCapture = ({
                       setVideoVisible(true);
                       startCamera();
                     }}
-                    className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                    className="absolute top-4 left-4 z-[10000] p-2"
                   >
-                    🔁 다시 찍기
+                    {/* <img
+                      scr="/svgs/review/camera/backIcon.svg"
+                      className="w-8 h-8"
+                    /> */}
+                    <p>{"<"}</p>
                   </button>
                 </>
               ) : (
@@ -277,7 +285,7 @@ const ReviewImageCapture = ({
                     setVideoVisible(true);
                     startCamera();
                   }}
-                  className="absolute bottom-4 left-4 z-[10000] w-32 h-12 flex gap-2 justify-center items-center text-white text-xl p-2 bg-black/50 rounded"
+                  className="absolute bottom-4 left-4 z-[10000] w-32 h-12 bg-primary-3 flex gap-2 justify-center items-center text-primary-8 text-xl p-2 rounded"
                 >
                   <img
                     src="/svgs/review/camera/retryIcon.svg"
@@ -290,7 +298,7 @@ const ReviewImageCapture = ({
               {/* 사용하기 버튼 (공통) */}
               <button
                 onClick={handleUsePhoto}
-                className="absolute bottom-4 right-4 z-[10000] px-4 py-2 bg-orange-500 text-white rounded shadow font-semibold"
+                className="absolute bottom-4 right-4 z-[10000] w-32 h-12 flex gap-2 justify-center items-center px-4 py-2 bg-primary-8 text-white rounded shadow font-semibold"
               >
                 <img src="/svgs/review/camera/checkIcon.svg" />
                 사용하기
