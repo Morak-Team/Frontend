@@ -1,36 +1,8 @@
 import { useState } from "react";
+import { tagList } from "@/constants/review/tagList";
 
 const SelectTag = ({ onNext }) => {
   const [selectedTags, setSelectedTags] = useState([]);
-
-  const tags = [
-    { label: "품질이 좋아요", icon: "/svgs/review/tags/goodQualityIcon.svg" },
-    {
-      label: "친환경적이에요",
-      icon: "/svgs/review/tags/environmentIcon.svg",
-    },
-    {
-      label: "가격이 합리적이에요",
-      icon: "/svgs/review/tags/goodPriceIcon.svg",
-    },
-    { label: "청결해요", icon: "/svgs/review/tags/cleanIcon.svg" },
-    {
-      label: "다시 방문하고 싶어요",
-      icon: "/svgs/review/tags/comeAgainIcon.svg",
-    },
-    {
-      label: "의미있는 소비였어요",
-      icon: "/svgs/review/tags/meaningfulIcon.svg",
-    },
-    {
-      label: "우리 지역에 도움이 돼요",
-      icon: "/svgs/review/tags/helpOurRegionIcon.svg",
-    },
-    {
-      label: "이웃과 연결된 느낌이에요",
-      icon: "/svgs/review/tags/neighborhoodIcon.svg",
-    },
-  ];
 
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
@@ -40,7 +12,6 @@ const SelectTag = ({ onNext }) => {
     }
   };
 
-  console.log(selectedTags);
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
@@ -77,7 +48,7 @@ const SelectTag = ({ onNext }) => {
             </p>
 
             <div className="flex flex-col mt-6 gap-2">
-              {tags.map((tag) => {
+              {tagList.map((tag) => {
                 const isSelected = selectedTags.includes(tag.label);
                 return (
                   <button
