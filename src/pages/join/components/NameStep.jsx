@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import XIcon from "/svgs/Ic_X_Btn.svg";
+import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 
-const NameStep = ({ onNext }) => {
+const NameStep = ({ onNext, onBack }) => {
   const [name, setName] = useState("");
   const [bottomOffset, setBottomOffset] = useState(0);
   const inputRef = useRef(null);
@@ -76,6 +77,14 @@ const NameStep = ({ onNext }) => {
       onSubmit={handleSubmit}
       className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative"
     >
+      <button
+        onClick={onBack}
+        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
+        aria-label="뒤로가기"
+      >
+        <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
+      </button>
+
       <section className="px-8">
         <h1 className="text-3xl font-semibold">이름을 입력해주세요.</h1>
         <p className="text-sm text-gray-500 mt-2">투명한 리뷰에 사용됩니다.</p>
@@ -125,8 +134,10 @@ const NameStep = ({ onNext }) => {
         <button
           type="submit"
           disabled={!name.trim()}
-          className={`w-full py-6 text-center text-white text-lg font-semibold ${
-            name.trim() ? "bg-orange-500" : "bg-gray-200 text-gray-400"
+          className={`w-full py-6 text-center text-lg font-semibold ${
+            name.trim()
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200 text-gray-400"
           }`}
         >
           확인
