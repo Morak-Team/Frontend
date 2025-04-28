@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-3xl font-bold text-blue-500">Tailwind 테스트!</h1>
       <h2 className="text-xl">모락의 Home page입니다.</h2>
 
       {/* 모바일 웹 테스트 용 버튼 */}
