@@ -6,7 +6,7 @@ import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 
-const PlaceBottomSheet = ({ place, onClose, onToggleLike }) => {
+const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -37,11 +37,12 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike }) => {
   useEffect(() => {
     document.body.style.overflow = isExpanded ? "hidden" : "auto";
     setBottomSheetOpen(isExpanded);
+    onExpandChange?.(isExpanded);
     return () => {
       document.body.style.overflow = "auto";
       setBottomSheetOpen(false);
     };
-  }, [isExpanded, setBottomSheetOpen]);
+  }, [isExpanded, onExpandChange, setBottomSheetOpen]);
 
   const handleTouchStart = (e) => {
     if (!isMobile) return;

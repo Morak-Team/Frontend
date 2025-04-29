@@ -17,6 +17,7 @@ const MapPage = () => {
 
   const [userCoords, setUserCoords] = useState(null);
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
+  const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -151,24 +152,26 @@ const MapPage = () => {
         <IntroModal onClose={() => setShowIntroModal(false)} />
       )}
 
-      <div
-        className={`absolute ${
-          selectedPlace || showIntroModal
-            ? "bottom-80"
-            : "bottom-28 sm:bottom-30"
-        } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10002] flex justify-end transition-all duration-300`}
-      >
-        <button
-          onClick={() => setMoveToCurrentLocation(true)}
-          className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
+      {!isBottomSheetExpanded && (
+        <div
+          className={`absolute ${
+            selectedPlace || showIntroModal
+              ? "bottom-80"
+              : "bottom-28 sm:bottom-30"
+          } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10002] flex justify-end transition-all duration-300`}
         >
-          <img
-            src="/svgs/map/Ic_Current_Location.svg"
-            alt="사용자 현재 위치 버튼"
-            className="w-6 h-6"
-          />
-        </button>
-      </div>
+          <button
+            onClick={() => setMoveToCurrentLocation(true)}
+            className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
+          >
+            <img
+              src="/svgs/map/Ic_Current_Location.svg"
+              alt="사용자 현재 위치 버튼"
+              className="w-6 h-6"
+            />
+          </button>
+        </div>
+      )}
 
       <MapViewer
         places={filteredPlaces}
@@ -186,6 +189,7 @@ const MapPage = () => {
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
           onToggleLike={() => handleToggleLike(selectedPlace.id)}
+          onExpandChange={setIsBottomSheetExpanded}
         />
       )}
     </>
