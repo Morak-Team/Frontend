@@ -17,9 +17,7 @@ const MapPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSearchClick = () => {
-    navigate("/map/search");
-  };
+  const handleSearchClick = () => navigate("/map/search");
 
   useEffect(() => {
     const hasSeenIntro = sessionStorage.getItem("seenIntro");
@@ -45,9 +43,7 @@ const MapPage = () => {
           const { latitude, longitude } = pos.coords;
           setUserCoords({ lat: latitude, lng: longitude });
         },
-        (err) => {
-          console.error("위치 정보를 가져오는 데 실패했습니다:", err);
-        }
+        (err) => console.error("위치 정보를 가져오는 데 실패했습니다:", err)
       );
     }
   }, []);
@@ -93,7 +89,6 @@ const MapPage = () => {
           const filtered = samplePlaces
             .filter((p) => p.businessType === category)
             .map((p) => ({ ...p, isSearchResult: true }));
-
           setFilteredPlaces(filtered);
           setSelectedPlace(null);
         }}
@@ -129,6 +124,7 @@ const MapPage = () => {
         moveToCurrentLocation={moveToCurrentLocation}
         onMoveComplete={() => setMoveToCurrentLocation(false)}
         resetMap={location.state?.resetMap}
+        selectedPlace={selectedPlace}
       />
 
       {selectedPlace && (
