@@ -6,8 +6,10 @@ import samplePlaces from "@constants/map/socialEnterprise";
 import CategoryBar from "./components/CategoryBar";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
+import IntroModal from "./components/IntroModal";
 
 const MapPage = () => {
+  const [showIntroModal, setShowIntroModal] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [filteredPlaces, setFilteredPlaces] = useState(samplePlaces);
   const [userCoords, setUserCoords] = useState(null);
@@ -18,6 +20,14 @@ const MapPage = () => {
   const handleSearchClick = () => {
     navigate("/map/search");
   };
+
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem("seenIntro");
+    if (!hasSeenIntro) {
+      setShowIntroModal(true);
+      sessionStorage.setItem("seenIntro", "true");
+    }
+  }, []);
 
   useEffect(() => {
     if (location.state?.resetMap) {
@@ -88,10 +98,16 @@ const MapPage = () => {
         }}
       />
 
+      {showIntroModal && (
+        <IntroModal onClose={() => setShowIntroModal(false)} />
+      )}
+
       <div
         className={`absolute ${
-          selectedPlace ? "bottom-80" : "bottom-28 sm:bottom-30"
-        } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[100] flex justify-end transition-all duration-300`}
+          selectedPlace || showIntroModal
+            ? "bottom-80"
+            : "bottom-28 sm:bottom-30"
+        } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10002] flex justify-end transition-all duration-300`}
       >
         <button
           onClick={() => setMoveToCurrentLocation(true)}
