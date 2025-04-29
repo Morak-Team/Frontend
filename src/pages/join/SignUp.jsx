@@ -33,7 +33,7 @@ const SignUpPage = () => {
     const finalData = {
       ...signupData,
       role: role.toUpperCase(),
-      profileImageUrl: signupData.profileImageColor,
+      profileColor: signupData.profileImageColor,
     };
     try {
       await signup(finalData);
