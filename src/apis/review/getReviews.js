@@ -17,10 +17,10 @@ export const getTopRatedMovies = async (page = 1) => {
   return res.data;
 };
 
-// --------------- 실제 사용할 함수들 (수정 예정)
-export const getReviews = async (storeId) => {
-  const res = await api.get("/reviews/get-all-company-reviews", {
-    params: { storeId, limit: 5 },
+// 바텀시트 내부 약 3개의 리뷰 패칭
+export const getReviewsForPreview = async (storeId) => {
+  const res = await api.get("/reviews/public/get-all-company-reviews", {
+    params: { storeId, size: 3 },
   });
 
   return res.data;

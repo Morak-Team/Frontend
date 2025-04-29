@@ -40,7 +40,7 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://52.78.110.178:8080",
+        target: "https://api.morak.site",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

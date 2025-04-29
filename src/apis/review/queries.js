@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getTopRatedMovies,
   getInfiniteReviews,
-  getReviews,
+  getReviewsForPreview,
 } from "@/apis/review/getReviews";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getReviewCount, getTemperature } from "@/apis/review/getReviewDetail";
@@ -11,7 +11,7 @@ import { getReviewCount, getTemperature } from "@/apis/review/getReviewDetail";
 export const useStoreReviews = (storeId) => {
   return useQuery({
     queryKey: ["reviews", storeId],
-    queryFn: () => getReviews(storeId),
+    queryFn: () => getReviewsForPreview(storeId),
   });
 };
 

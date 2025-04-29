@@ -1,10 +1,12 @@
 import { reviewData } from "@/constants/review/reviewData";
 import ReviewContent from "@/pages/map/components/ReviewContent";
 import { Link } from "react-router-dom";
-import { useGetStoreReviewCount } from "@/apis/review/queries";
+import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 
 const ReviewList = ({ setTurnOnCamera, storeId }) => {
   const { data, isLoading } = useGetStoreReviewCount();
+  const { storeReviewData, isLoadingForStoreReviews } = useStoreReviews();
+  console.log(storeReviewData);
 
   console.log(data);
   return (
