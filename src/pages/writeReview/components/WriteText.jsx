@@ -36,7 +36,7 @@ const WriteText = ({ onNext, onBack }) => {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="리뷰를 작성해주세요."
+            placeholder="리뷰를 작성해 주세요."
             className="w-80 sm:w-[77%] bg-gray-2 rounded-xl px-3 pt-3 pb-3 text-gray-900 min-h-[160px] resize-none outline-none 
               placeholder:text-gray-400 placeholder:pl-1"
           />

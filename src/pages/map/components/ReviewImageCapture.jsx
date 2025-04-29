@@ -143,18 +143,18 @@ const ReviewImageCapture = ({
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
 
-    onCaptureSuccess?.(); // 성공 시
-    handleCloseCamera();
+    // onCaptureSuccess?.(); // 성공 시
+    // handleCloseCamera();
 
-    // mutate(imageBlob, {
-    //   onSuccess: (data) => {
-    //     onCaptureSuccess?.(); // 성공 시
-    //     handleCloseCamera();
-    //   },
-    //   onError: () => {
-    //     setShowReceiptError(true); // 실패 시 모달 표시
-    //   },
-    // });
+    mutate(imageBlob, {
+      onSuccess: (data) => {
+        onCaptureSuccess?.(); // 성공 시
+        handleCloseCamera();
+      },
+      onError: () => {
+        setShowReceiptError(true); // 실패 시 모달 표시
+      },
+    });
   };
 
   return (
@@ -271,11 +271,10 @@ const ReviewImageCapture = ({
                     }}
                     className="absolute top-4 left-4 z-[10000] p-2"
                   >
-                    {/* <img
+                    <img
                       scr="/svgs/review/camera/backIcon.svg"
                       className="w-8 h-8"
-                    /> */}
-                    <p>{"<"}</p>
+                    />
                   </button>
                 </>
               ) : (
