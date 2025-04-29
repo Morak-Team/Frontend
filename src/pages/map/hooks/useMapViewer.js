@@ -154,7 +154,7 @@ const useMapViewer = ({
   useEffect(() => {
     if (resetMap && mapInstance.current) {
       mapInstance.current.setCenter(
-        new window.naver.maps.LatLng(37.5665, 126.978),
+        new window.naver.maps.LatLng(37.5665, 126.978), // 서울 시청
       );
       mapInstance.current.setZoom(11.5);
 
@@ -164,6 +164,39 @@ const useMapViewer = ({
       }
     }
   }, [resetMap]);
+
+  // 카테고리 필터링 이후 핀 반영
+  useEffect(() => {
+    if (!mapInstance.current || !isMapInitialized) return;
+
+    Object.values(markersRef.current).forEach((marker) => {
+      marker.setMap(null);
+    });
+    markersRef.current = {};
+
+    places.forEach((place) => {
+      if (!place.coords?.lat || !place.coords?.lng) return;
+
+      const isHighlighted =
+        place.isSearchResult ||
+        (selectedPlace && selectedPlace.id === place.id);
+
+      const marker = new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(
+          place.coords.lat,
+          place.coords.lng,
+        ),
+        map: mapInstance.current,
+        icon: createMarkerIcon(isHighlighted),
+      });
+
+      markersRef.current[place.id] = marker;
+
+      window.naver.maps.Event.addListener(marker, "click", () =>
+        handleMarkerClick(place),
+      );
+    });
+  }, [places, selectedPlace, isMapInitialized, handleMarkerClick]);
 };
 
 export default useMapViewer;

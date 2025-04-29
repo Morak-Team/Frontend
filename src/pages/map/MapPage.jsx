@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
-import samplePlaces from "@constants/map/socialEnterprise";
 import CategoryBar from "./components/CategoryBar";
+import IntroModal from "./components/IntroModal";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
-import IntroModal from "./components/IntroModal";
+import samplePlaces from "@constants/map/socialEnterprise";
 
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
+
+  const [placesWithDistance, setPlacesWithDistance] = useState(samplePlaces);
   const [filteredPlaces, setFilteredPlaces] = useState(samplePlaces);
+
   const [userCoords, setUserCoords] = useState(null);
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,12 +34,13 @@ const MapPage = () => {
   useEffect(() => {
     if (location.state?.resetMap) {
       setSelectedPlace(null);
-      setFilteredPlaces(samplePlaces);
+      setFilteredPlaces(placesWithDistance);
       setMoveToCurrentLocation(false);
       navigate(location.pathname, { replace: true });
     }
-  }, [location, navigate]);
+  }, [location, placesWithDistance, navigate]);
 
+  // 사용자 위치 가져오기
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -64,6 +69,7 @@ const MapPage = () => {
         };
       });
 
+      setPlacesWithDistance(withDistance);
       setFilteredPlaces(withDistance);
     }
   }, [userCoords]);
@@ -85,10 +91,19 @@ const MapPage = () => {
       </div>
 
       <CategoryBar
-        onSelect={(category) => {
-          const filtered = samplePlaces
-            .filter((p) => p.businessType === category)
+        onSelect={(businessType) => {
+          console.log("선택된 businessType:", businessType);
+          console.log(
+            "전체 businessTypes:",
+            placesWithDistance.map((p) => p.businessType)
+          );
+
+          const filtered = placesWithDistance
+            .filter((p) => p.businessType === businessType)
             .map((p) => ({ ...p, isSearchResult: true }));
+
+          console.log("필터링 결과:", filtered);
+
           setFilteredPlaces(filtered);
           setSelectedPlace(null);
         }}
