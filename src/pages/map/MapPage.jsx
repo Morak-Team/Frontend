@@ -90,9 +90,10 @@ const MapPage = () => {
 
       <CategoryBar
         onSelect={(category) => {
-          const filtered = filteredPlaces
+          const filtered = samplePlaces
             .filter((p) => p.businessType === category)
             .map((p) => ({ ...p, isSearchResult: true }));
+
           setFilteredPlaces(filtered);
           setSelectedPlace(null);
         }}
