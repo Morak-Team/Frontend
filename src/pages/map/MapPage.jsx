@@ -88,7 +88,11 @@ const MapPage = () => {
         }}
       />
 
-      <div className="absolute bottom-28 sm:bottom-30 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-50 flex justify-end">
+      <div
+        className={`absolute ${
+          selectedPlace ? "bottom-80" : "bottom-28 sm:bottom-30"
+        } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[100] flex justify-end transition-all duration-300`}
+      >
         <button
           onClick={() => setMoveToCurrentLocation(true)}
           className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
