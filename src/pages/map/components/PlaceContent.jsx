@@ -1,10 +1,12 @@
 import { categoryIconMap } from "@constants/iconMap";
+import { formatDistance } from "../utils/formatDistance";
 
 const PlaceContent = ({
   name,
   category,
   businessType,
   distance,
+  formattedDistance,
   address,
   images = [],
   liked,
@@ -13,6 +15,10 @@ const PlaceContent = ({
   showMapLink = true,
 }) => {
   const categoryIcon = categoryIconMap[category];
+
+  const displayedDistance =
+    formattedDistance ||
+    (typeof distance === "number" ? formatDistance(distance) : null);
 
   return (
     <>
@@ -25,8 +31,9 @@ const PlaceContent = ({
             </span>
           </h3>
           <p className="text-sm font-semibold text-gray-600 mt-1">
-            {distance} ∙ {address}
+            {displayedDistance ? `${displayedDistance} ∙ ${address}` : address}
           </p>
+
           {categoryIcon && (
             <div className="flex items-center gap-1 mt-3">
               <img src={categoryIcon} alt={category} className="w-5 h-5" />

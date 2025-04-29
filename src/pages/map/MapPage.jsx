@@ -11,9 +11,9 @@ import samplePlaces from "@constants/map/socialEnterprise";
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
-
-  const [placesWithDistance, setPlacesWithDistance] = useState(samplePlaces);
-  const [filteredPlaces, setFilteredPlaces] = useState(samplePlaces);
+  const [placesWithDistance, setPlacesWithDistance] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [showOnlyLiked, setShowOnlyLiked] = useState(false);
 
   const [userCoords, setUserCoords] = useState(null);
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
@@ -40,7 +40,6 @@ const MapPage = () => {
     }
   }, [location, placesWithDistance, navigate]);
 
-  // 사용자 위치 가져오기
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -62,7 +61,6 @@ const MapPage = () => {
           place.coords.lat,
           place.coords.lng
         );
-
         return {
           ...place,
           distance: formatDistance(distInMeters),
@@ -73,6 +71,46 @@ const MapPage = () => {
       setFilteredPlaces(withDistance);
     }
   }, [userCoords]);
+
+  const handleCategorySelect = (businessType) => {
+    const filtered = placesWithDistance
+      .filter((p) => p.businessType === businessType)
+      .map((p) => ({ ...p, isSearchResult: true }));
+
+    setFilteredPlaces(filtered);
+    setSelectedPlace(null);
+    setShowOnlyLiked(false);
+  };
+
+  const handleToggleLikedFilter = () => {
+    const next = !showOnlyLiked;
+    setShowOnlyLiked(next);
+    setSelectedPlace(null);
+
+    setFilteredPlaces(
+      next ? placesWithDistance.filter((p) => p.liked) : placesWithDistance
+    );
+  };
+
+  const handleToggleLike = (targetId) => {
+    const updated = placesWithDistance.map((place) =>
+      place.id === targetId ? { ...place, liked: !place.liked } : place
+    );
+    setPlacesWithDistance(updated);
+
+    const updatedFiltered = showOnlyLiked
+      ? updated.filter((p) => p.liked)
+      : selectedPlace
+        ? updated.filter((p) => p.businessType === selectedPlace.businessType)
+        : updated;
+
+    setFilteredPlaces(updatedFiltered);
+
+    if (selectedPlace?.id === targetId) {
+      const updatedSelected = updated.find((p) => p.id === targetId);
+      setSelectedPlace(updatedSelected);
+    }
+  };
 
   return (
     <>
@@ -90,24 +128,24 @@ const MapPage = () => {
         />
       </div>
 
-      <CategoryBar
-        onSelect={(businessType) => {
-          console.log("선택된 businessType:", businessType);
-          console.log(
-            "전체 businessTypes:",
-            placesWithDistance.map((p) => p.businessType)
-          );
+      <CategoryBar onSelect={handleCategorySelect} />
 
-          const filtered = placesWithDistance
-            .filter((p) => p.businessType === businessType)
-            .map((p) => ({ ...p, isSearchResult: true }));
-
-          console.log("필터링 결과:", filtered);
-
-          setFilteredPlaces(filtered);
-          setSelectedPlace(null);
-        }}
-      />
+      <div className="absolute top-48 sm:top-56 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-40 px-4 flex justify-end">
+        <button
+          onClick={handleToggleLikedFilter}
+          className={`w-10 h-10 rounded-full shadow flex items-center justify-center bg-white`}
+        >
+          <img
+            src={
+              showOnlyLiked
+                ? "/svgs/Ic_Heart_Fill.svg"
+                : "/svgs/Ic_Heart_Empty.svg"
+            }
+            alt="찜 필터"
+            className="w-6 h-6"
+          />
+        </button>
+      </div>
 
       {showIntroModal && (
         <IntroModal onClose={() => setShowIntroModal(false)} />
@@ -140,12 +178,14 @@ const MapPage = () => {
         onMoveComplete={() => setMoveToCurrentLocation(false)}
         resetMap={location.state?.resetMap}
         selectedPlace={selectedPlace}
+        showOnlyLiked={showOnlyLiked}
       />
 
       {selectedPlace && (
         <PlaceBottomSheet
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
+          onToggleLike={() => handleToggleLike(selectedPlace.id)}
         />
       )}
     </>

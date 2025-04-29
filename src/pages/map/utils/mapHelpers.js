@@ -1,4 +1,4 @@
-export const createMarkerIcon = (isHighlighted) => {
+export const createMarkerIcon = (isHighlighted, isFavorite) => {
   const size = isHighlighted
     ? new window.naver.maps.Size(64, 64)
     : new window.naver.maps.Size(48, 48);
@@ -7,14 +7,15 @@ export const createMarkerIcon = (isHighlighted) => {
     ? new window.naver.maps.Point(32, 64)
     : new window.naver.maps.Point(24, 48);
 
-  return {
-    url: isHighlighted
-      ? "/svgs/map/Ic_Pin_Orange.svg"
-      : "/svgs/map/Ic_Marker_Orange.svg",
-    size,
-    scaledSize: size,
-    anchor,
-  };
+  const url = isHighlighted
+    ? isFavorite
+      ? "/svgs/map/Ic_Pin_Pink.svg"
+      : "/svgs/map/Ic_Pin_Orange.svg"
+    : isFavorite
+      ? "/svgs/map/Ic_Marker_Pink.svg"
+      : "/svgs/map/Ic_Marker_Orange.svg";
+
+  return { url, size, scaledSize: size, anchor };
 };
 
 export const createUserMarkerIcon = () => ({

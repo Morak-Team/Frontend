@@ -6,8 +6,7 @@ import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 
-const PlaceBottomSheet = ({ place, onClose }) => {
-  const [liked, setLiked] = useState(place.liked || false);
+const PlaceBottomSheet = ({ place, onClose, onToggleLike }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -75,7 +74,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
       ref={sheetRef}
       className={`fixed ${bottomOffset} left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow ${
         turnOnCamera || showConfirm ? "" : "overflow-hidden"
-      }`} // ✅ overflow-hidden 추가
+      }`}
       animate={controls}
       initial={{ height: MIN_HEIGHT }}
       transition={{ duration: 0.35 }}
@@ -108,8 +107,8 @@ const PlaceBottomSheet = ({ place, onClose }) => {
 
         <PlaceContent
           {...place}
-          liked={liked}
-          onToggleLike={() => setLiked((prev) => !prev)}
+          liked={place.liked}
+          onToggleLike={() => onToggleLike(place.id)}
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />

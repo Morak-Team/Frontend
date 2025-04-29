@@ -14,6 +14,7 @@ const useMapViewer = ({
   markerPosition,
   zoom = 11,
   selectedPlace,
+  showOnlyLiked,
 }) => {
   const mapInstance = useRef(null);
   const userMarkerRef = useRef(null);
@@ -24,21 +25,22 @@ const useMapViewer = ({
   const handleMarkerClick = useCallback(
     (place) => {
       Object.values(markersRef.current).forEach((marker) => {
-        marker.setIcon(createMarkerIcon(false));
+        marker.setIcon(createMarkerIcon(false, false));
       });
 
       const clickedMarker = markersRef.current[place.id];
       if (clickedMarker) {
-        clickedMarker.setIcon(createMarkerIcon(true));
+        createMarkerIcon(true, showOnlyLiked ? place.liked : false);
       }
 
       onMarkerClick?.(place);
     },
-    [onMarkerClick],
+    [onMarkerClick, showOnlyLiked],
   );
 
+  // 초기 지도 로딩
   useEffect(() => {
-    if (!userCoords || isMapInitialized) return;
+    if (isMapInitialized || (!userCoords && !center)) return;
 
     loadNaverMapScript().then(() => {
       const mapCenter = center
@@ -52,6 +54,7 @@ const useMapViewer = ({
 
       setIsMapInitialized(true);
 
+      // 최초 마커 세팅
       places.forEach((place) => {
         if (!place.coords?.lat || !place.coords?.lng) return;
 
@@ -65,7 +68,10 @@ const useMapViewer = ({
             place.coords.lng,
           ),
           map: mapInstance.current,
-          icon: createMarkerIcon(isHighlighted),
+          icon: createMarkerIcon(
+            isHighlighted,
+            showOnlyLiked ? place.liked : false,
+          ),
         });
 
         markersRef.current[place.id] = marker;
@@ -82,6 +88,7 @@ const useMapViewer = ({
             markerPosition.lng,
           ),
           map: mapInstance.current,
+          icon: createMarkerIcon(true),
         });
       }
     });
@@ -95,8 +102,10 @@ const useMapViewer = ({
     handleMarkerClick,
     isMapInitialized,
     mapRef,
+    showOnlyLiked,
   ]);
 
+  // 최초 진입 시 애니메이션 이동 & 마커
   useEffect(() => {
     if (
       userCoords &&
@@ -114,7 +123,6 @@ const useMapViewer = ({
       const zoomTimeout = setTimeout(() => {
         mapInstance.current.setZoom(18, true);
 
-        // 사용자 현위치 마커 생성 (처음 진입 시 확대되면 보여지도록)
         if (userMarkerRef.current) {
           userMarkerRef.current.setMap(null);
         }
@@ -130,6 +138,7 @@ const useMapViewer = ({
     }
   }, [userCoords, isMapInitialized]);
 
+  // 현위치 버튼 클릭 시 동작
   useEffect(() => {
     if (moveToCurrentLocation && userCoords && mapInstance.current) {
       const newCenter = new window.naver.maps.LatLng(
@@ -151,6 +160,7 @@ const useMapViewer = ({
     }
   }, [moveToCurrentLocation, userCoords, onMoveComplete]);
 
+  // 지도 초기화
   useEffect(() => {
     if (resetMap && mapInstance.current) {
       mapInstance.current.setCenter(
@@ -165,7 +175,6 @@ const useMapViewer = ({
     }
   }, [resetMap]);
 
-  // 카테고리 필터링 이후 핀 반영
   useEffect(() => {
     if (!mapInstance.current || !isMapInitialized) return;
 
@@ -187,7 +196,7 @@ const useMapViewer = ({
           place.coords.lng,
         ),
         map: mapInstance.current,
-        icon: createMarkerIcon(isHighlighted),
+        icon: createMarkerIcon(isHighlighted, place.liked),
       });
 
       markersRef.current[place.id] = marker;
