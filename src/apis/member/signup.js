@@ -1,12 +1,12 @@
 import api from "@apis/instance/api";
 
-export const signup = async ({ name, location, role, profileImageUrl }) => {
+export const signup = async ({ name, location, role, profileColor }) => {
   try {
     const res = await api.post("/member/signup", {
       name,
       location,
       role,
-      profileImageUrl,
+      profileColor,
     });
 
     return res.data;
