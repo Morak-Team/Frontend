@@ -3,6 +3,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        secondary: "rgba(53, 171, 255, 1)",
         gray: {
           0: "rgba(255, 255, 255, 1)",
           1: "rgba(253, 253, 253, 1)",

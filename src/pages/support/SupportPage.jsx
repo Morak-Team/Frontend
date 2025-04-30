@@ -1,3 +1,5 @@
+import CompanyTab from "@/pages/support/components/CompanyTab";
+import ConsummerTab from "@/pages/support/components/ConsummerTab";
 import { useState } from "react";
 
 const SupportPage = () => {
@@ -27,6 +29,10 @@ const SupportPage = () => {
         >
           사장님
         </button>
+      </div>
+
+      <div className="mt-7">
+        {category === "consummer" ? <ConsummerTab /> : <CompanyTab />}
       </div>
     </div>
   );
