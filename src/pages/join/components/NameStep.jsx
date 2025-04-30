@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import XIcon from "/svgs/Ic_X_Btn.svg";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 import useBottomOffset from "../hooks/useBottomOffset";
@@ -19,7 +19,7 @@ const NameStep = ({ onNext, onBack }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative"
+      className="flex flex-col justify-start mt-48 bg-white h-screen overflow-auto relative"
     >
       <button
         onClick={onBack}

@@ -36,7 +36,7 @@ const LocationStep = ({ onNext, onBack }) => {
   const showNotSeoulMessage = checked;
 
   return (
-    <div className="flex flex-col justify-start items-start h-screen pt-20 px-6 bg-white relative overflow-auto">
+    <div className="flex flex-col justify-start items-start h-screen mt-20 px-6 bg-white relative overflow-auto">
       <button
         onClick={onBack}
         className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
