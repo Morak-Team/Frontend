@@ -6,7 +6,7 @@ const SupportPage = () => {
   const [category, setCategory] = useState("consummer");
 
   return (
-    <div className="flex flex-col p-5">
+    <div className="flex flex-col p-5 h-[calc(100vh-5.25rem)] overflow-y-auto">
       <div className="mt-10">
         <p className="h2">지원</p>
       </div>
