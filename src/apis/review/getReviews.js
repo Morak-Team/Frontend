@@ -18,9 +18,9 @@ export const getTopRatedMovies = async (page = 1) => {
 };
 
 // 바텀시트 내부 약 3개의 리뷰 패칭
-export const getReviewsForPreview = async (storeId) => {
-  const res = await api.get("/reviews/public/get-all-company-reviews", {
-    params: { storeId, size: 3 },
+export const getReviewsForPreview = async (companyId) => {
+  const res = await api.get("/reviews/public/get-company-reviews", {
+    params: { companyId, size: 3 },
   });
 
   return res.data;

@@ -15,7 +15,7 @@ export const getTemperature = async (companyId) => {
 
 export const getReviewCount = async (companyId) => {
   try {
-    const res = await api.get("/reviews/public/get-company-reviews", {
+    const res = await api.get("/reviews/public/get-count-company-review", {
       params: {
         companyId: companyId,
       },

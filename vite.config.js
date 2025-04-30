@@ -38,13 +38,13 @@ export default defineConfig({
   server: {
     open: true,
     host: true,
-    proxy: {
-      "/api": {
-        target: "https://api.morak.site",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
+    // proxy: {
+    //   "/api": {
+    //     target: "https://api.morak.site",
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ""),
+    //   },
+    // },
     allowedHosts: [".ngrok-free.app"],
   },
   resolve: {

@@ -4,17 +4,16 @@ import { Link } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 
 const ReviewList = ({ setTurnOnCamera, storeId }) => {
-  const { data, isLoading } = useGetStoreReviewCount();
-  const { storeReviewData, isLoadingForStoreReviews } = useStoreReviews();
-  console.log(storeReviewData);
+  const { data: count, isLoading } = useGetStoreReviewCount(1);
+  const { data: preview } = useStoreReviews(1);
+  console.log(preview);
 
-  console.log(data);
   return (
     <div className="mb-20">
       <div className="mt-10 flex justify-between mb-3">
         <div className="flex justify-center items-center gap-1">
           <h3 className="h3 text-gray-12">리뷰</h3>
-          <span className="text-gray-6 b1">27개</span>
+          <span className="text-gray-6 b1">{count}개</span>
         </div>
 
         <button

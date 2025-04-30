@@ -126,9 +126,9 @@ const ReviewImageCapture = ({
 
     canvas.toBlob((blob) => {
       if (blob) {
-        const imageUrl = URL.createObjectURL(blob);
-        setImageBlob(blob);
-        setCapturedImage(imageUrl);
+        const file = new File([blob], "receipt.jpg", { type: "image/jpeg" });
+        setImageBlob(file);
+        setCapturedImage(URL.createObjectURL(file));
         setFromGallery(false);
         setVideoVisible(false);
       }
@@ -272,7 +272,7 @@ const ReviewImageCapture = ({
                     className="absolute top-4 left-4 z-[10000] p-2"
                   >
                     <img
-                      scr="/svgs/review/camera/backIcon.svg"
+                      src="/svgs/review/camera/backIcon.svg"
                       className="w-8 h-8"
                     />
                   </button>
