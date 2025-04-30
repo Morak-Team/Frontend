@@ -33,6 +33,13 @@ const CompanyTab = () => {
           </div>
         ))}
       </div>
+
+      <div className="mt-10">
+        <p className="h3">내게 맞는 금융 상품</p>
+      </div>
+      <div className="flex justify-center items-center">
+        <div className="mt-5 bg-secondary rounded-md sm:w-full w-80 h-40"></div>
+      </div>
     </div>
   );
 };
