@@ -2,6 +2,7 @@ import { categoryIconMap } from "@constants/iconMap";
 import { formatDistance } from "../utils/formatDistance";
 
 const PlaceContent = ({
+  id,
   name,
   category,
   businessType,
@@ -73,7 +74,7 @@ const PlaceContent = ({
         <button
           onClick={(e) => {
             e.stopPropagation?.();
-            onToggleLike();
+            onToggleLike(id);
           }}
           className="w-14 p-2 flex items-center justify-center rounded-md bg-[#FAFAF9]"
         >

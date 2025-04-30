@@ -108,8 +108,9 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
 
         <PlaceContent
           {...place}
+          id={place.id}
           liked={place.liked}
-          onToggleLike={() => onToggleLike(place.id)}
+          onToggleLike={onToggleLike}
           isDetail={isExpanded}
           showMapLink={isExpanded}
         />
