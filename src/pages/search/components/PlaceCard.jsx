@@ -7,7 +7,7 @@ const PlaceCard = ({ place, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex justify-between items-start bg-white pr-5 pl-4 py-3 border-b border-black hover:bg-gray-50 cursor-pointer"
+      className="flex justify-between items-start bg-white px-[1.9rem] pt-8 border-b border-black hover:bg-gray-50 cursor-pointer"
     >
       <div className="flex items-start gap-4">
         <img

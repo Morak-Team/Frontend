@@ -188,7 +188,7 @@ const MapPage = () => {
         <PlaceBottomSheet
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
-          onToggleLike={() => handleToggleLike(selectedPlace.id)}
+          onToggleLike={handleToggleLike}
           onExpandChange={setIsBottomSheetExpanded}
         />
       )}
