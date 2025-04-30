@@ -6,7 +6,8 @@ import CategoryBar from "./components/CategoryBar";
 import IntroModal from "./components/IntroModal";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
-import samplePlaces from "@constants/map/socialEnterprise";
+import { getAllCompanies } from "@apis/company/getAllCompanies";
+import { reverseCategoryNameMap } from "@/constants/iconMap";
 
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(true);
@@ -54,28 +55,41 @@ const MapPage = () => {
   }, []);
 
   useEffect(() => {
-    if (userCoords) {
-      const withDistance = samplePlaces.map((place) => {
-        const distInMeters = getDistanceFromLatLon(
-          userCoords.lat,
-          userCoords.lng,
-          place.coords.lat,
-          place.coords.lng
-        );
-        return {
-          ...place,
-          distance: formatDistance(distInMeters),
-        };
-      });
+    const fetchCompanies = async () => {
+      try {
+        const data = await getAllCompanies();
+        const withDistance = data.map((company) => {
+          const distInMeters = userCoords
+            ? getDistanceFromLatLon(
+                userCoords.lat,
+                userCoords.lng,
+                company.latitude,
+                company.longitude
+              )
+            : 0;
 
-      setPlacesWithDistance(withDistance);
-      setFilteredPlaces(withDistance);
-    }
+          return {
+            ...company,
+            id: company.companyId,
+            name: company.companyName,
+            coords: { lat: company.latitude, lng: company.longitude },
+            distance: formatDistance(distInMeters),
+          };
+        });
+
+        setPlacesWithDistance(withDistance);
+        setFilteredPlaces(withDistance);
+      } catch (error) {
+        console.error("기업 데이터를 불러오는 데 실패했습니다:", error);
+      }
+    };
+
+    if (userCoords) fetchCompanies();
   }, [userCoords]);
 
-  const handleCategorySelect = (businessType) => {
+  const handleCategorySelect = (englishCategory) => {
     const filtered = placesWithDistance
-      .filter((p) => p.businessType === businessType)
+      .filter((p) => p.companyCategory === englishCategory)
       .map((p) => ({ ...p, isSearchResult: true }));
 
     setFilteredPlaces(filtered);
@@ -102,7 +116,9 @@ const MapPage = () => {
     const updatedFiltered = showOnlyLiked
       ? updated.filter((p) => p.liked)
       : selectedPlace
-        ? updated.filter((p) => p.businessType === selectedPlace.businessType)
+        ? updated.filter(
+            (p) => p.companyCategory === selectedPlace.companyCategory
+          )
         : updated;
 
     setFilteredPlaces(updatedFiltered);

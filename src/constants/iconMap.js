@@ -18,3 +18,21 @@ export const businessTypeIconMap = {
   "제조/운송": "/svgs/categoryBar/Ic_Manufacturing_Transportation.svg",
   기타: "/svgs/categoryBar/Ic_Etc.svg",
 };
+
+export const categoryNameMap = {
+  CAFE: "카페",
+  RESTAURANT: "음식점",
+  SHOPPING: "쇼핑",
+  COMPLEX_SPACE: "복합공간",
+  CULTURE_ART: "문화/예술",
+  LIVING_SERVICE: "생활서비스",
+  EDUCATION: "교육/지원",
+  IT_DIGITAL: "IT/디지털",
+  MANUFACTURING_TRANSPORTATION: "제조/운송",
+  ETC: "기타",
+};
+
+// 한글 → 영문 역변환
+export const reverseCategoryNameMap = Object.fromEntries(
+  Object.entries(categoryNameMap).map(([en, ko]) => [ko, en]),
+);
