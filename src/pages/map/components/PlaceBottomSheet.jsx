@@ -38,9 +38,11 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
     document.body.style.overflow = isExpanded ? "hidden" : "auto";
     setBottomSheetOpen(isExpanded);
     onExpandChange?.(isExpanded);
+
     return () => {
       document.body.style.overflow = "auto";
       setBottomSheetOpen(false);
+      onExpandChange?.(false);
     };
   }, [isExpanded, onExpandChange, setBottomSheetOpen]);
 
