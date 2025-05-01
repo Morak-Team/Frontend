@@ -1,12 +1,12 @@
 import { useState } from "react";
+import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 import {
+  IcCheck,
+  ImgOrange,
   ImgGray,
   ImgPink,
   ImgBlue,
-  ImgOrange,
-  IcCheck,
-} from "@assets/svgs/signup/index";
-import BackIcon from "/svgs/Ic_Arrow_Left.svg";
+} from "@assets/svgs/signup";
 
 const profileSvgs = [ImgGray, ImgPink, ImgBlue, ImgOrange];
 const profileColors = ["gray", "pink", "blue", "orange"];

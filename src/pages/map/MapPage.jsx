@@ -7,7 +7,8 @@ import IntroModal from "./components/IntroModal";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
 import { getAllCompanies } from "@apis/company/getAllCompanies";
-import { reverseCategoryNameMap } from "@/constants/iconMap";
+import { getCompanyPreview } from "@apis/company/getCompanyPreview";
+import { useToggleLike } from "./hooks/useToggleLike";
 
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(true);
@@ -24,6 +25,15 @@ const MapPage = () => {
   const location = useLocation();
 
   const handleSearchClick = () => navigate("/map/search");
+
+  const { toggleLike: handleToggleLike } = useToggleLike({
+    placesWithDistance,
+    setPlacesWithDistance,
+    setFilteredPlaces,
+    showOnlyLiked,
+    selectedPlace,
+    setSelectedPlace,
+  });
 
   useEffect(() => {
     const hasSeenIntro = sessionStorage.getItem("seenIntro");
@@ -73,7 +83,8 @@ const MapPage = () => {
             id: company.companyId,
             name: company.companyName,
             coords: { lat: company.latitude, lng: company.longitude },
-            distance: formatDistance(distInMeters),
+            distance: distInMeters,
+            formattedDistance: formatDistance(distInMeters),
           };
         });
 
@@ -107,25 +118,15 @@ const MapPage = () => {
     );
   };
 
-  const handleToggleLike = (targetId) => {
-    const updated = placesWithDistance.map((place) =>
-      place.id === targetId ? { ...place, liked: !place.liked } : place
-    );
-    setPlacesWithDistance(updated);
-
-    const updatedFiltered = showOnlyLiked
-      ? updated.filter((p) => p.liked)
-      : selectedPlace
-        ? updated.filter(
-            (p) => p.companyCategory === selectedPlace.companyCategory
-          )
-        : updated;
-
-    setFilteredPlaces(updatedFiltered);
-
-    if (selectedPlace?.id === targetId) {
-      const updatedSelected = updated.find((p) => p.id === targetId);
-      setSelectedPlace(updatedSelected);
+  const handleMarkerClick = async (place) => {
+    try {
+      const preview = await getCompanyPreview(place.id);
+      setSelectedPlace({
+        ...place,
+        ...preview,
+      });
+    } catch (error) {
+      console.error("프리뷰 조회 실패:", error);
     }
   };
 
@@ -191,7 +192,7 @@ const MapPage = () => {
 
       <MapViewer
         places={filteredPlaces}
-        onMarkerClick={setSelectedPlace}
+        onMarkerClick={handleMarkerClick}
         userCoords={userCoords}
         moveToCurrentLocation={moveToCurrentLocation}
         onMoveComplete={() => setMoveToCurrentLocation(false)}

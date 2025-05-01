@@ -1,10 +1,10 @@
 import {
   businessTypeIconMap,
-  categoryNameMap,
-  reverseCategoryNameMap,
-} from "@constants/iconMap";
+  businessTypeNameMap,
+  reverseBusinessNameMap,
+} from "@/constants/categoryMap";
 
-const categories = Object.entries(categoryNameMap).map(([en, ko]) => ({
+const categories = Object.entries(businessTypeNameMap).map(([en, ko]) => ({
   name: ko,
   icon: businessTypeIconMap[ko],
 }));
@@ -17,7 +17,7 @@ const CategoryBar = ({ onSelect }) => {
           <button
             key={cate.name}
             onClick={() => {
-              const engValue = reverseCategoryNameMap[cate.name];
+              const engValue = reverseBusinessNameMap[cate.name];
               onSelect(engValue);
             }}
             className="flex shrink-0 gap-2 items-center pl-3 pr-5 py-1.5 sm:pl-4 sm:pr-6 rounded-full text-xs sm:text-sm font-medium text-gray-900 whitespace-nowrap bg-white shadow cursor-pointer"
