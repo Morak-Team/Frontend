@@ -6,7 +6,6 @@ import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 const ReviewList = ({ setTurnOnCamera, storeId }) => {
   const { data: count, isLoading } = useGetStoreReviewCount(1);
   const { data: preview } = useStoreReviews(1);
-  console.log(preview);
 
   return (
     <div className="mb-20">
@@ -25,7 +24,7 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
         </button>
       </div>
 
-      {reviewData.map((item, idx) => (
+      {preview?.content?.map((item, idx) => (
         <ReviewContent item={item} key={idx} />
       ))}
 
