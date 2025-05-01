@@ -6,6 +6,7 @@ export const categoryIconMap = {
   "기타(창의ㆍ혁신)형": "/svgs/type/Ic_Type_Etc.svg",
   예비: "/svgs/type/Ic_Type_Pre.svg",
 };
+
 export const businessTypeIconMap = {
   카페: "/svgs/categoryBar/Ic_Cafe.svg",
   음식점: "/svgs/categoryBar/Ic_Restaurent.svg",

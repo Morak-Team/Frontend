@@ -4,6 +4,8 @@ export default {
     extend: {
       colors: {
         secondary: "rgba(53, 171, 255, 1)",
+        secondaryBackground: "rgba(233, 246, 255, 1)",
+        secondaryText: "rgba(0, 92, 158, 1)",
         error: "rgba(232, 58, 58, 1)",
         errorContainer: "rgba(255, 232, 232, 1)",
         gray: {

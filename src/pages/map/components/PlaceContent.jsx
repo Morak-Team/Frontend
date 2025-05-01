@@ -58,7 +58,7 @@ const PlaceContent = ({
             href={`https://map.naver.com/v5/search/${name}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-72 py-3.5 px-14 flex items-center justify-center rounded-md bg-[#FAFAF9] text-sm text-zinc-900 font-medium"
+            className="w-72 py-3.5 px-14 flex items-center justify-center rounded-md bg-gray-2 text-sm text-zinc-900 font-medium"
           >
             네이버 지도에서 길찾기
           </a>
@@ -68,7 +68,7 @@ const PlaceContent = ({
             e.stopPropagation?.();
             onToggleLike();
           }}
-          className="w-14 p-2 flex items-center justify-center rounded-md bg-[#FAFAF9]"
+          className="w-14 p-2 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
             src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart_Empty.svg"}
