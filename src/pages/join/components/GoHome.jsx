@@ -1,4 +1,4 @@
-import { ImgDone } from "@/assets/svgs/signup";
+import { ImgDone } from "@assets/svgs/signup";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 
 const GoHome = ({ onNext, onBack }) => {

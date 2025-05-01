@@ -1,10 +1,10 @@
-export const categoryIconMap = {
+export const companyTypeIconMap = {
   일자리제공형: "/svgs/type/Ic_Type_Work.svg",
   사회서비스제공형: "/svgs/type/Ic_Type_Service.svg",
   지역사회공헌형: "/svgs/type/Ic_Type_Region.svg",
   혼합형: "/svgs/type/Ic_Type_Intersection.svg",
   "기타(창의ㆍ혁신)형": "/svgs/type/Ic_Type_Etc.svg",
-  예비: "/svgs/type/Ic_Type_Pre.svg",
+  예비사회적기업: "/svgs/type/Ic_Type_Pre.svg",
 };
 export const businessTypeIconMap = {
   카페: "/svgs/categoryBar/Ic_Cafe.svg",
@@ -19,7 +19,16 @@ export const businessTypeIconMap = {
   기타: "/svgs/categoryBar/Ic_Etc.svg",
 };
 
-export const categoryNameMap = {
+export const companyTypeNameMap = {
+  JOB_PROVISION: "일자리제공형",
+  SOCIAL_SERVICE: "사회서비스제공형",
+  COMPANY_CONTRIBUTION: "지역사회공헌형",
+  ETC: "기타(창의ㆍ혁신)형",
+  PRE: "예비사회적기업",
+  MIXED: "혼합형",
+};
+
+export const businessTypeNameMap = {
   CAFE: "카페",
   RESTAURANT: "음식점",
   SHOPPING: "쇼핑",
@@ -33,6 +42,6 @@ export const categoryNameMap = {
 };
 
 // 한글 → 영문 역변환
-export const reverseCategoryNameMap = Object.fromEntries(
-  Object.entries(categoryNameMap).map(([en, ko]) => [ko, en]),
+export const reverseBusinessNameMap = Object.fromEntries(
+  Object.entries(businessTypeNameMap).map(([en, ko]) => [ko, en]),
 );

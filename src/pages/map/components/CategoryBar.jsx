@@ -2,7 +2,7 @@ import {
   businessTypeIconMap,
   businessTypeNameMap,
   reverseBusinessNameMap,
-} from "@/constants/categoryMap";
+} from "@constants/categoryMap";
 
 const categories = Object.entries(businessTypeNameMap).map(([en, ko]) => ({
   name: ko,
