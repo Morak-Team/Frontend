@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { tagList } from "@/constants/review/tagList";
 import { usePaymentStore } from "@/store/paymentStore";
+import { useNavigate } from "react-router-dom";
 
 const SelectTag = ({ onNext }) => {
+  const navigate = useNavigate();
   const [selectedTags, setSelectedTags] = useState([]);
   const paymentTime = usePaymentStore((s) => s.paymentTime);
   const companyId = usePaymentStore((s) => s.companyId);
@@ -22,7 +24,10 @@ const SelectTag = ({ onNext }) => {
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
-        <div className="flex justify-end">
+        <div
+          className="flex justify-end"
+          onClick={() => navigate("/review/780")}
+        >
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
         </div>
 
