@@ -3,8 +3,14 @@ import PlaceCard from "./PlaceCard";
 const PlaceList = ({ places, onSelect, showEmptyMessage }) => {
   if (!places.length) {
     return showEmptyMessage ? (
-      <div className="mt-16 text-center text-gray-400">
-        검색 결과가 없습니다.
+      <div className="flex flex-col items-center justify-center mt-32 text-center font-semibold leading-6 text-gray-500">
+        <img
+          src="/svgs/map/Ic_Illustration_Search.svg"
+          alt="최근 검색 결과 없음"
+          className="w-44 h-44"
+        />
+        <span>가까운 사회적 기업을</span>
+        <span>찾아보세요</span>
       </div>
     ) : null;
   }

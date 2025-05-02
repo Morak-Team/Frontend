@@ -33,18 +33,22 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB까지 허용
+      },
     }),
   ],
   server: {
     open: true,
     host: true,
-    // proxy: {
-    //   "/api": {
-    //     target: "https://api.morak.site",
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ""),
-    //   },
-    // },
+    proxy: {
+      "/api": {
+        target: "https://api.morak.site",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
     allowedHosts: [".ngrok-free.app"],
   },
   resolve: {

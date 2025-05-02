@@ -1,13 +1,16 @@
-import { categoryIconMap, businessTypeIconMap } from "@constants/iconMap";
+import {
+  companyTypeIconMap,
+  businessTypeIconMap,
+} from "@constants/categoryMap";
 
 const PlaceCard = ({ place, onClick }) => {
-  const categoryIcon = categoryIconMap[place.category];
+  const categoryIcon = companyTypeIconMap[place.category];
   const businessIcon = businessTypeIconMap[place.businessType];
 
   return (
     <div
       onClick={onClick}
-      className="flex justify-between items-start bg-white pr-5 pl-4 py-3 border-b border-black hover:bg-gray-50 cursor-pointer"
+      className="flex justify-between items-start bg-white px-[1.9rem] pt-8 border-b border-black hover:bg-gray-50 cursor-pointer"
     >
       <div className="flex items-start gap-4">
         <img

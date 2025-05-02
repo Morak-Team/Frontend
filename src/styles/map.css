@@ -2,10 +2,12 @@ div[style*="z-index: 100"][style*="bottom: 0px"][style*="right: 0px"] {
   top: 4px !important;
   bottom: unset !important;
   right: 4px !important;
+  z-index: 0 !important;
 }
 
 div[style*="z-index: 100"][style*="bottom: 0px"][style*="left: 0px"] {
   top: 2px !important;
   bottom: unset !important;
   left: 4px !important;
+  z-index: 0 !important;
 }

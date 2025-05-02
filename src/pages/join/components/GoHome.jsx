@@ -1,3 +1,4 @@
+import { ImgDone } from "@assets/svgs/signup";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
 
 const GoHome = ({ onNext, onBack }) => {
@@ -9,7 +10,7 @@ const GoHome = ({ onNext, onBack }) => {
     <div
       className="flex flex-col justify-between h-screen bg-cover bg-no-repeat bg-center px-6 pt-6 pb-10 relative"
       style={{
-        backgroundImage: `url('/images/Img_Join.svg')`,
+        backgroundImage: `url('${ImgDone}')`,
       }}
     >
       <button

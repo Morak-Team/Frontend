@@ -5,6 +5,8 @@ import PlaceList from "./components/SearchPlaceList";
 import samplePlaces from "@constants/map/socialEnterprise";
 import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
 import { formatDistance } from "../map/utils/formatDistance";
+import PlaceBottomSheet from "@pages/map/components/PlaceBottomSheet";
+import MapViewer from "../map/components/MapViewer";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -14,11 +16,14 @@ const SearchPage = () => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
   const [userCoords, setUserCoords] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [step, setStep] = useState(1);
 
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
       setRecentSearches(JSON.parse(stored));
+      setStep(JSON.parse(stored).length > 0 ? 2 : 1);
     }
   }, []);
 
@@ -30,8 +35,9 @@ const SearchPage = () => {
     if (keyword.trim() === "") {
       setIsSearched(false);
       setFilteredPlaces([]);
+      setStep(recentSearches.length > 0 ? 2 : 1);
     }
-  }, [keyword]);
+  }, [keyword, recentSearches.length]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -47,10 +53,28 @@ const SearchPage = () => {
     );
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setStep((prev) => Math.max(1, prev - 1));
+
+      if (step === 5) setSelectedPlace(null);
+      else if (step === 4) {
+        setIsSearched(false);
+        setFilteredPlaces([]);
+      } else if (step === 3) {
+        setKeyword("");
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [step]);
+
   const handleSearch = (text) => {
     if (!text.trim()) return;
+    window.history.pushState({}, "");
     setKeyword(text);
     setIsSearched(true);
+    setStep(4);
 
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
@@ -89,27 +113,101 @@ const SearchPage = () => {
     setFilteredPlaces(result);
   };
 
-  return (
-    <div className="bg-white min-h-screen pb-36">
-      <SearchBar
-        keyword={keyword}
-        setKeyword={setKeyword}
-        onSearch={handleSearch}
-      />
+  const handleSelectPlace = (place) => {
+    window.history.pushState({}, "");
 
-      {keyword.length === 0 && recentSearches.length > 0 && (
+    const enriched = filteredPlaces.find((p) => p.id === place.id) || place;
+
+    setKeyword(enriched.name);
+    setSelectedPlace(enriched);
+    setIsSearched(false);
+    setStep(5);
+  };
+
+  const handleFocusSearch = () => {
+    if (step < 3) {
+      window.history.pushState({}, "");
+      setStep(3);
+    }
+  };
+
+  return (
+    <div className="relative min-h-screen bg-white">
+      {step === 5 ? (
+        <div className="absolute top-0 left-0 right-0 z-50 px-[1.6rem] pt-16 bg-transparent">
+          <SearchBar
+            keyword={keyword}
+            setKeyword={setKeyword}
+            onSearch={handleSearch}
+            onFocus={handleFocusSearch}
+            step={step}
+          />
+        </div>
+      ) : (
+        <div className="sticky top-0 z-50 bg-white">
+          <div className="px-[1.6rem] pt-16 pb-8">
+            <SearchBar
+              keyword={keyword}
+              setKeyword={setKeyword}
+              onSearch={handleSearch}
+              onFocus={handleFocusSearch}
+              step={step}
+            />
+          </div>
+          <div className="w-full h-2 bg-[#F5F4F4]" />
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+          <img
+            src="/images/search-empty.svg"
+            alt="검색 유도"
+            className="w-24 h-24 mb-4"
+          />
+          <p>가까운 사회적 기업을 찾아보세요</p>
+        </div>
+      )}
+      {step === 2 && (
         <RecentSearchList
           recentSearches={recentSearches}
           onSearch={handleSearch}
           setRecentSearches={setRecentSearches}
         />
       )}
-
-      <PlaceList
-        places={filteredPlaces}
-        onSelect={(p) => alert(p.name)}
-        showEmptyMessage={isSearched}
-      />
+      {step === 3 && (
+        <RecentSearchList
+          recentSearches={recentSearches}
+          onSearch={handleSearch}
+          setRecentSearches={setRecentSearches}
+        />
+      )}
+      {step === 4 && !selectedPlace && (
+        <PlaceList
+          places={filteredPlaces}
+          onSelect={handleSelectPlace}
+          showEmptyMessage={true}
+        />
+      )}
+      {step === 5 && selectedPlace && (
+        <div className="relative w-full h-screen">
+          <MapViewer
+            places={[selectedPlace]}
+            center={selectedPlace.coords}
+            markerPosition={selectedPlace.coords}
+            markerLabel={selectedPlace.name}
+            zoom={17}
+            selectedPlace={selectedPlace}
+          />
+          <PlaceBottomSheet
+            place={selectedPlace}
+            onClose={() => {
+              setSelectedPlace(null);
+              setStep(4);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -4,11 +4,11 @@ const RecentSearchList = ({ recentSearches, onSearch, setRecentSearches }) => {
   };
 
   return (
-    <div className="px-[1.9rem] bg-white border-b-8 border-gray-50">
+    <div className="px-[1.9rem] pt-[3.1rem] bg-white divide-y divide-gray-200">
       {recentSearches.map((word, idx) => (
         <div
           key={idx}
-          className="flex items-center justify-between py-4 border-t border-gray-100 first:border-none"
+          className="flex items-center justify-between py-4 "
           onClick={() => onSearch(word)}
         >
           <div className="flex items-center space-x-2">
