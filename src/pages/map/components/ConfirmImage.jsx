@@ -6,12 +6,28 @@ import DatePickerSheet from "@/pages/map/components/DatePickerSheet";
 import TimePickerSheet from "@/pages/map/components/TimePickerSheet";
 import { AnimatePresence } from "framer-motion";
 import { formatDateTime } from "@/pages/map/utils/formatDateTime";
+import { usePaymentStore } from "@/store/paymentStore";
 
 const ConfirmImage = ({ onReject, data }) => {
   const navigate = useNavigate();
+  const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
+  const setCompanyId = usePaymentStore((s) => s.setCompanyId);
   const moveToReviewPage = () => {
-    navigate(`review/${780}`);
+    navigate(`/review/${780}`);
   };
+
+  const handleClick = () => {
+    // 1) 피커에서 파싱한 새 Date 객체를 넘기면
+    const newDate = new Date(/* year, month-1, day, hour, minute */);
+    setPaymentTime(newDate);
+
+    // 2) 회사 ID 저장
+    setCompanyId(780);
+
+    // 3) 페이지 이동
+    navigate("/writereview");
+  };
+
   const mapRef = useRef(null);
   const [location, setLocation] = useState(null);
   const [isMapLoading, setIsMapLoading] = useState(false);
@@ -208,7 +224,7 @@ const ConfirmImage = ({ onReject, data }) => {
 
       <div className="flex flex-col gap-1 justify-center items-center mt-14 w-full">
         <button
-          onClick={() => navigate("/writereview")}
+          onClick={handleClick}
           className="px-6 py-3 border border-black rounded-md b1 text-gray-0 bg-orange-500 w-80 h-12 sm:w-[77%]"
         >
           맞아요

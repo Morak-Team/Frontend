@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { tagList } from "@/constants/review/tagList";
+import { usePaymentStore } from "@/store/paymentStore";
 
 const SelectTag = ({ onNext }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const paymentTime = usePaymentStore((s) => s.paymentTime);
+  const companyId = usePaymentStore((s) => s.companyId);
 
+  console.log("결제 시간:", paymentTime);
+  console.log("Company ID:", companyId);
+
+  console.log(paymentTime, companyId);
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
       setSelectedTags(selectedTags.filter((t) => t !== tagLabel));
