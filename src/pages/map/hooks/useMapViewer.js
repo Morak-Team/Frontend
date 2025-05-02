@@ -30,7 +30,9 @@ const useMapViewer = ({
 
       const clickedMarker = markersRef.current[place.id];
       if (clickedMarker) {
-        createMarkerIcon(true, showOnlyLiked ? place.liked : false);
+        clickedMarker.setIcon(
+          createMarkerIcon(true, showOnlyLiked ? place.liked : false),
+        );
       }
 
       onMarkerClick?.(place);
@@ -38,7 +40,6 @@ const useMapViewer = ({
     [onMarkerClick, showOnlyLiked],
   );
 
-  // 초기 지도 로딩
   useEffect(() => {
     if (isMapInitialized || (!userCoords && !center)) return;
 
@@ -54,7 +55,6 @@ const useMapViewer = ({
 
       setIsMapInitialized(true);
 
-      // 최초 마커 세팅
       places.forEach((place) => {
         if (!place.coords?.lat || !place.coords?.lng) return;
 
@@ -68,10 +68,7 @@ const useMapViewer = ({
             place.coords.lng,
           ),
           map: mapInstance.current,
-          icon: createMarkerIcon(
-            isHighlighted,
-            showOnlyLiked ? place.liked : false,
-          ),
+          icon: createMarkerIcon(isHighlighted, place.liked),
         });
 
         markersRef.current[place.id] = marker;
@@ -105,7 +102,6 @@ const useMapViewer = ({
     showOnlyLiked,
   ]);
 
-  // 최초 진입 시 애니메이션 이동 & 마커
   useEffect(() => {
     if (
       userCoords &&
@@ -138,7 +134,6 @@ const useMapViewer = ({
     }
   }, [userCoords, isMapInitialized]);
 
-  // 현위치 버튼 클릭 시 동작
   useEffect(() => {
     if (moveToCurrentLocation && userCoords && mapInstance.current) {
       const newCenter = new window.naver.maps.LatLng(
@@ -160,11 +155,10 @@ const useMapViewer = ({
     }
   }, [moveToCurrentLocation, userCoords, onMoveComplete]);
 
-  // 지도 초기화
   useEffect(() => {
     if (resetMap && mapInstance.current) {
       mapInstance.current.setCenter(
-        new window.naver.maps.LatLng(37.5665, 126.978), // 서울 시청
+        new window.naver.maps.LatLng(37.5665, 126.978),
       );
       mapInstance.current.setZoom(11.5);
 
