@@ -1,25 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  getTopRatedMovies,
   getInfiniteReviews,
   getReviewsForPreview,
 } from "@/apis/review/getReviews";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getReviewCount, getTemperature } from "@/apis/review/getReviewDetail";
+import { getReviewCount } from "@/apis/review/getReviewDetail";
 
 // 바텀 시트 내부에서 보이는 약 5개 정도의 리뷰를 가져오는 쿼리
 export const useStoreReviews = (storeId) => {
   return useQuery({
     queryKey: ["reviews", storeId],
     queryFn: () => getReviewsForPreview(storeId),
-  });
-};
-
-// 가게의 온도를 가져오는 쿼리
-export const useGetStoreTemperature = (storeId) => {
-  return useQuery({
-    queryKey: ["temperature", storeId],
-    queryFn: () => getTemperature(storeId),
   });
 };
 
@@ -43,21 +34,6 @@ export const useInfiniteReviews = (storeId) => {
         return undefined;
       }
       return lastPage.number + 1;
-    },
-  });
-};
-
-// 연습용 영화 데이터 무한 스크롤 패칭 쿼리
-export const useInfinitePractice = (storeId) => {
-  return useInfiniteQuery({
-    queryKey: ["top-rated"],
-    queryFn: ({ pageParam }) => getTopRatedMovies(pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (last) => {
-      if (last.page < last.total_pages) {
-        return last.page + 1;
-      }
-      return undefined;
     },
   });
 };

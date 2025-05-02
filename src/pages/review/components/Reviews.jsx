@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import ReviewContent from "@/pages/map/components/ReviewContent";
 import { useGetStoreReviewCount } from "@/apis/review/queries";
 import { useInfiniteReviews } from "@/apis/review/queries";
