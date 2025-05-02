@@ -12,7 +12,7 @@ import { getLikedCompanies } from "@apis/company/getLikedCompanies";
 import { useToggleLike } from "./hooks/useToggleLike";
 
 const MapPage = () => {
-  const [showIntroModal, setShowIntroModal] = useState(true);
+  const [showIntroModal, setShowIntroModal] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [placesWithDistance, setPlacesWithDistance] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
@@ -26,6 +26,14 @@ const MapPage = () => {
   const location = useLocation();
 
   const handleSearchClick = () => navigate("/map/search");
+
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem("seenIntro");
+    if (!hasSeenIntro) {
+      setShowIntroModal(true);
+      sessionStorage.setItem("seenIntro", "true");
+    }
+  }, []);
 
   const { toggleLike: handleToggleLike } = useToggleLike({
     placesWithDistance,
