@@ -33,6 +33,9 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB까지 허용
+      },
     }),
   ],
   server: {
@@ -40,8 +43,9 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://52.78.110.178:8080",
+        target: "https://api.morak.site",
         changeOrigin: true,
+        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
