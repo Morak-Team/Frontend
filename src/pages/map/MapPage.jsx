@@ -45,14 +45,6 @@ const MapPage = () => {
   });
 
   useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem("seenIntro");
-    if (!hasSeenIntro) {
-      setShowIntroModal(true);
-      sessionStorage.setItem("seenIntro", "true");
-    }
-  }, []);
-
-  useEffect(() => {
     if (location.state?.resetMap) {
       setSelectedPlace(null);
       setFilteredPlaces(placesWithDistance);
