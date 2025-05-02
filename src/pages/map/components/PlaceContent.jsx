@@ -4,6 +4,18 @@ import {
   companyTypeNameMap,
 } from "@constants/categoryMap";
 import { formatDistance } from "../utils/formatDistance";
+import {
+  IcFire10,
+  IcFire20,
+  IcFire30,
+  IcFire40,
+  IcFire50,
+  IcFire60,
+  IcFire70,
+  IcFire80,
+  IcFire90,
+  IcFire100,
+} from "@assets/svgs/fire";
 
 const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
   const {
@@ -34,6 +46,26 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
     }
   };
 
+  const fireIcons = {
+    10: IcFire10,
+    20: IcFire20,
+    30: IcFire30,
+    40: IcFire40,
+    50: IcFire50,
+    60: IcFire60,
+    70: IcFire70,
+    80: IcFire80,
+    90: IcFire90,
+    100: IcFire100,
+  };
+
+  const getFireIconByTemp = (temp) => {
+    const normalized = Math.min(100, Math.max(10, Math.ceil(temp / 10) * 10));
+    return fireIcons[normalized] || IcFire10;
+  };
+
+  const FireIcon = getFireIconByTemp(temperature);
+
   return (
     <div className="flex flex-col gap-3 ">
       <div className="flex justify-between items-start px-5 sm:px-6">
@@ -49,11 +81,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
 
           <p className="text-sm flex items-center gap-2 mt-1">
             <span className="flex items-center text-orange-500 font-bold">
-              <img
-                src="/svgs/review/fireIcon.svg"
-                alt="온도 아이콘"
-                className="w-4 h-4 mr-1"
-              />
+              <FireIcon className="w-4 h-4 mr-1" />
               {temperature}도
             </span>
             <span className="text-zinc-500">방문자 리뷰 {reviewCount}</span>
