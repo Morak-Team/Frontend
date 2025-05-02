@@ -8,6 +8,7 @@ import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
 import { getAllCompanies } from "@apis/company/getAllCompanies";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
+import { getLikedCompanies } from "@apis/company/getLikedCompanies";
 import { useToggleLike } from "./hooks/useToggleLike";
 
 const MapPage = () => {
@@ -108,14 +109,41 @@ const MapPage = () => {
     setShowOnlyLiked(false);
   };
 
-  const handleToggleLikedFilter = () => {
+  const handleToggleLikedFilter = async () => {
     const next = !showOnlyLiked;
     setShowOnlyLiked(next);
     setSelectedPlace(null);
 
-    setFilteredPlaces(
-      next ? placesWithDistance.filter((p) => p.liked) : placesWithDistance
-    );
+    if (next) {
+      try {
+        const likedCompanies = await getLikedCompanies();
+        const likedCompanyIds = likedCompanies.map((c) => c.companyId);
+
+        const likedWithMeta = likedCompanies.map((company) => {
+          const matched = placesWithDistance.find(
+            (p) => p.id === company.companyId
+          );
+          const dist = matched?.distance || 0;
+          const formatted = matched?.formattedDistance || formatDistance(dist);
+
+          return {
+            ...company,
+            id: company.companyId,
+            name: company.companyName,
+            coords: matched?.coords,
+            distance: dist,
+            formattedDistance: formatted,
+            liked: true,
+          };
+        });
+
+        setFilteredPlaces(likedWithMeta);
+      } catch (err) {
+        console.error("찜한 기업 목록 조회 실패:", err);
+      }
+    } else {
+      setFilteredPlaces(placesWithDistance);
+    }
   };
 
   const handleMarkerClick = async (place) => {
