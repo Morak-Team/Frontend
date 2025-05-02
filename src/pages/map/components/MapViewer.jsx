@@ -12,6 +12,7 @@ const MapViewer = ({
   markerPosition,
   zoom = 11,
   selectedPlace,
+  showOnlyLiked,
 }) => {
   const mapRef = useRef(null);
 
