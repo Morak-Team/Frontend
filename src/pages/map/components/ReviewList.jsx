@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ReviewList = ({ setTurnOnCamera, storeId }) => {
   return (
-    <div className="mb-20">
+    <div className="mb-20 px-5 sm:px-6">
       <div className="mt-10 flex justify-between mb-3">
         <div className="flex justify-center items-center gap-1">
           <h3 className="h3 text-gray-12">리뷰</h3>

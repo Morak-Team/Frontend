@@ -1,7 +1,10 @@
-import { categoryIconMap, businessTypeIconMap } from "@constants/iconMap";
+import {
+  companyTypeIconMap,
+  businessTypeIconMap,
+} from "@constants/categoryMap";
 
 const PlaceCard = ({ place, onClick }) => {
-  const categoryIcon = categoryIconMap[place.category];
+  const categoryIcon = companyTypeIconMap[place.category];
   const businessIcon = businessTypeIconMap[place.businessType];
 
   return (

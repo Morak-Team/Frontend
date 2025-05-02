@@ -121,7 +121,7 @@ const useMapViewer = ({
       hasAnimatedRef.current = true;
 
       const zoomTimeout = setTimeout(() => {
-        mapInstance.current.setZoom(18, true);
+        mapInstance.current.setZoom(17, true);
 
         if (userMarkerRef.current) {
           userMarkerRef.current.setMap(null);

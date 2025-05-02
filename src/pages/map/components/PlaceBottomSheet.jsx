@@ -90,30 +90,34 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
       </div>
 
       <div
-        className={`px-5 sm:px-6 pb-6 transition-all duration-300 h-full ${
-          isExpanded ? "max-h-[100vh] overflow-y-auto pt-10" : ""
+        className={`transition-all duration-300 h-full ${
+          isExpanded ? "max-h-[100vh] overflow-y-auto" : ""
         }`}
       >
         {isExpanded && (
-          <div className="flex justify-end mb-2">
+          <div className="relative w-full h-[120px]">
+            <img
+              src={"/svgs/map/Img_Map.svg"}
+              alt="상단 배경"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onClose();
               }}
-              className="p-4 -mt-4 -mr-4"
+              className="absolute top-3 right-3 p-2 z-10"
+              aria-label="닫기"
             >
-              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-8 h-8" />
+              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-6 h-6" />
             </button>
           </div>
         )}
 
         <PlaceContent
-          {...place}
-          id={place.id}
+          place={place}
           liked={place.liked}
           onToggleLike={onToggleLike}
-          isDetail={isExpanded}
           showMapLink={isExpanded}
         />
 
