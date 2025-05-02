@@ -1,30 +1,42 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import XIcon from "/svgs/Ic_X_Btn.svg";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
-import { IcCheck, IcNonCheck } from "@assets/svgs/signup/index";
+import { IcCheck, IcNonCheck } from "@assets/svgs/signup";
+import useBottomOffset from "../hooks/useBottomOffset";
 
 const LocationStep = ({ onNext, onBack }) => {
-  const [location, setLocation] = useState("서울특별시 ");
+  const [location, setLocation] = useState("");
   const [checked, setChecked] = useState(false);
+  const inputRef = useRef(null);
+  const bottomOffset = useBottomOffset(inputRef);
 
   const handleChange = (e) => setLocation(e.target.value);
-  const clearInput = () => setLocation("서울특별시 ");
+  const clearInput = () => setLocation("");
+
   const toggleCheck = () => {
     setChecked((prev) => {
       const next = !prev;
-      if (next) setLocation("");
+      if (next) {
+        setLocation("서울 외 지역 거주");
+      } else {
+        setLocation("");
+      }
       return next;
     });
   };
 
   const trimmed = location.trim();
-  const isUserTyped = trimmed !== "" && trimmed !== "서울특별시";
+  const fullLocation = checked ? location : `서울특별시 ${location}`;
+  const isUserTyped = trimmed !== "" && !checked;
   const isActive = isUserTyped || checked;
 
-  const showWarning = trimmed === "" || !trimmed.startsWith("서울특별시");
+  const showWarningForSeoul =
+    !checked &&
+    (trimmed === "" || !`서울특별시 ${trimmed}`.startsWith("서울특별시"));
+  const showNotSeoulMessage = checked;
 
   return (
-    <div className="flex flex-col justify-start items-start h-screen pt-20 px-6 bg-white">
+    <div className="flex flex-col justify-start items-start h-screen mt-20 px-6 bg-white relative overflow-auto">
       <button
         onClick={onBack}
         className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
@@ -44,20 +56,34 @@ const LocationStep = ({ onNext, onBack }) => {
         주소
       </label>
 
-      <div className="relative w-full">
+      <div
+        className={`relative w-full flex items-center border-b-2 ${
+          trimmed || checked ? "border-orange-500" : "border-gray-300"
+        } py-2`}
+      >
+        {!checked && (
+          <span className="text-lg font-semibold text-black whitespace-nowrap">
+            서울특별시&nbsp;
+          </span>
+        )}
+
         <input
           id="location"
+          ref={inputRef}
           type="text"
+          placeholder={!checked ? "마포구 서교동" : ""}
           value={location}
           onChange={handleChange}
-          className={`w-full border-b-2 ${
-            trimmed ? "border-orange-500" : "border-gray-300"
-          } text-lg font-semibold py-2 pr-10 focus:outline-none`}
+          readOnly={checked}
+          className={`flex-1 bg-transparent text-lg font-semibold focus:outline-none placeholder-gray-400 ${
+            checked ? "bg-gray-100 cursor-not-allowed" : ""
+          }`}
         />
-        {location && (
+
+        {!checked && location && (
           <button
             onClick={clearInput}
-            className="absolute right-4 top-3"
+            className="absolute right-0 top-3"
             aria-label="입력 지우기"
           >
             <img src={XIcon} alt="지우기 버튼" className="w-4 h-4" />
@@ -65,7 +91,7 @@ const LocationStep = ({ onNext, onBack }) => {
         )}
       </div>
 
-      {showWarning && (
+      {(showWarningForSeoul || showNotSeoulMessage) && (
         <p className="text-sm text-orange-500 mt-2">
           현재는 서울에 한해 사회적 기업들을 소개하고 있습니다.
         </p>
@@ -87,15 +113,24 @@ const LocationStep = ({ onNext, onBack }) => {
         </span>
       </button>
 
-      <button
-        disabled={!isActive}
-        onClick={() => isActive && onNext(location)}
-        className={`w-full max-w-[700px] h-12 mt-auto mb-6 font-semibold rounded-lg transition-colors ${
-          isActive ? "bg-[#FF6F31] text-white" : "bg-gray-100 text-gray-400"
-        }`}
+      <div
+        className="w-full max-w-[700px] fixed left-1/2 transform -translate-x-1/2"
+        style={{
+          bottom: bottomOffset,
+          transition:
+            bottomOffset > 0 ? "bottom 0.05s ease-out" : "bottom 0s ease-out",
+        }}
       >
-        확인
-      </button>
+        <button
+          disabled={!isActive}
+          onClick={() => isActive && onNext(fullLocation)}
+          className={`w-full h-12 mt-10 font-semibold transition-colors ${
+            isActive ? "bg-[#FF6F31] text-white" : "bg-gray-100 text-gray-400"
+          }`}
+        >
+          확인
+        </button>
+      </div>
     </div>
   );
 };

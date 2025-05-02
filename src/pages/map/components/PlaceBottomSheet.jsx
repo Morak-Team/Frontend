@@ -6,8 +6,7 @@ import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 
-const PlaceBottomSheet = ({ place, onClose }) => {
-  const [liked, setLiked] = useState(place.liked || false);
+const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -38,11 +37,14 @@ const PlaceBottomSheet = ({ place, onClose }) => {
   useEffect(() => {
     document.body.style.overflow = isExpanded ? "hidden" : "auto";
     setBottomSheetOpen(isExpanded);
+    onExpandChange?.(isExpanded);
+
     return () => {
       document.body.style.overflow = "auto";
       setBottomSheetOpen(false);
+      onExpandChange?.(false);
     };
-  }, [isExpanded, setBottomSheetOpen]);
+  }, [isExpanded, onExpandChange, setBottomSheetOpen]);
 
   const handleTouchStart = (e) => {
     if (!isMobile) return;
@@ -75,7 +77,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
       ref={sheetRef}
       className={`fixed ${bottomOffset} left-1/2 -translate-x-1/2 w-full max-w-[760px] z-50 bg-white rounded-t-[12px] shadow ${
         turnOnCamera || showConfirm ? "" : "overflow-hidden"
-      }`} // ✅ overflow-hidden 추가
+      }`}
       animate={controls}
       initial={{ height: MIN_HEIGHT }}
       transition={{ duration: 0.35 }}
@@ -88,29 +90,34 @@ const PlaceBottomSheet = ({ place, onClose }) => {
       </div>
 
       <div
-        className={`px-5 sm:px-6 pb-6 transition-all duration-300 h-full ${
-          isExpanded ? "max-h-[100vh] overflow-y-auto pt-10" : ""
+        className={`transition-all duration-300 h-full ${
+          isExpanded ? "max-h-[100vh] overflow-y-auto" : ""
         }`}
       >
         {isExpanded && (
-          <div className="flex justify-end mb-2">
+          <div className="relative w-full h-[120px]">
+            <img
+              src={"/svgs/map/Img_Map.svg"}
+              alt="상단 배경"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onClose();
               }}
-              className="p-4 -mt-4 -mr-4"
+              className="absolute top-3 right-3 p-2 z-10"
+              aria-label="닫기"
             >
-              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-8 h-8" />
+              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-6 h-6" />
             </button>
           </div>
         )}
 
         <PlaceContent
-          {...place}
-          liked={liked}
-          onToggleLike={() => setLiked((prev) => !prev)}
-          isDetail={isExpanded}
+          place={place}
+          liked={place.liked}
+          onToggleLike={onToggleLike}
           showMapLink={isExpanded}
         />
 

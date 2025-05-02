@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import XIcon from "/svgs/Ic_X_Btn.svg";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
+import useBottomOffset from "../hooks/useBottomOffset";
 
 const NameStep = ({ onNext, onBack }) => {
   const [name, setName] = useState("");
-  const [bottomOffset, setBottomOffset] = useState(0);
   const inputRef = useRef(null);
+  const bottomOffset = useBottomOffset(inputRef);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,67 +16,10 @@ const NameStep = ({ onNext, onBack }) => {
 
   const clearInput = () => setName("");
 
-  useEffect(() => {
-    const inputEl = inputRef.current;
-
-    const handleVisualViewportResize = () => {
-      requestAnimationFrame(() => {
-        const viewportHeight =
-          window.visualViewport?.height || window.innerHeight;
-        const offset = window.innerHeight - viewportHeight;
-        setBottomOffset(offset > 0 ? offset : 0);
-      });
-    };
-
-    const handleFocusFallback = () => {
-      setTimeout(() => {
-        const offset =
-          window.innerHeight - document.documentElement.clientHeight;
-        setBottomOffset(offset > 0 ? offset : 300);
-      }, 200);
-    };
-
-    const handleBlurFallback = () => {
-      setBottomOffset(0);
-    };
-
-    if ("visualViewport" in window) {
-      window.visualViewport.addEventListener(
-        "resize",
-        handleVisualViewportResize
-      );
-      window.visualViewport.addEventListener(
-        "scroll",
-        handleVisualViewportResize
-      );
-    } else {
-      inputEl?.addEventListener("focus", handleFocusFallback);
-      inputEl?.addEventListener("blur", handleBlurFallback);
-      window.addEventListener("resize", handleFocusFallback);
-    }
-
-    return () => {
-      if ("visualViewport" in window) {
-        window.visualViewport.removeEventListener(
-          "resize",
-          handleVisualViewportResize
-        );
-        window.visualViewport.removeEventListener(
-          "scroll",
-          handleVisualViewportResize
-        );
-      } else {
-        inputEl?.removeEventListener("focus", handleFocusFallback);
-        inputEl?.removeEventListener("blur", handleBlurFallback);
-        window.removeEventListener("resize", handleFocusFallback);
-      }
-    };
-  }, []);
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-start pt-48 bg-white h-screen overflow-auto relative"
+      className="flex flex-col justify-start mt-48 bg-white h-screen overflow-auto relative"
     >
       <button
         onClick={onBack}
