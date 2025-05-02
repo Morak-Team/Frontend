@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import XIcon from "/svgs/Ic_X_Btn.svg";
 import BackIcon from "/svgs/Ic_Arrow_Left.svg";
-import { IcCheck, IcNonCheck } from "@assets/svgs/signup/index";
+import { IcCheck, IcNonCheck } from "@assets/svgs/signup";
 import useBottomOffset from "../hooks/useBottomOffset";
 
 const LocationStep = ({ onNext, onBack }) => {
