@@ -11,6 +11,7 @@ const PlaceBottomSheet = ({ place, onClose }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [companyInfo, setCompanyInfo] = useState({});
 
   const { turnOnCamera, setTurnOnCamera, setBottomSheetOpen } = useUIStore();
 
@@ -123,15 +124,17 @@ const PlaceBottomSheet = ({ place, onClose }) => {
                 storeId={storeId}
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
-                onCaptureSuccess={() => {
+                onCaptureSuccess={(data) => {
                   setTurnOnCamera(false);
                   setShowConfirm(true);
+                  setCompanyInfo(data);
                 }}
               />
             )}
 
             {showConfirm && (
               <ConfirmImage
+                data={companyInfo}
                 onReject={() => {
                   sessionStorage.removeItem("reviewResult");
                   setShowConfirm(false);
