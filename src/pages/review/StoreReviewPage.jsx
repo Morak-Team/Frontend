@@ -10,6 +10,7 @@ import useUIStore from "@/store/uiStore";
 import ReviewList from "@/pages/map/components/ReviewList";
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 import ConfirmImage from "@/pages/map/components/ConfirmImage";
+import Reviews from "@/pages/review/components/Reviews";
 
 const StoreReviewPage = () => {
   const navigate = useNavigate();
@@ -19,26 +20,26 @@ const StoreReviewPage = () => {
 
   const { turnOnCamera, setTurnOnCamera } = useUIStore();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfinitePractice();
+  // const {
+  //   data,
+  //   fetchNextPage,
+  //   hasNextPage,
+  //   isFetchingNextPage,
+  //   isLoading,
+  //   error,
+  // } = useInfinitePractice();
 
-  useEffect(() => {
-    if (inView && !isFetchingNextPage && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  // useEffect(() => {
+  //   if (inView && !isFetchingNextPage && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView]);
 
-  console.log("data", data);
-  console.log(getTopRatedMovies());
+  // console.log("data", data);
+  // console.log(getTopRatedMovies());
 
-  if (isLoading) return <p>로딩 중...</p>;
-  if (error) return <p>에러 발생: {error.message}</p>;
+  // if (isLoading) return <p>로딩 중...</p>;
+  // if (error) return <p>에러 발생: {error.message}</p>;
 
   return (
     <div className="flex flex-col">
@@ -55,7 +56,7 @@ const StoreReviewPage = () => {
       <div className="w-full h-2 bg-gray-3 mt-5" />
 
       <div className="p-5">
-        <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
+        <Reviews setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
       </div>
 
       {turnOnCamera && (

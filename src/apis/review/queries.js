@@ -35,13 +35,14 @@ export const useGetStoreReviewCount = (storeId) => {
 export const useInfiniteReviews = (storeId) => {
   return useInfiniteQuery({
     queryKey: ["reviews", storeId],
-    queryFn: ({ pageParam }) => getInfiniteReviews(storeId, pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (last) => {
-      if (last.page < last.total_pages) {
-        return last.page + 1;
+    queryFn: ({ pageParam = 0 }) => getInfiniteReviews(storeId, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      // lastPage가 없거나, 마지막 페이지에 도달했으면 undefined 반환
+      if (!lastPage || lastPage.number + 1 >= lastPage.totalPages) {
+        return undefined;
       }
-      return undefined;
+      return lastPage.number + 1;
     },
   });
 };

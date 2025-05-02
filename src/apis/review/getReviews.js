@@ -26,8 +26,11 @@ export const getReviewsForPreview = async (companyId) => {
   return res.data;
 };
 
-export const getInfiniteReviews = async (storeId, page) => {
-  const res = await api.get("/review", { params: { storeId, page } });
+const PAGE_SIZE = 10;
 
+export const getInfiniteReviews = async (storeId, page) => {
+  const res = await api.get("/reviews/public/get-all-company-reviews", {
+    params: { companyId: storeId, page, size: 10 },
+  });
   return res.data;
 };
