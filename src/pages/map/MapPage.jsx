@@ -15,6 +15,7 @@ import useAuthStore from "@/store/authStore";
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [originalPlaces, setOriginalPlaces] = useState([]);
   const [places, setPlaces] = useState([]);
   const [showOnlyLiked, setShowOnlyLiked] = useState(false);
 
@@ -24,7 +25,6 @@ const MapPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleSearchClick = () => navigate("/map/search");
@@ -50,9 +50,10 @@ const MapPage = () => {
     if (location.state?.resetMap) {
       setSelectedPlace(null);
       setMoveToCurrentLocation(false);
+      setPlaces(originalPlaces);
       navigate(location.pathname, { replace: true });
     }
-  }, [location, navigate]);
+  }, [location, navigate, originalPlaces]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -76,6 +77,7 @@ const MapPage = () => {
           name: company.companyName,
           coords: { lat: company.latitude, lng: company.longitude },
         }));
+        setOriginalPlaces(enriched);
         setPlaces(enriched);
       } catch (error) {
         console.error("기업 데이터를 불러오는 데 실패했습니다:", error);
@@ -112,7 +114,7 @@ const MapPage = () => {
   }, [enrichedPlaces, showOnlyLiked]);
 
   const handleCategorySelect = (englishCategory) => {
-    const filtered = enrichedPlaces
+    const filtered = originalPlaces
       .filter((p) => p.companyCategory === englishCategory)
       .map((p) => ({ ...p, isSearchResult: true }));
 
@@ -137,7 +139,7 @@ const MapPage = () => {
         const likedCompanies = await getLikedCompanies();
         const likedCompanyIds = likedCompanies.map((c) => c.companyId);
 
-        const updated = enrichedPlaces.map((p) => ({
+        const updated = originalPlaces.map((p) => ({
           ...p,
           liked: likedCompanyIds.includes(p.id),
         }));
@@ -147,7 +149,7 @@ const MapPage = () => {
         console.error("찜한 기업 목록 조회 실패:", err);
       }
     } else {
-      setPlaces(enrichedPlaces);
+      setPlaces(originalPlaces);
     }
   };
 
