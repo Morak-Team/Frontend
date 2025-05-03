@@ -19,6 +19,7 @@ export const usePaymentStore = create((set) => ({
   companyId: "", // 회사 ID
   temperature: null, // 온도 (number)
   reviewTags: [], // 태그 배열
+  receiptInfo: null, // OCR 결과 전체 보관
 
   // 액션들
   setPaymentTime: (raw) => {
@@ -43,7 +44,6 @@ export const usePaymentStore = create((set) => ({
     set({ temperature: num });
   },
 
-  // 태그 배열 전체를 한 번에 설정
   setReviewTags: (tags) => {
     if (!Array.isArray(tags)) {
       console.warn("[paymentStore] reviewTags must be an array:", tags);
@@ -52,13 +52,31 @@ export const usePaymentStore = create((set) => ({
     set({ reviewTags: tags });
   },
 
-  // 초기화
+  setReceiptInfo: (info) => {
+    if (!info || typeof info !== "object") {
+      console.warn("[paymentStore] Invalid receiptInfo:", info);
+      return;
+    }
+    const updates = { receiptInfo: info };
+
+    // 날짜 있으면 paymentTime 값도 반영
+    if (info.orderDateTime) {
+      const date = new Date(info.orderDateTime.replace(/[-]/g, "/"));
+      if (!isNaN(date.getTime())) updates.paymentTime = formatToYMDHMS(date);
+    }
+
+    if (info.companyId) updates.companyId = String(info.companyId);
+
+    set(updates);
+  },
+
   resetReviewInfo: () => {
     set({
       paymentTime: "",
       companyId: "",
       temperature: null,
       reviewTags: [],
+      receiptInfo: null,
     });
   },
 }));

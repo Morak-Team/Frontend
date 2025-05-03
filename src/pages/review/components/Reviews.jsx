@@ -52,7 +52,9 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
   }
 
   // 모든 페이지를 flatten
-  const allReviews = data.pages.flatMap((page) => page.content);
+  const allReviews = data?.pages
+    ? data.pages.flatMap((page) => page.content || [])
+    : [];
 
   return (
     <div className="mb-20">

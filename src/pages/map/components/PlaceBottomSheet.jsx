@@ -10,12 +10,15 @@ import { usePaymentStore } from "@/store/paymentStore";
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   // console.log("place 정보", place);
   const setCompanyId = usePaymentStore((s) => s.setCompanyId);
-  setCompanyId(place.companyId);
+  const { setReceiptInfo } = usePaymentStore();
+  useEffect(() => {
+    setCompanyId(place.companyId);
+  }, [place.companyId, setCompanyId]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [companyInfo, setCompanyInfo] = useState({});
+  const [companyInfo, setCompanyInfo] = useState(null);
 
   const { turnOnCamera, setTurnOnCamera, setBottomSheetOpen } = useUIStore();
 
@@ -139,9 +142,9 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
                 onCaptureSuccess={(data) => {
-                  setTurnOnCamera(false);
-                  setShowConfirm(true);
-                  setCompanyInfo(data);
+                  setCompanyInfo(data); // 즉시 로컬 상태에 저장
+                  setReceiptInfo(data); // 전역 상태에도 저장
+                  setShowConfirm(true); // 그다음 Confirm 렌더링
                 }}
               />
             )}
@@ -150,9 +153,9 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
               <ConfirmImage
                 data={companyInfo}
                 onReject={() => {
-                  sessionStorage.removeItem("reviewResult");
                   setShowConfirm(false);
                   setTurnOnCamera(true);
+                  setCompanyInfo(null);
                 }}
               />
             )}

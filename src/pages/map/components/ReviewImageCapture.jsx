@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
 
+import { usePaymentStore } from "@/store/paymentStore";
+
 import imageCompression from "browser-image-compression";
 const ReviewImageCapture = ({
   companyId,
@@ -140,10 +142,21 @@ const ReviewImageCapture = ({
   const { mutate, isPending, isError } = useMutation({
     mutationFn: postRecipt,
     retry: 2,
-    onSuccess: (data) => {
-      console.log(data);
-      onCaptureSuccess(data);
-      onCloseCamera?.();
+    onSuccess: (res) => {
+      console.log("res", res);
+
+      setTimeout(() => {
+        onCaptureSuccess?.(res); // props를 통해 부모 컴포넌트로 직접 전달
+        onCloseCamera?.();
+      }, 200);
+
+      // setReceiptInfo(res);
+      // // onCaptureSuccess(res);
+      // // onCloseCamera?.();
+      // setTimeout(() => {
+      //   onCaptureSuccess?.(); // 필요 시
+      //   onCloseCamera?.(); // 카메라 닫기
+      // }, 200); // 다음 이벤트 루프로 넘김
     },
     onError: (err) => {
       console.error("OCR 실패:", err.response?.data || err);

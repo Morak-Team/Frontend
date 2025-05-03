@@ -10,7 +10,12 @@ import { usePaymentStore } from "@/store/paymentStore";
 
 const ConfirmImage = ({ onReject, data }) => {
   const navigate = useNavigate();
+
   const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
+  const { reviewInfo } = usePaymentStore();
+  console.log("reviewInfo", reviewInfo);
+
+  console.log("confirm", data);
 
   const moveToReviewPage = () => {
     navigate(`/review/${780}`);
