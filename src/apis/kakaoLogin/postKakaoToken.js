@@ -7,14 +7,9 @@ export const postKakaoToken = async (code) => {
       { code },
       { withCredentials: true }, // JWT 쿠키 받기 위해 필요
     );
-    const { accessToken } = res.data;
-
-    if (accessToken) {
-      localStorage.setItem("jwtToken", accessToken);
-    }
     return res.data;
   } catch (err) {
-    console.error("카카오 토큰 요청 실패", err.response?.data || err.message);
+    console.error("카카오 토큰 요청 실패:", err.response?.data || err.message);
     throw err;
   }
 };

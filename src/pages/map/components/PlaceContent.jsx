@@ -115,7 +115,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
             href={`https://map.naver.com/v5/search/${companyName}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 py-4 px-14 gap-2 flex items-center justify-center rounded-md bg-[#FAFAF9] text-sm text-[#827F7A] font-semibold"
+            className="flex-1 py-4 px-14 gap-2 flex items-center justify-center rounded-md bg-gray-2 text-b4 text-gray-9 font-semibold"
           >
             <img
               src="/svgs/map/Ic_NaverMap.svg"
@@ -130,7 +130,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
             e.stopPropagation();
             onToggleLike?.(place.id);
           }}
-          className="w-12 h-12 flex items-center justify-center rounded-md bg-gray-9"
+          className="w-12 h-12 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
             src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart_Empty.svg"}

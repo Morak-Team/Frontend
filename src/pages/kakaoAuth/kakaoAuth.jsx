@@ -1,33 +1,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postKakaoToken } from "@apis/kakaoLogin/postKakaoToken";
+import useAuthStore from "@/store/authStore";
 
 const KakaoAuth = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState(null);
+  const login = useAuthStore((state) => state.login);
 
-  // 인가 코드 추출
   useEffect(() => {
     const urlCode = new URL(window.location.href).searchParams.get("code");
     if (urlCode) setCode(urlCode);
   }, []);
 
-  // 백엔드에 인가코드 전달 → 로그인 처리 요청
   useEffect(() => {
     const loginWithKakao = async () => {
       if (!code) return;
 
       try {
-        await postKakaoToken(code); // 백엔드에서 JWT 쿠키 발급 처리
-        navigate("/"); // 또는 navigate("/signup") ← 유저 상태에 따라
+        const { isNewUser } = await postKakaoToken(code); // 서버에서 쿠키에 토큰 설정 + isNewUser 응답
+        login(); // 로그인 상태 전역 반영
+
+        if (isNewUser) {
+          navigate("/signup");
+        } else {
+          navigate("/");
+        }
       } catch (err) {
         console.error("카카오 로그인 실패", err);
-        navigate("/auth"); // 로그인 실패 시 다시 로그인 유도
+        navigate("/auth");
       }
     };
 
     loginWithKakao();
-  }, [code, navigate]);
+  }, [code, login, navigate]);
 
   const handleLoginClick = () => {
     const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
@@ -39,9 +45,9 @@ const KakaoAuth = () => {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen pb-20 px-5 bg-white">
-      {!code && (
+      {!code ? (
         <>
-          <h1 className="text-2xl sm:text-3xl font-semibold leading-relaxed self-start text-left">
+          <h1 className="text-h2 sm:text-h1 font-semibold text-gray-12 self-start text-left">
             간편하게 로그인하고 <br />
             따뜻한 온기에 동참해보세요.
           </h1>
@@ -62,8 +68,9 @@ const KakaoAuth = () => {
             />
           </button>
         </>
+      ) : (
+        <div className="text-h3">카카오 로그인 처리 중입니다...</div>
       )}
-      {code && <div className="text-lg">카카오 로그인 처리 중입니다...</div>}
     </div>
   );
 };
