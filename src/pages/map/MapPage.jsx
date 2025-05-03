@@ -76,6 +76,7 @@ const MapPage = () => {
     if (location.state?.resetMap) {
       setSelectedPlace(null);
       setMoveToCurrentLocation(false);
+      setShowOnlyLiked(false);
       setPlaces(originalPlaces);
       navigate(location.pathname, { replace: true });
     }

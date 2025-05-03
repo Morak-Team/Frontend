@@ -80,8 +80,10 @@ const SearchPage = () => {
   useEffect(() => {
     const handlePopState = () => {
       setStep((prev) => {
-        if (prev === 5) setSelectedPlace(null);
-        else if (prev === 4) setIsSearched(false);
+        if (prev === 5) {
+          setSelectedPlace(null);
+          setIsSearched(true);
+        } else if (prev === 4) setIsSearched(false);
         else if (prev === 3) setKeyword("");
         return Math.max(1, prev - 1);
       });
