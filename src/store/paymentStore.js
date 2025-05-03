@@ -2,7 +2,7 @@
 import { create } from "zustand";
 
 // Date → "yyyy/MM/dd HH:mm:ss" 포맷 함수
-const formatToYMDHMS = (date) => {
+export const formatToYMDHMS = (date) => {
   const pad = (n) => String(n).padStart(2, "0");
   const yyyy = date.getFullYear();
   const MM = pad(date.getMonth() + 1);
@@ -17,9 +17,20 @@ export const usePaymentStore = create((set) => ({
   // 상태 필드
   paymentTime: "", // "yyyy/MM/dd HH:mm:ss"
   companyId: "", // 회사 ID
-  temperature: null, // 온도 (number)
-  reviewTags: [], // 태그 배열
   receiptInfo: null, // OCR 결과 전체 보관
+  reviewInfo: null, // 🆕 리뷰 정보 객체
+
+  setReviewInfo: (info) =>
+    set((state) => ({
+      reviewInfo: {
+        ...state.reviewInfo, // 기존 필드 유지
+        ...info, // 새 필드 덮어쓰기
+      },
+    })),
+
+  resetReviewInfo: () => {
+    set({ reviewInfo: null });
+  },
 
   // 액션들
   setPaymentTime: (raw) => {
@@ -33,23 +44,6 @@ export const usePaymentStore = create((set) => ({
 
   setCompanyId: (id) => {
     set({ companyId: String(id) });
-  },
-
-  setTemperature: (temp) => {
-    const num = Number(temp);
-    if (isNaN(num)) {
-      console.warn("[paymentStore] Invalid temperature:", temp);
-      return;
-    }
-    set({ temperature: num });
-  },
-
-  setReviewTags: (tags) => {
-    if (!Array.isArray(tags)) {
-      console.warn("[paymentStore] reviewTags must be an array:", tags);
-      return;
-    }
-    set({ reviewTags: tags });
   },
 
   setReceiptInfo: (info) => {
@@ -68,15 +62,5 @@ export const usePaymentStore = create((set) => ({
     if (info.companyId) updates.companyId = String(info.companyId);
 
     set(updates);
-  },
-
-  resetReviewInfo: () => {
-    set({
-      paymentTime: "",
-      companyId: "",
-      temperature: null,
-      reviewTags: [],
-      receiptInfo: null,
-    });
   },
 }));

@@ -36,7 +36,9 @@ const PlaceInfo = ({ placeInfo }) => {
               src="/svgs/storeReview/fireIcon.svg"
               className="w-4 h-4 mr-1"
             />
-            <p className="b4 text-primary-8">{placeInfo.temperature}도</p>
+            <p className="b4 text-primary-8">
+              {placeInfo.temperature.toFixed(2)}도
+            </p>
             <p className="b6 ml-2">방문자 리뷰 {placeInfo.reviewCount}개</p>
           </div>
 

@@ -14,6 +14,7 @@ const StoreReviewPage = () => {
   const navigate = useNavigate();
   const { companyId: companyIdParam } = useParams();
   const companyId = Number(companyIdParam);
+  const [companyInfo, setCompanyInfo] = useState(null);
 
   const [showConfirm, setShowConfirm] = useState(false);
   const { turnOnCamera, setTurnOnCamera } = useUIStore();
@@ -64,14 +65,26 @@ const StoreReviewPage = () => {
           }}
         />
       )}
+      {turnOnCamera && (
+        <ReviewImageCapture
+          companyId={companyId}
+          turnOnCamera={turnOnCamera}
+          onCloseCamera={() => setTurnOnCamera(false)}
+          onCaptureSuccess={(data) => {
+            setCompanyInfo(data); // 즉시 로컬 상태에 저장
+            // setReceiptInfo(data); // 전역 상태에도 저장
+            setShowConfirm(true); // 그다음 Confirm 렌더링
+          }}
+        />
+      )}
 
       {showConfirm && (
         <ConfirmImage
-          data={JSON.parse(sessionStorage.getItem("reviewResult"))}
+          data={companyInfo}
           onReject={() => {
-            sessionStorage.removeItem("reviewResult");
             setShowConfirm(false);
             setTurnOnCamera(true);
+            setCompanyInfo(null);
           }}
         />
       )}

@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { tagList } from "@/constants/review/tagList";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
 
 const SelectTag = ({ onNext }) => {
   const navigate = useNavigate();
-  const [selectedTags, setSelectedTags] = useState([]);
-  const paymentTime = usePaymentStore((s) => s.paymentTime);
-  const companyId = usePaymentStore((s) => s.companyId);
+  const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
 
-  console.log("결제 시간:", paymentTime);
+  const { reviewInfo } = usePaymentStore();
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [temperature, setTemperature] = useState(87.5);
+
+  const companyId = usePaymentStore((s) => s.companyId);
+  console.log("tag", selectedTags);
+
   console.log("Company ID:", companyId);
 
-  console.log(paymentTime, companyId);
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
       setSelectedTags(selectedTags.filter((t) => t !== tagLabel));
@@ -21,6 +24,19 @@ const SelectTag = ({ onNext }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("updated reviewInfo", reviewInfo);
+  }, [reviewInfo]);
+
+  const handleClick = () => {
+    setReviewInfo({
+      temperature,
+      reviewCategory: selectedTags, // 최대 3개
+      companyId: companyId,
+    });
+
+    onNext();
+  };
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
@@ -61,11 +77,11 @@ const SelectTag = ({ onNext }) => {
 
             <div className="flex flex-col mt-6 gap-2">
               {tagList.map((tag) => {
-                const isSelected = selectedTags.includes(tag.label);
+                const isSelected = selectedTags.includes(tag.value);
                 return (
                   <button
                     key={tag.label}
-                    onClick={() => handleTagClick(tag.label)}
+                    onClick={() => handleTagClick(tag.value)}
                     className={`flex w-fit shadow-[0px_2px_12px_rgba(46,45,43,0.05)] items-center gap-2 px-3 py-2 rounded-full border transition ${
                       isSelected
                         ? "border-orange-500 bg-[#FFF4EC] border-[1px]"
@@ -85,7 +101,7 @@ const SelectTag = ({ onNext }) => {
       {/* 고정 하단 버튼 */}
       <div className="fixed bottom-0 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
-          onClick={onNext}
+          onClick={handleClick}
           className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
         >
           다음

@@ -7,13 +7,16 @@ import TimePickerSheet from "@/pages/map/components/TimePickerSheet";
 import { AnimatePresence } from "framer-motion";
 import { formatDateTime } from "@/pages/map/utils/formatDateTime";
 import { usePaymentStore } from "@/store/paymentStore";
+import { getDistanceDiff } from "@/pages/map/utils/getDistanceDiff";
+import { formatToYMDHMS } from "@/store/paymentStore";
 
 const ConfirmImage = ({ onReject, data }) => {
   const navigate = useNavigate();
+  // 이 화면에서 넘겨야 할 것 -> 시간 정보, 결제승인번호
+  const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
+  const { reviewInfo } = usePaymentStore();
 
   const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
-  const { reviewInfo } = usePaymentStore();
-  console.log("reviewInfo", reviewInfo);
 
   console.log("confirm", data);
 
@@ -21,9 +24,39 @@ const ConfirmImage = ({ onReject, data }) => {
     navigate(`/review/${780}`);
   };
 
+  // const handleClick = () => {
+  //   const newDate = new Date(/* year, month-1, day, hour, minute */);
+  //   setPaymentTime(newDate);
+
+  //   navigate("/writereview");
+  // };
+
   const handleClick = () => {
-    const newDate = new Date(/* year, month-1, day, hour, minute */);
-    setPaymentTime(newDate);
+    const pad = (n) => String(n).padStart(2, "0");
+
+    const extractNumber = (str) => parseInt(str.replace(/\D/g, ""), 10); // 숫자만 추출
+
+    const hour24 =
+      selectedTime.period === "오후"
+        ? (extractNumber(selectedTime.hour) % 12) + 12
+        : extractNumber(selectedTime.hour) % 12;
+
+    const rawDateStr = `2025/${pad(extractNumber(selectedDate.month))}/${pad(extractNumber(selectedDate.day))} ${pad(hour24)}:${pad(extractNumber(selectedTime.minute))}:00`;
+
+    const dateObj = new Date(rawDateStr);
+    console.log("✅ raw:", rawDateStr);
+    console.log("📆 dateObj:", dateObj);
+
+    if (isNaN(dateObj.getTime())) {
+      console.warn("❌ Invalid constructed date", rawDateStr);
+      return;
+    }
+
+    setReviewInfo({
+      paymentInfoTime: formatToYMDHMS(dateObj),
+      paymentInfoConfirmNum: data.confirmNumber,
+    });
+    console.log(reviewInfo);
 
     navigate("/writereview");
   };
@@ -217,7 +250,16 @@ const ConfirmImage = ({ onReject, data }) => {
           <p className="b4 text-gray-6">쇼핑</p>
         </div>
         <div className="flex gap-2 justify-start items-center">
-          <p className="b4 text-gray-12">541m</p>
+          <p className="b4 text-gray-12">
+            {location
+              ? getDistanceDiff(
+                  location.latitude,
+                  location.longitude,
+                  data.location.latitude,
+                  data.location.longitude
+                )
+              : "0m"}
+          </p>
           <p className="b6 text-gray-12">{data.storeAddress}</p>
         </div>
       </div>

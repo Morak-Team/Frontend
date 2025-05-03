@@ -149,14 +149,6 @@ const ReviewImageCapture = ({
         onCaptureSuccess?.(res); // props를 통해 부모 컴포넌트로 직접 전달
         onCloseCamera?.();
       }, 200);
-
-      // setReceiptInfo(res);
-      // // onCaptureSuccess(res);
-      // // onCloseCamera?.();
-      // setTimeout(() => {
-      //   onCaptureSuccess?.(); // 필요 시
-      //   onCloseCamera?.(); // 카메라 닫기
-      // }, 200); // 다음 이벤트 루프로 넘김
     },
     onError: (err) => {
       console.error("OCR 실패:", err.response?.data || err);

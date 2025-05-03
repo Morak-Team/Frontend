@@ -1,9 +1,17 @@
+import { usePaymentStore } from "@/store/paymentStore";
+import { useNavigate } from "react-router-dom";
+
 const Complete = () => {
+  const navigate = useNavigate();
+  const { companyId } = usePaymentStore();
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         {/* 닫기 버튼 */}
-        <div className="flex justify-end">
+        <div
+          className="flex justify-end"
+          onClick={() => navigate(`/review/${companyId}`)}
+        >
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
         </div>
 
@@ -22,7 +30,10 @@ const Complete = () => {
 
         {/* 고정 하단 버튼 */}
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
-          <button className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black">
+          <button
+            onClick={() => navigate(`/review/${companyId}`)}
+            className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
+          >
             확인
           </button>
         </div>
