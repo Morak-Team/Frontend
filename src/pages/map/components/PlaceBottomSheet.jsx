@@ -5,9 +5,13 @@ import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
 import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
+import { usePaymentStore } from "@/store/paymentStore";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
-  console.log("place 정보", place);
+  // console.log("place 정보", place);
+  const setCompanyId = usePaymentStore((s) => s.setCompanyId);
+  setCompanyId(place.companyId);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);

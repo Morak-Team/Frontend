@@ -11,20 +11,15 @@ import { usePaymentStore } from "@/store/paymentStore";
 const ConfirmImage = ({ onReject, data }) => {
   const navigate = useNavigate();
   const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
-  const setCompanyId = usePaymentStore((s) => s.setCompanyId);
+
   const moveToReviewPage = () => {
     navigate(`/review/${780}`);
   };
 
   const handleClick = () => {
-    // 1) 피커에서 파싱한 새 Date 객체를 넘기면
     const newDate = new Date(/* year, month-1, day, hour, minute */);
     setPaymentTime(newDate);
 
-    // 2) 회사 ID 저장
-    setCompanyId(780);
-
-    // 3) 페이지 이동
     navigate("/writereview");
   };
 

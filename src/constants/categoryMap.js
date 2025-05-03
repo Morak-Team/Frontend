@@ -4,7 +4,7 @@ export const companyTypeIconMap = {
   지역사회공헌형: "/svgs/type/Ic_Type_Region.svg",
   혼합형: "/svgs/type/Ic_Type_Intersection.svg",
   "기타(창의ㆍ혁신)형": "/svgs/type/Ic_Type_Etc.svg",
-  예비사회적기업: "/svgs/type/Ic_Type_Pre.svg",
+  예비: "/svgs/type/Ic_Type_Pre.svg",
 };
 
 export const businessTypeIconMap = {
@@ -25,7 +25,7 @@ export const companyTypeNameMap = {
   SOCIAL_SERVICE: "사회서비스제공형",
   COMPANY_CONTRIBUTION: "지역사회공헌형",
   ETC: "기타(창의ㆍ혁신)형",
-  PRE: "예비사회적기업",
+  PRE: "예비",
   MIXED: "혼합형",
 };
 

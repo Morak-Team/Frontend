@@ -1,21 +1,39 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+// src/pages/review/StoreReviewPage.jsx
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import PlaceInfo from "@/pages/review/components/PlaceInfo";
-import { useNavigate } from "react-router-dom";
 import useUIStore from "@/store/uiStore";
 
 import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
 import ConfirmImage from "@/pages/map/components/ConfirmImage";
 import Reviews from "@/pages/review/components/Reviews";
+import { useGetCompanyPreview } from "@/apis/company/queries";
 
 const StoreReviewPage = () => {
   const navigate = useNavigate();
-  const { companyId } = useParams();
+  const { companyId: companyIdParam } = useParams();
+  const companyId = Number(companyIdParam);
 
   const [showConfirm, setShowConfirm] = useState(false);
-
   const { turnOnCamera, setTurnOnCamera } = useUIStore();
+
+  const {
+    data: placeInfo,
+    isLoading: placeLoading,
+    error: placeError,
+  } = useGetCompanyPreview(companyId);
+
+  if (placeLoading) {
+    return <p className="text-center py-8">장소 정보를 불러오는 중...</p>;
+  }
+  if (placeError) {
+    return (
+      <p className="text-center py-8">
+        장소 정보 로드 실패: {placeError.message}
+      </p>
+    );
+  }
 
   return (
     <div className="flex flex-col">
@@ -27,7 +45,7 @@ const StoreReviewPage = () => {
         />
       </div>
 
-      <PlaceInfo />
+      <PlaceInfo placeInfo={placeInfo} />
 
       <div className="w-full h-2 bg-gray-3 mt-5" />
 
@@ -49,6 +67,7 @@ const StoreReviewPage = () => {
 
       {showConfirm && (
         <ConfirmImage
+          data={JSON.parse(sessionStorage.getItem("reviewResult"))}
           onReject={() => {
             sessionStorage.removeItem("reviewResult");
             setShowConfirm(false);

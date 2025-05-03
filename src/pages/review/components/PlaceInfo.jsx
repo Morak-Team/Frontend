@@ -1,8 +1,13 @@
 import { categoryIconMap } from "@constants/iconMap";
 import { useNavigate } from "react-router-dom";
+import { businessTypeNameMap } from "@/constants/categoryMap";
 
-const PlaceInfo = () => {
+import { companyTypeNameMap } from "@/constants/categoryMap";
+import { companyTypeIconMap } from "@/constants/categoryMap";
+
+const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
+  console.log(placeInfo);
   const dummy = {
     name: "블루웨일",
     businessType: "카페",
@@ -20,31 +25,46 @@ const PlaceInfo = () => {
       <div className="flex justify-between items-start mt-4 w-full">
         <div className="w-full">
           <h3 className="h3">
-            {dummy.name}
-            <span className="b5 text-gray-6 ml-1">{dummy.businessType}</span>
+            {placeInfo.companyName}
+            <span className="ml-2 b5 text-gray-6">
+              {businessTypeNameMap[placeInfo.companyCategory] ??
+                placeInfo.companyCategory}
+            </span>
           </h3>
           <div className="flex items-center justify-start mt-1">
             <img
               src="/svgs/storeReview/fireIcon.svg"
               className="w-4 h-4 mr-1"
             />
-            <p className="text-sm font-semibold text-orange-500">98도</p>
-            <p className="b6 ml-2">방문자 리뷰 27개</p>
+            <p className="b4 text-primary-8">{placeInfo.temperature}도</p>
+            <p className="b6 ml-2">방문자 리뷰 {placeInfo.reviewCount}개</p>
           </div>
 
-          <div className="bg-secondaryBackground b5 text-secondaryText rounded-xl px-4 py-3 mt-4 w-full leading-relaxed">
-            승리단길에 위치한 장애인과 비장애인이 함께하는 공간, 카페
-            블루웨일입니다.
-            <div className="flex gap-2 mt-2">
-              <div className="flex gap-1 bg-blue-100 px-3 py-1 rounded-full items-center w-fit">
+          <div className="bg-secondaryBackground flex flex-col b5 text-secondary3 rounded-xl px-4 py-3 mt-4 w-full leading-relaxed">
+            {placeInfo.business}
+
+            {placeInfo.companyType && (
+              <div className="inline-flex mt-3 items-center gap-2 px-3 py-1 rounded-xl bg-white w-fit">
                 <img
-                  src="/svgs/map/tagIcon.svg"
-                  alt="tag"
+                  src={
+                    companyTypeIconMap[
+                      companyTypeNameMap[placeInfo.companyType]
+                    ]
+                  }
                   className="w-4 h-4"
                 />
-                <p className="caption2 text-blue-600">{dummy.category}</p>
+
+                <span
+                  className={`caption2 ${
+                    placeInfo.companyType === "PRE"
+                      ? "text-pre"
+                      : "text-secondary3"
+                  }`}
+                >
+                  {companyTypeNameMap[placeInfo.companyType]}
+                </span>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
