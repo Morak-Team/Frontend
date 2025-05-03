@@ -1,25 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import SearchBar from "./components/SearchBar";
 import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
-import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
-import { formatDistance } from "../map/utils/formatDistance";
 import PlaceBottomSheet from "@pages/map/components/PlaceBottomSheet";
 import MapViewer from "../map/components/MapViewer";
-import { getAllCompanies } from "@apis/company/getAllCompanies";
+import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
+import { formatDistance } from "../map/utils/formatDistance";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
+import { useCompanyData } from "./hooks/useCompanyData";
+import { useUserCoords } from "./hooks/useUserCoords";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
 const SearchPage = () => {
   const [keyword, setKeyword] = useState("");
-  const [allPlaces, setAllPlaces] = useState([]);
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
-  const [userCoords, setUserCoords] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [step, setStep] = useState(1);
+
+  const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
+  const userCoords = useUserCoords();
 
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -36,73 +37,17 @@ const SearchPage = () => {
   useEffect(() => {
     if (keyword.trim() === "") {
       setIsSearched(false);
-      setFilteredPlaces([]);
       setStep(recentSearches.length > 0 ? 2 : 1);
     }
   }, [keyword, recentSearches.length]);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserCoords({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      (err) => {
-        console.error("위치 정보를 가져올 수 없습니다:", err);
-      }
-    );
-  }, []);
+  const filteredPlaces = useMemo(() => {
+    if (!isSearched || !keyword.trim()) return [];
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const companies = await getAllCompanies();
-        const enriched = companies.map((c) => ({
-          id: c.companyId,
-          name: c.companyName,
-          category: c.companyCategory,
-          coords: { lat: c.latitude, lng: c.longitude },
-        }));
-        setAllPlaces(enriched);
-      } catch (err) {
-        console.error("기업 데이터 로드 실패:", err);
-      }
-    };
+    const searchText = keyword.toLowerCase();
 
-    fetchCompanies();
-  }, []);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      setStep((prev) => Math.max(1, prev - 1));
-
-      if (step === 5) setSelectedPlace(null);
-      else if (step === 4) {
-        setIsSearched(false);
-        setFilteredPlaces([]);
-      } else if (step === 3) {
-        setKeyword("");
-      }
-    };
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [step]);
-
-  const handleSearch = (text) => {
-    if (!text.trim()) return;
-    window.history.pushState({}, "");
-    setKeyword(text);
-    setIsSearched(true);
-    setStep(4);
-
-    const updated = [text, ...recentSearches.filter((w) => w !== text)];
-    setRecentSearches(updated.slice(0, 5));
-
-    const result = allPlaces
+    return allPlaces
       .map((place) => {
-        const searchText = text.toLowerCase();
         const match =
           place.name.toLowerCase().includes(searchText) ||
           place.category.toLowerCase().includes(searchText);
@@ -130,21 +75,37 @@ const SearchPage = () => {
         if (a.distance == null || b.distance == null) return 0;
         return a.distance - b.distance;
       });
+  }, [allPlaces, keyword, isSearched, userCoords]);
 
-    setFilteredPlaces(result);
+  useEffect(() => {
+    const handlePopState = () => {
+      setStep((prev) => {
+        if (prev === 5) setSelectedPlace(null);
+        else if (prev === 4) setIsSearched(false);
+        else if (prev === 3) setKeyword("");
+        return Math.max(1, prev - 1);
+      });
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const handleSearch = (text) => {
+    if (!text.trim()) return;
+    window.history.pushState({}, "");
+    setKeyword(text);
+    setIsSearched(true);
+    setStep(4);
+
+    const updated = [text, ...recentSearches.filter((w) => w !== text)];
+    setRecentSearches(updated.slice(0, 5));
   };
 
   const handleSelectPlace = async (place) => {
     window.history.pushState({}, "");
-
     try {
       const preview = await getCompanyPreview(place.id);
-
-      const enriched = {
-        ...place,
-        ...preview, // 상세 정보 추가: temperature, reviewCount, companyLocation, companyTelNum 등
-      };
-
+      const enriched = { ...place, ...preview };
       setKeyword(enriched.name);
       setSelectedPlace(enriched);
       setIsSearched(false);
