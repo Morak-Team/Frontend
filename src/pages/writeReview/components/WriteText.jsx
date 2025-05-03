@@ -13,13 +13,19 @@ const WriteText = ({ onNext, onBack }) => {
   console.log(text);
 
   const handleClick = async () => {
+    setIsUploading(true); // 모달 띄우기
+
     try {
       await postReview(reviewInfo, companyId, text);
+      setIsUploading(false); // 성공 시 닫기
       onNext();
     } catch (e) {
       console.log(e);
+      setIsUploading(false); // 실패 시도 닫기
+      alert("리뷰 등록에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">

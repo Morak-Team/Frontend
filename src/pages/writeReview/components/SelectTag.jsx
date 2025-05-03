@@ -42,7 +42,7 @@ const SelectTag = ({ onNext }) => {
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         <div
           className="flex justify-end"
-          onClick={() => navigate("/review/780")}
+          onClick={() => navigate(`/review/${companyId}`)}
         >
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
         </div>
