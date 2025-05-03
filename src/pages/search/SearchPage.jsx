@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
-import samplePlaces from "@constants/map/socialEnterprise";
 import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
 import { formatDistance } from "../map/utils/formatDistance";
 import PlaceBottomSheet from "@pages/map/components/PlaceBottomSheet";
 import MapViewer from "../map/components/MapViewer";
+import { getAllCompanies } from "@apis/company/getAllCompanies";
+import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
 const SearchPage = () => {
   const [keyword, setKeyword] = useState("");
+  const [allPlaces, setAllPlaces] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
@@ -54,6 +56,25 @@ const SearchPage = () => {
   }, []);
 
   useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const companies = await getAllCompanies();
+        const enriched = companies.map((c) => ({
+          id: c.companyId,
+          name: c.companyName,
+          category: c.companyCategory,
+          coords: { lat: c.latitude, lng: c.longitude },
+        }));
+        setAllPlaces(enriched);
+      } catch (err) {
+        console.error("기업 데이터 로드 실패:", err);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  useEffect(() => {
     const handlePopState = () => {
       setStep((prev) => Math.max(1, prev - 1));
 
@@ -79,7 +100,7 @@ const SearchPage = () => {
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
 
-    const result = samplePlaces
+    const result = allPlaces
       .map((place) => {
         const searchText = text.toLowerCase();
         const match =
@@ -113,15 +134,24 @@ const SearchPage = () => {
     setFilteredPlaces(result);
   };
 
-  const handleSelectPlace = (place) => {
+  const handleSelectPlace = async (place) => {
     window.history.pushState({}, "");
 
-    const enriched = filteredPlaces.find((p) => p.id === place.id) || place;
+    try {
+      const preview = await getCompanyPreview(place.id);
 
-    setKeyword(enriched.name);
-    setSelectedPlace(enriched);
-    setIsSearched(false);
-    setStep(5);
+      const enriched = {
+        ...place,
+        ...preview, // 상세 정보 추가: temperature, reviewCount, companyLocation, companyTelNum 등
+      };
+
+      setKeyword(enriched.name);
+      setSelectedPlace(enriched);
+      setIsSearched(false);
+      setStep(5);
+    } catch (err) {
+      console.error("기업 상세 정보 불러오기 실패:", err);
+    }
   };
 
   const handleFocusSearch = () => {
@@ -154,28 +184,24 @@ const SearchPage = () => {
               step={step}
             />
           </div>
-          <div className="w-full h-2 bg-[#F5F4F4]" />
+          <div className="w-full h-2 bg-gray-3" />
         </div>
       )}
 
       {step === 1 && (
-        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+        <div className="flex flex-col items-center justify-center text-center h-full my-44 text-h4 text-gray-9">
           <img
-            src="/images/search-empty.svg"
-            alt="검색 유도"
-            className="w-24 h-24 mb-4"
+            src="/svgs/map/Ic_Illustration_Search.svg"
+            alt="검색기록 없음"
+            className="w-24 h-24"
           />
-          <p>가까운 사회적 기업을 찾아보세요</p>
+          <p>
+            가까운 사회적 기업을
+            <br /> 찾아보세요
+          </p>
         </div>
       )}
-      {step === 2 && (
-        <RecentSearchList
-          recentSearches={recentSearches}
-          onSearch={handleSearch}
-          setRecentSearches={setRecentSearches}
-        />
-      )}
-      {step === 3 && (
+      {(step === 2 || step === 3) && (
         <RecentSearchList
           recentSearches={recentSearches}
           onSearch={handleSearch}
