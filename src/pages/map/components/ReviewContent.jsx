@@ -4,7 +4,9 @@ import { tagList } from "@/constants/review/tagList";
 const ReviewContent = ({ item }) => {
   const scrollRef = useDragScroll();
 
-  const matchedTags = tagList.filter((tag) => item.tag?.includes(tag.value));
+  const matchedTags = tagList.filter((tag) =>
+    item.reviewCategories?.includes(tag.value)
+  );
 
   const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}Profile.svg`;
   return (
@@ -27,7 +29,7 @@ const ReviewContent = ({ item }) => {
           {matchedTags.map((tag, idx) => (
             <div
               key={idx}
-              className="flex select-none items-center gap-1 px-3 py-1 bg-gray-1 text-gray-11 rounded-full whitespace-nowrap text-sm"
+              className="flex select-none items-center gap-1 px-1 py-1 bg-gray-1 text-gray-11 rounded-full whitespace-nowrap text-sm"
             >
               <img
                 src={tag.icon}

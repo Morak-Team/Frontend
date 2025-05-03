@@ -5,7 +5,6 @@ import { useInfiniteReviews } from "@/apis/review/queries";
 import { useInView } from "react-intersection-observer";
 
 const Reviews = ({ setTurnOnCamera, companyId }) => {
-  console.log(companyId);
   const {
     data: countData = 0,
     isLoading: countLoading,
@@ -54,10 +53,6 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
 
   // 모든 페이지를 flatten
   const allReviews = data.pages.flatMap((page) => page.content);
-
-  console.log("data confirm", data.pages[0].content);
-  // const allReviews = data.pages[0];
-  // console.log(allReviews);
 
   return (
     <div className="mb-20">

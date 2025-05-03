@@ -22,34 +22,18 @@ export const useGetStoreReviewCount = (companyId) => {
   });
 };
 
-// 리뷰 전체보기 페이지에서 모든 리뷰를 가져오는 쿼리
-// export const useInfiniteReviews = (storeId) => {
-//   return useInfiniteQuery({
-//     queryKey: ["reviews", storeId],
-//     queryFn: ({ pageParam = 0 }) => getInfiniteReviews(storeId, pageParam),
-//     initialPageParam: 0,
-//     getNextPageParam: (lastPage) => {
-//       // lastPage가 없거나, 마지막 페이지에 도달했으면 undefined 반환
-//       if (!lastPage || lastPage.number + 1 >= lastPage.totalPages) {
-//         return undefined;
-//       }
-//       return lastPage.number + 1;
-//     },
-//   });
-// };
-
+// 가게의 전체 리뷰 무한 스크롤 패칭 쿼리
 export const useInfiniteReviews = (companyId) => {
   return useInfiniteQuery({
     queryKey: ["reviews", companyId],
-    // ⬇️ 여기를 수정:
+
     queryFn: ({ pageParam = 0 }) => {
       console.log("fetch page:", pageParam);
       return getInfiniteReviews(companyId, pageParam);
     },
-    // 첫 페이지를 0으로
+
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      // API 응답에 lastPage.number 가 있습니다.
       const next = lastPage.number + 1;
       return next < lastPage.totalPages ? next : undefined;
     },

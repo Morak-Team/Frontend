@@ -12,7 +12,7 @@ import Reviews from "@/pages/review/components/Reviews";
 const StoreReviewPage = () => {
   const navigate = useNavigate();
   const { companyId } = useParams();
-  console.log(companyId);
+
   const [showConfirm, setShowConfirm] = useState(false);
 
   const { turnOnCamera, setTurnOnCamera } = useUIStore();
