@@ -8,13 +8,15 @@ import useUIStore from "@/store/uiStore";
 import { usePaymentStore } from "@/store/paymentStore";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
-  // console.log("place 정보", place);
+  console.log("place 정보", place);
 
   const setCompanyId = usePaymentStore((s) => s.setCompanyId);
-  const { setReceiptInfo } = usePaymentStore();
+  const { companyId } = usePaymentStore();
+
   useEffect(() => {
     setCompanyId(place.companyId);
-  }, [place.companyId, setCompanyId]);
+    console.log(companyId);
+  }, [place.companyId, setCompanyId, place]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);

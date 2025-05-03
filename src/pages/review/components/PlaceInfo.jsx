@@ -1,24 +1,50 @@
 import { categoryIconMap } from "@constants/iconMap";
 import { useNavigate } from "react-router-dom";
 import { businessTypeNameMap } from "@/constants/categoryMap";
-
+import { useState, useEffect } from "react";
 import { companyTypeNameMap } from "@/constants/categoryMap";
 import { companyTypeIconMap } from "@/constants/categoryMap";
+import { isLikedPlace } from "@/pages/review/utils/isLikedPlace";
+import { usePaymentStore } from "@/store/paymentStore";
+import { likeToggleCompany } from "@/apis/review/likeToggle";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
   console.log(placeInfo);
-  const dummy = {
-    name: "블루웨일",
-    businessType: "카페",
-    category: "일자리제공",
-    address: "서울 송리단길",
-    distance: "98도 방문자 리뷰 27",
-    images: [],
-    liked: false,
-  };
 
-  const categoryIcon = categoryIconMap[dummy.category];
+  const { companyId } = usePaymentStore();
+  console.log(companyId, isLikedPlace(companyId), "좋아요 여부");
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태 (선택)
+  console.log(isLiked, companyId);
+
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        const result = await isLikedPlace(companyId);
+        setIsLiked(result);
+      } catch (e) {
+        console.error("좋아요 여부 확인 실패:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (companyId) fetchLikeStatus();
+  }, [companyId]);
+
+  // 좋아요 토글 클릭
+  const handleLikeClick = async () => {
+    try {
+      setLoading(true);
+      await likeToggleCompany(companyId);
+      setIsLiked((prev) => !prev);
+    } catch (e) {
+      console.error("좋아요 토글 실패:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full px-5">
@@ -72,7 +98,7 @@ const PlaceInfo = ({ placeInfo }) => {
       </div>
       <div className="flex items-center gap-2 mt-6 w-full">
         <a
-          href={`https://map.naver.com/v5/search/${dummy.name}`}
+          href={`https://map.naver.com/v5/search/${placeInfo.companyName}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 min-w-0 py-3 flex items-center justify-center gap-2 rounded-md bg-[#FAFAF9] text-sm text-zinc-900 font-medium overflow-hidden"
@@ -85,13 +111,13 @@ const PlaceInfo = ({ placeInfo }) => {
         </a>
 
         <button
-          onClick={() => {}}
+          onClick={handleLikeClick}
           className="w-12 h-12 flex items-center justify-center rounded-md bg-[#FAFAF9] shrink-0"
         >
           <img
             src={
-              dummy.liked
-                ? "/svgs/storeReview/fillHeartIcon.svg"
+              isLiked
+                ? "/svgs/storeReview/fullHeartIcon.svg"
                 : "/svgs/storeReview/emptyHeartIcon.svg"
             }
             alt="좋아요 버튼"
