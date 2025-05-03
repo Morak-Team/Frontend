@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
@@ -14,8 +14,7 @@ import { useToggleLike } from "./hooks/useToggleLike";
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [placesWithDistance, setPlacesWithDistance] = useState([]);
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [showOnlyLiked, setShowOnlyLiked] = useState(false);
 
   const [userCoords, setUserCoords] = useState(null);
@@ -36,9 +35,9 @@ const MapPage = () => {
   }, []);
 
   const { toggleLike: handleToggleLike } = useToggleLike({
-    placesWithDistance,
-    setPlacesWithDistance,
-    setFilteredPlaces,
+    placesWithDistance: places,
+    setPlacesWithDistance: setPlaces,
+    setFilteredPlaces: () => {},
     showOnlyLiked,
     selectedPlace,
     setSelectedPlace,
@@ -47,11 +46,10 @@ const MapPage = () => {
   useEffect(() => {
     if (location.state?.resetMap) {
       setSelectedPlace(null);
-      setFilteredPlaces(placesWithDistance);
       setMoveToCurrentLocation(false);
       navigate(location.pathname, { replace: true });
     }
-  }, [location, placesWithDistance, navigate]);
+  }, [location, navigate]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -69,44 +67,55 @@ const MapPage = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getAllCompanies();
-        const withDistance = data.map((company) => {
-          const distInMeters = userCoords
-            ? getDistanceFromLatLon(
-                userCoords.lat,
-                userCoords.lng,
-                company.latitude,
-                company.longitude
-              )
-            : 0;
-
-          return {
-            ...company,
-            id: company.companyId,
-            name: company.companyName,
-            coords: { lat: company.latitude, lng: company.longitude },
-            distance: distInMeters,
-            formattedDistance: formatDistance(distInMeters),
-          };
-        });
-
-        setPlacesWithDistance(withDistance);
-        setFilteredPlaces(withDistance);
+        const enriched = data.map((company) => ({
+          ...company,
+          id: company.companyId,
+          name: company.companyName,
+          coords: { lat: company.latitude, lng: company.longitude },
+        }));
+        setPlaces(enriched);
       } catch (error) {
         console.error("기업 데이터를 불러오는 데 실패했습니다:", error);
       }
     };
 
-    if (userCoords) fetchCompanies();
-  }, [userCoords]);
+    fetchCompanies();
+  }, []);
+
+  const enrichedPlaces = useMemo(() => {
+    return places.map((place) => {
+      const dist = userCoords
+        ? getDistanceFromLatLon(
+            userCoords.lat,
+            userCoords.lng,
+            place.coords.lat,
+            place.coords.lng
+          )
+        : 0;
+
+      return {
+        ...place,
+        distance: dist,
+        formattedDistance: formatDistance(dist),
+      };
+    });
+  }, [places, userCoords]);
+
+  const filteredPlaces = useMemo(() => {
+    if (showOnlyLiked) {
+      return enrichedPlaces.filter((p) => p.liked);
+    }
+    return enrichedPlaces;
+  }, [enrichedPlaces, showOnlyLiked]);
 
   const handleCategorySelect = (englishCategory) => {
-    const filtered = placesWithDistance
+    const filtered = enrichedPlaces
       .filter((p) => p.companyCategory === englishCategory)
       .map((p) => ({ ...p, isSearchResult: true }));
 
-    setFilteredPlaces(filtered);
     setSelectedPlace(null);
     setShowOnlyLiked(false);
+    setPlaces(filtered);
   };
 
   const handleToggleLikedFilter = async () => {
@@ -119,30 +128,17 @@ const MapPage = () => {
         const likedCompanies = await getLikedCompanies();
         const likedCompanyIds = likedCompanies.map((c) => c.companyId);
 
-        const likedWithMeta = likedCompanies.map((company) => {
-          const matched = placesWithDistance.find(
-            (p) => p.id === company.companyId
-          );
-          const dist = matched?.distance || 0;
-          const formatted = matched?.formattedDistance || formatDistance(dist);
+        const updated = enrichedPlaces.map((p) => ({
+          ...p,
+          liked: likedCompanyIds.includes(p.id),
+        }));
 
-          return {
-            ...company,
-            id: company.companyId,
-            name: company.companyName,
-            coords: matched?.coords,
-            distance: dist,
-            formattedDistance: formatted,
-            liked: true,
-          };
-        });
-
-        setFilteredPlaces(likedWithMeta);
+        setPlaces(updated);
       } catch (err) {
         console.error("찜한 기업 목록 조회 실패:", err);
       }
     } else {
-      setFilteredPlaces(placesWithDistance);
+      setPlaces(enrichedPlaces);
     }
   };
 
@@ -164,7 +160,7 @@ const MapPage = () => {
         onClick={handleSearchClick}
         className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[33.5rem] h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between bg-white rounded-2xl shadow cursor-pointer"
       >
-        <span className="text-gray-400 text-sm sm:text-base">
+        <span className="text-gray-6 text-b2">
           내 주변 가치가게 찾기
         </span>
         <img
