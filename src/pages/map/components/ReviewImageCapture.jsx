@@ -7,7 +7,7 @@ import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
 
 import imageCompression from "browser-image-compression";
 const ReviewImageCapture = ({
-  storeId,
+  companyId,
   turnOnCamera,
   onCloseCamera,
   onCaptureSuccess,

@@ -10,9 +10,9 @@ export const getReviewsForPreview = async (companyId) => {
 };
 
 // 모든 리뷰 페이지 무한 스크롤 쿼리
-export const getInfiniteReviews = async (storeId, page) => {
-  const res = await api.get("/reviews/public/get-all-company-reviews", {
-    params: { companyId: storeId, page, size: 10 },
+export const getInfiniteReviews = async (companyId, page) => {
+  const res = await api.get("/reviews/public/get-company-reviews", {
+    params: { companyId: companyId, page, size: 10 },
   });
   return res.data;
 };

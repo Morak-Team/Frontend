@@ -3,9 +3,9 @@ import ReviewContent from "@/pages/map/components/ReviewContent";
 import { Link } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 
-const ReviewList = ({ setTurnOnCamera, storeId }) => {
-  const { data: count, isLoading } = useGetStoreReviewCount(1);
-  const { data: preview } = useStoreReviews(1);
+const ReviewList = ({ setTurnOnCamera, companyId }) => {
+  const { data: count, isLoading } = useGetStoreReviewCount(companyId);
+  const { data: preview } = useStoreReviews(companyId);
 
   return (
     <div className="mb-20 px-5 sm:px-6">
@@ -30,7 +30,7 @@ const ReviewList = ({ setTurnOnCamera, storeId }) => {
 
       <div className="w-full flex justify-center mt-8">
         <Link
-          to={`/review/${storeId}`}
+          to={`/review/${companyId}`}
           className="b4 text-gray-9 bg-gray-2 px-6 py-2 rounded-full"
         >
           리뷰 더보기

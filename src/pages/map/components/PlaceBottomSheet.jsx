@@ -7,6 +7,7 @@ import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
+  console.log("place 정보", place);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -17,7 +18,6 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   const bottomOffset =
     turnOnCamera || isExpanded ? "bottom-0" : "bottom-[84px]";
 
-  const storeId = 1;
   const MIN_HEIGHT = 220;
   const MAX_HEIGHT = useRef(window.innerHeight);
   const controls = useAnimation();
@@ -124,11 +124,14 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
 
         {isExpanded && (
           <>
-            <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
+            <ReviewList
+              setTurnOnCamera={setTurnOnCamera}
+              companyId={place.companyId}
+            />
 
             {turnOnCamera && (
               <ReviewImageCapture
-                storeId={storeId}
+                companyId={place.companyId}
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
                 onCaptureSuccess={(data) => {

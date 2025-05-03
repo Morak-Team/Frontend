@@ -11,7 +11,8 @@ import Reviews from "@/pages/review/components/Reviews";
 
 const StoreReviewPage = () => {
   const navigate = useNavigate();
-  const { storeId } = useParams();
+  const { companyId } = useParams();
+  console.log(companyId);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const { turnOnCamera, setTurnOnCamera } = useUIStore();
@@ -31,12 +32,12 @@ const StoreReviewPage = () => {
       <div className="w-full h-2 bg-gray-3 mt-5" />
 
       <div className="p-5">
-        <Reviews setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
+        <Reviews setTurnOnCamera={setTurnOnCamera} companyId={companyId} />
       </div>
 
       {turnOnCamera && (
         <ReviewImageCapture
-          storeId={storeId}
+          companyId={companyId}
           turnOnCamera={turnOnCamera}
           onCloseCamera={() => setTurnOnCamera(false)}
           onCaptureSuccess={() => {

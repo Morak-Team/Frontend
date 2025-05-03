@@ -4,12 +4,13 @@ import { useGetStoreReviewCount } from "@/apis/review/queries";
 import { useInfiniteReviews } from "@/apis/review/queries";
 import { useInView } from "react-intersection-observer";
 
-const Reviews = ({ setTurnOnCamera, storeId }) => {
+const Reviews = ({ setTurnOnCamera, companyId }) => {
+  console.log(companyId);
   const {
     data: countData = 0,
     isLoading: countLoading,
     error: countError,
-  } = useGetStoreReviewCount(storeId);
+  } = useGetStoreReviewCount(companyId);
 
   const {
     data,
@@ -18,12 +19,12 @@ const Reviews = ({ setTurnOnCamera, storeId }) => {
     isFetchingNextPage,
     isLoading: reviewsLoading,
     error: reviewsError,
-  } = useInfiniteReviews(storeId);
+  } = useInfiniteReviews(companyId);
 
   // 3) 스크롤 관찰자 세팅 (threshold, rootMargin)
   const { ref, inView } = useInView({
-    threshold: 1.0,
-    rootMargin: "0px 0px -200px 0px",
+    threshold: 0.5,
+    rootMargin: "0px",
   });
 
   useEffect(() => {
@@ -51,9 +52,12 @@ const Reviews = ({ setTurnOnCamera, storeId }) => {
     );
   }
 
-  console.log("data confirm", data);
-  const allReviews = data.pages[0];
-  console.log(allReviews);
+  // 모든 페이지를 flatten
+  const allReviews = data.pages.flatMap((page) => page.content);
+
+  console.log("data confirm", data.pages[0].content);
+  // const allReviews = data.pages[0];
+  // console.log(allReviews);
 
   return (
     <div className="mb-20">
@@ -72,7 +76,6 @@ const Reviews = ({ setTurnOnCamera, storeId }) => {
           <p className="b5 text-orange-500">리뷰 쓰기</p>
         </button>
       </div>
-
       {/* 리뷰 리스트 */}
       <div className="space-y-6">
         {allReviews.map((item, idx) => (
@@ -86,13 +89,13 @@ const Reviews = ({ setTurnOnCamera, storeId }) => {
         {isFetchingNextPage && (
           <p className="py-2 text-gray-500">불러오는 중...</p>
         )}
-        {!hasNextPage && (
+        {/* {!hasNextPage && (
           <p className="py-2 text-gray-500">모두 불러왔습니다.</p>
         )}
 
         {!hasNextPage || allReviews.length >= countData ? (
           <p className="py-2 text-gray-500">모두 불러왔습니다.</p>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );
