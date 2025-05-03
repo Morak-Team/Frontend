@@ -3,7 +3,7 @@ import PlaceCard from "./PlaceCard";
 const PlaceList = ({ places, onSelect, showEmptyMessage }) => {
   if (!places.length) {
     return showEmptyMessage ? (
-      <div className="flex flex-col items-center justify-center mt-32 text-center font-semibold leading-6 text-gray-500">
+      <div className="flex flex-col items-center justify-center mt-32 text-center text-h4 font-semibold text-gray-9">
         <img
           src="/svgs/map/Ic_Illustration_Search.svg"
           alt="최근 검색 결과 없음"

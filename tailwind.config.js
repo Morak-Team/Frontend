@@ -19,6 +19,8 @@ export default {
           12: "rgba(46, 45, 43, 1)",
           13: "rgba(15, 15, 14, 1)",
         },
+        orange: "#FF6F31",
+        blue: "#005C9E"
       },
       fontSize: {
         h1: ["1.75rem", { lineHeight: "140%" }],

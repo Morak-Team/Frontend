@@ -33,7 +33,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
         <img src={BackIcon} alt="뒤로가기" className="w-6 h-6 sm:w-7 sm:h-7" />
       </button>
 
-      <h1 className="pt-24 sm:pt-32 text-2xl sm:text-4xl font-semibold text-center">
+      <h1 className="pt-24 sm:pt-32 text-h1 text-gray-12 sm:text-4xl font-semibold text-center">
         프로필사진을 설정해주세요.
       </h1>
 
@@ -65,7 +65,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
       <div className="w-full flex justify-center pb-6">
         <button
           onClick={handleConfirm}
-          className="w-full max-w-[33.4rem] h-12 px-4 bg-[#FF6F31] text-white font-semibold rounded-2xl"
+          className="w-full max-w-[33.4rem] h-12 px-4 bg-orange text-white font-semibold rounded-2xl"
         >
           확인
         </button>
