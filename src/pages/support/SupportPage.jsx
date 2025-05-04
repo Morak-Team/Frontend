@@ -1,5 +1,5 @@
 import CompanyTab from "@/pages/support/components/CompanyTab";
-import ConsummerTab from "@/pages/support/components/ConsummerTab";
+import ConsumerTab from "@/pages/support/components/ConsumerTab";
 import { useState } from "react";
 
 const SupportPage = () => {
@@ -32,7 +32,7 @@ const SupportPage = () => {
       </div>
 
       <div className="mt-7">
-        {category === "consummer" ? <ConsummerTab /> : <CompanyTab />}
+        {category === "consummer" ? <ConsumerTab /> : <CompanyTab />}
       </div>
     </div>
   );
