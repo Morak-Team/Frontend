@@ -17,6 +17,7 @@ const SearchPage = () => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [step, setStep] = useState(1);
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
@@ -192,8 +193,9 @@ const SearchPage = () => {
             place={selectedPlace}
             onClose={() => {
               setSelectedPlace(null);
-              setStep(4);
+              setIsBottomSheetExpanded(false);
             }}
+            onExpandChange={setIsBottomSheetExpanded}
           />
         </div>
       )}

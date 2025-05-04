@@ -46,6 +46,11 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
     };
   }, [isExpanded, onExpandChange, setBottomSheetOpen]);
 
+  useEffect(() => {
+    controls.start({ height: MIN_HEIGHT });
+    setIsExpanded(false);
+  }, [controls]);
+
   const handleTouchStart = (e) => {
     if (!isMobile) return;
     startY.current = e.touches[0].clientY;
