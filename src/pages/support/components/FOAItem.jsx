@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 const FOAItem = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-80 flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full">
+    <div className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full">
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
@@ -11,7 +14,11 @@ const FOAItem = () => {
             D-3
           </div>
         </div>
-        <img src="/svgs/support/company/forwardIcon.svg" className="w-4 h-4" />
+        <img
+          onClick={() => navigate("/support/list/3")}
+          src="/svgs/support/company/forwardIcon.svg"
+          className="w-4 h-4 cursor-pointer"
+        />
       </div>
 
       {/* 본문: 텍스트 내용 */}
