@@ -247,7 +247,7 @@ const ConfirmImage = ({ onReject, data }) => {
       <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2 sm:w-[77%]">
         <div className="flex gap-2 justify-start items-center">
           <p className="h3 text-gray-12">{data.storeName}</p>
-          <p className="b4 text-gray-6">쇼핑</p>
+          <p className="b4 text-gray-6">{data?.companyCategory ?? "기타"}</p>
         </div>
         <div className="flex gap-2 justify-start items-center">
           <p className="b4 text-gray-12">
