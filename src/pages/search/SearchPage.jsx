@@ -18,6 +18,7 @@ const SearchPage = () => {
   const [isSearched, setIsSearched] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [step, setStep] = useState(1);
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
@@ -100,6 +101,10 @@ const SearchPage = () => {
     setIsSearched(true);
     setStep(4);
 
+    setSelectedPlace(null);
+    setIsBottomSheetVisible(false);
+    setIsBottomSheetExpanded(false);
+
     const updated = [text, ...recentSearches.filter((w) => w !== text)];
     setRecentSearches(updated.slice(0, 5));
   };
@@ -111,7 +116,8 @@ const SearchPage = () => {
       const enriched = { ...place, ...preview };
       setKeyword(enriched.name);
       setSelectedPlace(enriched);
-      setIsSearched(false);
+      setIsBottomSheetVisible(true);
+      setIsBottomSheetExpanded(false);
       setStep(5);
     } catch (err) {
       console.error("기업 상세 정보 불러오기 실패:", err);
@@ -179,24 +185,25 @@ const SearchPage = () => {
           showEmptyMessage={true}
         />
       )}
-      {step === 5 && selectedPlace && (
+      {step === 5 && (
         <div className="relative w-full h-screen">
           <MapViewer
-            places={[selectedPlace]}
-            center={selectedPlace.coords}
-            markerPosition={selectedPlace.coords}
-            markerLabel={selectedPlace.name}
+            places={selectedPlace ? [selectedPlace] : []}
+            center={selectedPlace?.coords}
+            markerPosition={selectedPlace?.coords}
+            markerLabel={selectedPlace?.name}
             zoom={17}
             selectedPlace={selectedPlace}
+            onMarkerClick={() => setIsBottomSheetVisible(true)}
           />
-          <PlaceBottomSheet
-            place={selectedPlace}
-            onClose={() => {
-              setSelectedPlace(null);
-              setIsBottomSheetExpanded(false);
-            }}
-            onExpandChange={setIsBottomSheetExpanded}
-          />
+
+          {selectedPlace && isBottomSheetVisible && (
+            <PlaceBottomSheet
+              place={selectedPlace}
+              onClose={() => setIsBottomSheetVisible(false)}
+              onExpandChange={setIsBottomSheetExpanded}
+            />
+          )}
         </div>
       )}
     </div>
