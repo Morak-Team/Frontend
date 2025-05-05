@@ -8,13 +8,15 @@ import Step3 from "@/pages/support/components/step/Step3";
 import Step4 from "@/pages/support/components/step/Step4";
 import Step5 from "@/pages/support/components/step/Step5";
 import Step6 from "@/pages/support/components/step/Step6";
+import Step7 from "@/pages/support/components/step/Step7";
 
-const steps = [Step1, Step2, Step3, Step4, Step5, Step6];
+const steps = [Step1, Step2, Step3, Step4, Step5, Step6, Step7];
 
 const SupportRecommendPage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [step, setStep] = useState(0);
+  const [recommendResult, setRecommendResult] = useState(null); // ✅ 결과 상태 추가
 
   console.log(userInfo);
 
@@ -31,7 +33,7 @@ const SupportRecommendPage = () => {
 
   return (
     <div className="relative w-full h-[calc(100vh-5.25rem)] overflow-y-auto scrollbar-hide">
-      <div className="p-5 flex justify-between items-center">
+      <div className="px-5 pt-3 flex justify-between items-center">
         <div className="w-1/3" />
 
         <img
@@ -53,6 +55,9 @@ const SupportRecommendPage = () => {
             onNext={nextStep}
             onBack={prevStep}
             defaultValue={userInfo}
+            userInfo={userInfo}
+            setRecommendResult={setRecommendResult} // ✅ Step6에 전달
+            recommendResult={recommendResult} // ✅ Step7에 전달
           />
         </motion.div>
       </AnimatePresence>

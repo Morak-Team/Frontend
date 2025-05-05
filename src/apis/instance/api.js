@@ -6,3 +6,7 @@ const api = axios.create({
 });
 
 export default api;
+
+export const pythonServer = axios.create({
+  baseURL: import.meta.env.VITE_PYTHON_SERVER,
+});

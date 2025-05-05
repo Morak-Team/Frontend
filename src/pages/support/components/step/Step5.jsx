@@ -30,6 +30,7 @@ const Step5 = ({ onNext, defaultValue }) => {
     "소셜벤처 인증기업",
     "고용창출 기업",
     "지역특화산업 기업",
+    "없음",
   ];
 
   return (
