@@ -130,7 +130,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
             e.stopPropagation();
             onToggleLike?.(place.id);
           }}
-          className="w-14 p-2 flex items-center justify-center rounded-md bg-gray-2"
+          className="w-14 h-14 p-2 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
             src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart_Empty.svg"}

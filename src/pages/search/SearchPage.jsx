@@ -9,6 +9,7 @@ import { formatDistance } from "../map/utils/formatDistance";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { useCompanyData } from "./hooks/useCompanyData";
 import { useUserCoords } from "./hooks/useUserCoords";
+import useAuthStore from "@/store/authStore";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -23,6 +24,7 @@ const SearchPage = () => {
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
   const userCoords = useUserCoords();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -131,6 +133,17 @@ const SearchPage = () => {
     }
   };
 
+  const handleToggleLike = (id) => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 기능입니다.");
+      return;
+    }
+
+    setSelectedPlace((prev) =>
+      prev?.id === id ? { ...prev, liked: !prev.liked } : prev
+    );
+  };
+
   return (
     <div className="relative min-h-screen bg-white">
       {step === 5 ? (
@@ -202,6 +215,7 @@ const SearchPage = () => {
               place={selectedPlace}
               onClose={() => setIsBottomSheetVisible(false)}
               onExpandChange={setIsBottomSheetExpanded}
+              onToggleLike={handleToggleLike}
             />
           )}
         </div>
