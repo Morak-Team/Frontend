@@ -72,3 +72,11 @@
     @apply text-[0.75rem] leading-[150%] font-medium;
   }
 }
+
+/* Scroll Snap (중앙 정렬) */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+}
+.scroll-snap-align-center {
+  scroll-snap-align: center;
+}

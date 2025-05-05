@@ -1,24 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { tagList } from "@/constants/review/tagList";
+import { usePaymentStore } from "@/store/paymentStore";
+import { useNavigate } from "react-router-dom";
 
 const SelectTag = ({ onNext }) => {
-  const [selectedTags, setSelectedTags] = useState([]);
+  const navigate = useNavigate();
+  const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
 
-  const tags = [
-    { label: "품질이 좋아요", icon: "/svgs/review/tags/meaningful.svg" },
-    { label: "친환경적이에요", icon: "/svgs/review/tags/meaningful.svg" },
-    { label: "가격이 합리적이에요", icon: "/svgs/review/tags/meaningful.svg" },
-    { label: "청결해요", icon: "/svgs/review/tags/meaningful.svg" },
-    { label: "다시 방문하고 싶어요", icon: "/svgs/review/tags/meaningful.svg" },
-    { label: "의미있는 소비였어요", icon: "/svgs/review/tags/meaningful.svg" },
-    {
-      label: "우리 지역에 도움이 돼요",
-      icon: "/svgs/review/tags/meaningful.svg",
-    },
-    {
-      label: "이웃과 연결된 느낌이에요",
-      icon: "/svgs/review/tags/meaningful.svg",
-    },
-  ];
+  const { reviewInfo } = usePaymentStore();
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [temperature, setTemperature] = useState(87.5);
+
+  const companyId = usePaymentStore((s) => s.companyId);
+  console.log("tag", selectedTags);
+
+  console.log("Company ID:", companyId);
 
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
@@ -28,11 +24,26 @@ const SelectTag = ({ onNext }) => {
     }
   };
 
-  console.log(selectedTags);
+  useEffect(() => {
+    console.log("updated reviewInfo", reviewInfo);
+  }, [reviewInfo]);
+
+  const handleClick = () => {
+    setReviewInfo({
+      temperature,
+      reviewCategory: selectedTags, // 최대 3개
+      companyId: companyId,
+    });
+
+    onNext();
+  };
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
-        <div className="flex justify-end">
+        <div
+          className="flex justify-end"
+          onClick={() => navigate(`/review/${companyId}`)}
+        >
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
         </div>
 
@@ -65,12 +76,12 @@ const SelectTag = ({ onNext }) => {
             </p>
 
             <div className="flex flex-col mt-6 gap-2">
-              {tags.map((tag) => {
-                const isSelected = selectedTags.includes(tag.label);
+              {tagList.map((tag) => {
+                const isSelected = selectedTags.includes(tag.value);
                 return (
                   <button
                     key={tag.label}
-                    onClick={() => handleTagClick(tag.label)}
+                    onClick={() => handleTagClick(tag.value)}
                     className={`flex w-fit shadow-[0px_2px_12px_rgba(46,45,43,0.05)] items-center gap-2 px-3 py-2 rounded-full border transition ${
                       isSelected
                         ? "border-orange-500 bg-[#FFF4EC] border-[1px]"
@@ -90,7 +101,7 @@ const SelectTag = ({ onNext }) => {
       {/* 고정 하단 버튼 */}
       <div className="fixed bottom-0 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
-          onClick={onNext}
+          onClick={handleClick}
           className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
         >
           다음

@@ -5,9 +5,62 @@ import { useEffect, useRef, useState } from "react";
 import DatePickerSheet from "@/pages/map/components/DatePickerSheet";
 import TimePickerSheet from "@/pages/map/components/TimePickerSheet";
 import { AnimatePresence } from "framer-motion";
+import { formatDateTime } from "@/pages/map/utils/formatDateTime";
+import { usePaymentStore } from "@/store/paymentStore";
+import { getDistanceDiff } from "@/pages/map/utils/getDistanceDiff";
+import { formatToYMDHMS } from "@/store/paymentStore";
 
-const ConfirmImage = ({ onReject }) => {
+const ConfirmImage = ({ onReject, data }) => {
   const navigate = useNavigate();
+  // 이 화면에서 넘겨야 할 것 -> 시간 정보, 결제승인번호
+  const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
+  const { reviewInfo } = usePaymentStore();
+
+  const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
+
+  console.log("confirm", data);
+
+  const moveToReviewPage = () => {
+    navigate(`/review/${780}`);
+  };
+
+  // const handleClick = () => {
+  //   const newDate = new Date(/* year, month-1, day, hour, minute */);
+  //   setPaymentTime(newDate);
+
+  //   navigate("/writereview");
+  // };
+
+  const handleClick = () => {
+    const pad = (n) => String(n).padStart(2, "0");
+
+    const extractNumber = (str) => parseInt(str.replace(/\D/g, ""), 10); // 숫자만 추출
+
+    const hour24 =
+      selectedTime.period === "오후"
+        ? (extractNumber(selectedTime.hour) % 12) + 12
+        : extractNumber(selectedTime.hour) % 12;
+
+    const rawDateStr = `2025/${pad(extractNumber(selectedDate.month))}/${pad(extractNumber(selectedDate.day))} ${pad(hour24)}:${pad(extractNumber(selectedTime.minute))}:00`;
+
+    const dateObj = new Date(rawDateStr);
+    console.log("✅ raw:", rawDateStr);
+    console.log("📆 dateObj:", dateObj);
+
+    if (isNaN(dateObj.getTime())) {
+      console.warn("❌ Invalid constructed date", rawDateStr);
+      return;
+    }
+
+    setReviewInfo({
+      paymentInfoTime: formatToYMDHMS(dateObj),
+      paymentInfoConfirmNum: data.confirmNumber,
+    });
+    console.log(reviewInfo);
+
+    navigate("/writereview");
+  };
+
   const mapRef = useRef(null);
   const [location, setLocation] = useState(null);
   const [isMapLoading, setIsMapLoading] = useState(false);
@@ -15,15 +68,22 @@ const ConfirmImage = ({ onReject }) => {
 
   const [showPickerType, setShowPickerType] = useState(null); // null, "date", "time"
 
-  const [selectedDate, setSelectedDate] = useState({
-    month: "2월",
-    day: "14일",
-  });
+  // 방문 날짜/시간 상태 (빈값으로 초기화)
+  const [selectedDate, setSelectedDate] = useState({ month: "", day: "" });
   const [selectedTime, setSelectedTime] = useState({
-    period: "오후",
-    hour: "1시",
-    minute: "45분",
+    period: "",
+    hour: "",
+    minute: "",
   });
+
+  // data.orderDateTime이 들어오면 파싱해서 상태 셋팅
+  useEffect(() => {
+    if (data?.orderDateTime) {
+      const { date, time } = formatDateTime(data.orderDateTime);
+      setSelectedDate(date);
+      setSelectedTime(time);
+    }
+  }, [data?.orderDateTime]);
 
   // 현재 위치 가져오기
   useEffect(() => {
@@ -52,8 +112,8 @@ const ConfirmImage = ({ onReject }) => {
         if (!mounted) return;
 
         const naverLocation = new window.naver.maps.LatLng(
-          location.latitude,
-          location.longitude
+          data.location.latitude,
+          data.location.longitude
         );
 
         const map = new window.naver.maps.Map(mapRef.current, {
@@ -100,15 +160,18 @@ const ConfirmImage = ({ onReject }) => {
     <div
       onTouchStart={(e) => e.stopPropagation()}
       onTouchEnd={(e) => e.stopPropagation()}
-      className="fixed min-h-screen inset-0 z-[9999] bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center"
+      className="fixed min-h-screen inset-0 z-[9999] pt-7 bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center"
     >
-      <div className="flex justify-end w-full mt-14 sm:mt-32 pr-5">
-        <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />
+      <div
+        className="flex justify-end w-full mt-14 sm:mt-32 pr-5"
+        onClick={moveToReviewPage}
+      >
+        <img src="/svgs/review/xIcon.svg" className="w-8 h-8 mt-5" />
       </div>
 
       <div className="mt-6 mb-14">
         <p className="text-xl font-bold mb-6 text-center">
-          <span className="h2 text-orange-500">{"이 장소"}</span>
+          <span className="h2 text-orange-500">{data.storeName}</span>
           <span className="h2 text-gray-12">에 다녀오셨군요!</span>
         </p>
       </div>
@@ -129,7 +192,7 @@ const ConfirmImage = ({ onReject }) => {
             수정
           </button>
         </div>
-        <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
+        <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-4">
           <p className="b1 text-gray-12">
             {selectedTime.period} {selectedTime.hour} {selectedTime.minute}
           </p>
@@ -183,18 +246,27 @@ const ConfirmImage = ({ onReject }) => {
 
       <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2 sm:w-[77%]">
         <div className="flex gap-2 justify-start items-center">
-          <p className="h3 text-gray-12">태백농협하나로마트</p>
-          <p className="b4 text-gray-6">쇼핑</p>
+          <p className="h3 text-gray-12">{data.storeName}</p>
+          <p className="b4 text-gray-6">{data?.companyCategory ?? "기타"}</p>
         </div>
         <div className="flex gap-2 justify-start items-center">
-          <p className="b4 text-gray-12">541m</p>
-          <p className="b6 text-gray-12">강원도 태백시 번영로 254</p>
+          <p className="b4 text-gray-12">
+            {location
+              ? getDistanceDiff(
+                  location.latitude,
+                  location.longitude,
+                  data.location.latitude,
+                  data.location.longitude
+                )
+              : "0m"}
+          </p>
+          <p className="b6 text-gray-12">{data.storeAddress}</p>
         </div>
       </div>
 
       <div className="flex flex-col gap-1 justify-center items-center mt-14 w-full">
         <button
-          onClick={() => navigate("/writereview")}
+          onClick={handleClick}
           className="px-6 py-3 border border-black rounded-md b1 text-gray-0 bg-orange-500 w-80 h-12 sm:w-[77%]"
         >
           맞아요

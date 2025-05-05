@@ -1,33 +1,18 @@
-import axios from "axios";
 import api from "@/apis/instance/api";
 
-// 연습용 영화 데이터 패칭 함수
-export const getTopRatedMovies = async (page = 1) => {
-  const res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated`, {
-    params: {
-      language: "en-US",
-      page,
-    },
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
-    },
+// 바텀시트 내부 약 3개의 리뷰 패칭
+export const getReviewsForPreview = async (companyId) => {
+  const res = await api.get("/reviews/public/get-company-reviews", {
+    params: { companyId, size: 3 },
   });
 
   return res.data;
 };
 
-// --------------- 실제 사용할 함수들 (수정 예정)
-export const getReviews = async (storeId) => {
-  const res = await api.get("/reviews/get-all-company-reviews", {
-    params: { storeId, limit: 5 },
+// 모든 리뷰 페이지 무한 스크롤 쿼리
+export const getInfiniteReviews = async (companyId, page) => {
+  const res = await api.get("/reviews/public/get-company-reviews", {
+    params: { companyId: companyId, page, size: 10 },
   });
-
-  return res.data;
-};
-
-export const getInfiniteReviews = async (storeId, page) => {
-  const res = await api.get("/review", { params: { storeId, page } });
-
   return res.data;
 };
