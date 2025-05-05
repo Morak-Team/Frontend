@@ -5,18 +5,29 @@ import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
 import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
+import { usePaymentStore } from "@/store/paymentStore";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
+  console.log("place 정보", place);
+
+  const setCompanyId = usePaymentStore((s) => s.setCompanyId);
+  const { companyId } = usePaymentStore();
+
+  useEffect(() => {
+    setCompanyId(place.companyId);
+    console.log(companyId);
+  }, [place.companyId, setCompanyId, place]);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
+  const [companyInfo, setCompanyInfo] = useState(null);
+  console.log("company", companyInfo);
   const { turnOnCamera, setTurnOnCamera, setBottomSheetOpen } = useUIStore();
 
   const bottomOffset =
     turnOnCamera || isExpanded ? "bottom-0" : "bottom-[84px]";
 
-  const storeId = 1;
   const MIN_HEIGHT = 220;
   const MAX_HEIGHT = useRef(window.innerHeight);
   const controls = useAnimation();
@@ -128,26 +139,31 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
 
         {isExpanded && (
           <>
-            <ReviewList setTurnOnCamera={setTurnOnCamera} storeId={storeId} />
+            <ReviewList
+              setTurnOnCamera={setTurnOnCamera}
+              companyId={place.companyId}
+            />
 
             {turnOnCamera && (
               <ReviewImageCapture
-                storeId={storeId}
+                companyId={place.companyId}
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
-                onCaptureSuccess={() => {
-                  setTurnOnCamera(false);
-                  setShowConfirm(true);
+                onCaptureSuccess={(data) => {
+                  setCompanyInfo(data); // 즉시 로컬 상태에 저장
+                  // setReceiptInfo(data); // 전역 상태에도 저장
+                  setShowConfirm(true); // 그다음 Confirm 렌더링
                 }}
               />
             )}
 
             {showConfirm && (
               <ConfirmImage
+                data={companyInfo}
                 onReject={() => {
-                  sessionStorage.removeItem("reviewResult");
                   setShowConfirm(false);
                   setTurnOnCamera(true);
+                  setCompanyInfo(null);
                 }}
               />
             )}

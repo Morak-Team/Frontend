@@ -13,6 +13,8 @@ import ErrorPage from "@/pages/error/ErrorPage";
 import StoryDetail from "@/pages/story/components/StoryDetail";
 import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
 import SignUp from "@pages/join/SignUp";
+import SupportListPage from "@/pages/support/SupportListPage";
+import SupportItemPage from "@/pages/support/SupportItemPage";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
         element: <MyPage />,
       },
       {
-        path: "/review/:storeId",
+        path: "/review/:companyId",
         element: <StoreReviewPage />,
       },
       {
@@ -48,12 +50,20 @@ const router = createBrowserRouter([
         element: <StoryPage />,
       },
       {
-        path: "/story/:storyId",
+        path: "/story/:companyId",
         element: <StoryDetail />,
       },
       {
         path: "/support",
         element: <SupportPage />,
+      },
+      {
+        path: "/support/list/:announcementId",
+        element: <SupportItemPage />,
+      },
+      {
+        path: "/support/list",
+        element: <SupportListPage />,
       },
       {
         path: "/writereview",

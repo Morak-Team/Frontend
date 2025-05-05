@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useUIStore from "@/store/uiStore";
 
 const BottomTab = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ 현재 URL 경로 가져오기
   const { turnOnCamera, isBottomSheetOpen, isWriteReview } = useUIStore();
 
   // BottomSheet 확장 or 카메라 켜짐 상태면 숨김
@@ -13,24 +14,28 @@ const BottomTab = () => {
       path: "/map",
       label: "지도",
       icon: "/svgs/bottomTab/mapMenuIcon.svg",
+      selectedIcon: "/svgs/bottomTab/selectedMapMenuIcon.svg",
       onClick: () => navigate("/map", { state: { resetMap: true } }),
     },
     {
       path: "/story",
       label: "이야기",
       icon: "/svgs/bottomTab/storyMenuIcon.svg",
+      selectedIcon: "/svgs/bottomTab/selectedStoryMenuIcon.svg",
       onClick: () => navigate("/story"),
     },
     {
       path: "/support",
       label: "지원",
       icon: "/svgs/bottomTab/supportMenuIcon.svg",
+      selectedIcon: "/svgs/bottomTab/selectedSupportMenuIcon.svg",
       onClick: () => navigate("/support"),
     },
     {
       path: "/mypage",
       label: "내 프로필",
       icon: "/svgs/bottomTab/profileMenuIcon.svg",
+      selectedIcon: "/svgs/bottomTab/selectedProfileMenuIcon.svg",
       onClick: () => navigate("/mypage"),
     },
   ];
@@ -44,8 +49,18 @@ const BottomTab = () => {
             onClick={tab.onClick}
             className="flex flex-col flex-1 sm:w-20 h-12 justify-center items-center gap-1 cursor-pointer"
           >
-            <img src={tab.icon} alt={tab.label} />
-            <span>{tab.label}</span>
+            {/* ✅ 현재 경로와 tab.path가 같으면 selectedIcon, 아니면 기본 icon */}
+            <img
+              src={location.pathname === tab.path ? tab.selectedIcon : tab.icon}
+              alt={tab.label}
+            />
+            <span
+              className={
+                location.pathname === tab.path ? "text-black font-bold" : ""
+              }
+            >
+              {tab.label}
+            </span>
           </div>
         ))}
       </div>

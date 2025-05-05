@@ -3,6 +3,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        secondary: "rgba(53, 171, 255, 1)",
+        secondary3: "rgba(0, 92, 158, 1)",
+        secondaryBackground: "rgba(233, 246, 255, 1)",
+        secondaryText: "rgba(0, 92, 158, 1)",
+        pre: "rgba(152, 44, 128, 1)",
+        error: "rgba(232, 58, 58, 1)",
+        errorContainer: "rgba(255, 232, 232, 1)",
         gray: {
           0: "rgba(255, 255, 255, 1)",
           1: "rgba(253, 253, 253, 1)",
@@ -18,6 +25,21 @@ export default {
           11: "rgba(77, 75, 72, 1)",
           12: "rgba(46, 45, 43, 1)",
           13: "rgba(15, 15, 14, 1)",
+        },
+        primary: {
+          1: "rgba(255, 252, 251, 1)",
+          2: "rgba(255, 248, 245, 1)",
+          3: "rgba(255, 241, 234, 1)",
+          4: "rgba(255, 226, 214, 1)",
+          5: "rgba(255, 197, 173, 1)",
+          6: "rgba(255, 169, 131, 1)",
+          7: "rgba(255, 140, 90, 1)",
+          8: "rgba(255, 111, 49, 1)",
+          9: "rgba(217, 94, 42, 1)",
+          10: "rgba(179, 78, 34, 1)",
+          11: "rgba(128, 56, 25, 1)",
+          12: "rgba(77, 33, 15, 1)",
+          13: "rgba(26, 11, 5, 1)",
         },
         orange: "#FF6F31",
         blue: "#005C9E"
@@ -45,6 +67,9 @@ export default {
     },
     borderWidth: {
       1.6: "1.6px",
+    },
+    boxShadow: {
+      surface: "0px 2px 12px rgba(46, 45, 43, 0.05)",
     },
   },
   plugins: [],

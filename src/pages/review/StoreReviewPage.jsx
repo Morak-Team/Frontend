@@ -1,64 +1,94 @@
-import { useParams } from "react-router-dom";
-import { useInfinitePractice } from "@/apis/review/queries";
-import { useRef } from "react";
-import { useInView } from "react-intersection-observer";
+// src/pages/review/StoreReviewPage.jsx
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getTopRatedMovies } from "@/apis/review/getReviews";
+
+import PlaceInfo from "@/pages/review/components/PlaceInfo";
+import useUIStore from "@/store/uiStore";
+
+import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
+import ConfirmImage from "@/pages/map/components/ConfirmImage";
+import Reviews from "@/pages/review/components/Reviews";
+import { useGetCompanyPreview } from "@/apis/company/queries";
 
 const StoreReviewPage = () => {
-  const { storeId } = useParams();
-  const { ref, inView } = useInView();
+  const navigate = useNavigate();
+  const { companyId: companyIdParam } = useParams();
+  const companyId = Number(companyIdParam);
+  const [companyInfo, setCompanyInfo] = useState(null);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const { turnOnCamera, setTurnOnCamera } = useUIStore();
 
   const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfinitePractice();
+    data: placeInfo,
+    isLoading: placeLoading,
+    error: placeError,
+  } = useGetCompanyPreview(companyId);
 
-  useEffect(() => {
-    if (inView && !isFetchingNextPage && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView]);
-
-  console.log("data", data);
-  console.log(getTopRatedMovies());
-
-  if (isLoading) return <p>로딩 중...</p>;
-  if (error) return <p>에러 발생: {error.message}</p>;
+  if (placeLoading) {
+    return <p className="text-center py-8">장소 정보를 불러오는 중...</p>;
+  }
+  if (placeError) {
+    return (
+      <p className="text-center py-8">
+        장소 정보 로드 실패: {placeError.message}
+      </p>
+    );
+  }
 
   return (
-    <>
-      <h1>가게의 리뷰들을 볼 수 있는 페이지입니다.</h1>
-      <h1>이 가게의 아이디는 {storeId}입니다.</h1>
-
-      <ul className="grid gap-4">
-        {data?.pages.map((page, i) => (
-          <div key={i}>
-            {page.results.map((item) => (
-              <li
-                key={item.id}
-                className="border p-4 rounded-md shadow-sm bg-white"
-              >
-                <h3 className="font-semibold">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.overview}</p>
-              </li>
-            ))}
-          </div>
-        ))}
-      </ul>
-
-      <div ref={ref} className="mt-6 text-center text-blue-600">
-        {isFetchingNextPage
-          ? "불러오는 중..."
-          : hasNextPage
-            ? "스크롤하면 더 가져옵니다 ↓"
-            : "더 이상 데이터 없음!"}
+    <div className="flex flex-col">
+      <div className="flex justify-between pt-14 mx-5 items-center">
+        <img
+          src="/svgs/storeReview/backIcon.svg"
+          className="w-8 h-8"
+          onClick={() => navigate(-1)}
+        />
       </div>
-    </>
+
+      <PlaceInfo placeInfo={placeInfo} />
+
+      <div className="w-full h-2 bg-gray-3 mt-5" />
+
+      <div className="p-5">
+        <Reviews setTurnOnCamera={setTurnOnCamera} companyId={companyId} />
+      </div>
+
+      {turnOnCamera && (
+        <ReviewImageCapture
+          companyId={companyId}
+          turnOnCamera={turnOnCamera}
+          onCloseCamera={() => setTurnOnCamera(false)}
+          onCaptureSuccess={() => {
+            setTurnOnCamera(false);
+            setShowConfirm(true);
+          }}
+        />
+      )}
+      {turnOnCamera && (
+        <ReviewImageCapture
+          companyId={companyId}
+          turnOnCamera={turnOnCamera}
+          onCloseCamera={() => setTurnOnCamera(false)}
+          onCaptureSuccess={(data) => {
+            setCompanyInfo(data); // 즉시 로컬 상태에 저장
+            // setReceiptInfo(data); // 전역 상태에도 저장
+            setShowConfirm(true); // 그다음 Confirm 렌더링
+          }}
+        />
+      )}
+
+      {showConfirm && (
+        <ConfirmImage
+          data={companyInfo}
+          onReject={() => {
+            setShowConfirm(false);
+            setTurnOnCamera(true);
+            setCompanyInfo(null);
+          }}
+        />
+      )}
+    </div>
   );
 };
 

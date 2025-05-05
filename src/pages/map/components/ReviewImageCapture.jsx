@@ -4,8 +4,12 @@ import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
+
+import { usePaymentStore } from "@/store/paymentStore";
+
+import imageCompression from "browser-image-compression";
 const ReviewImageCapture = ({
-  storeId,
+  companyId,
   turnOnCamera,
   onCloseCamera,
   onCaptureSuccess,
@@ -126,35 +130,56 @@ const ReviewImageCapture = ({
 
     canvas.toBlob((blob) => {
       if (blob) {
-        const imageUrl = URL.createObjectURL(blob);
-        setImageBlob(blob);
-        setCapturedImage(imageUrl);
+        const file = new File([blob], "receipt.jpg", { type: "image/png" });
+        setImageBlob(file);
+        setCapturedImage(URL.createObjectURL(file));
         setFromGallery(false);
         setVideoVisible(false);
       }
     }, "image/jpeg");
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: postRecipt,
     retry: 2,
+    onSuccess: (res) => {
+      console.log("res", res);
+
+      setTimeout(() => {
+        onCaptureSuccess?.(res); // props를 통해 부모 컴포넌트로 직접 전달
+        onCloseCamera?.();
+      }, 200);
+    },
+    onError: (err) => {
+      console.error("OCR 실패:", err.response?.data || err);
+      setShowReceiptError(true);
+    },
   });
 
+  // 2) handleUsePhoto 에서도 객체 하나로 넘기기
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
+    console.log(imageBlob.size);
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        initialQuality: 0.8,
+      };
+      const compressedFile = await imageCompression(imageBlob, options);
+      console.log("압축 후 크기:", compressedFile.size);
 
-    onCaptureSuccess?.(); // 성공 시
-    handleCloseCamera();
+      // FormData 에 file + companyId 담기
+      const form = new FormData();
+      form.append("file", compressedFile, compressedFile.name);
+      form.append("companyId", String(780));
 
-    // mutate(imageBlob, {
-    //   onSuccess: (data) => {
-    //     onCaptureSuccess?.(); // 성공 시
-    //     handleCloseCamera();
-    //   },
-    //   onError: () => {
-    //     setShowReceiptError(true); // 실패 시 모달 표시
-    //   },
-    // });
+      // 단일 인자로 FormData 전달
+      mutate(form);
+    } catch (e) {
+      console.error(e);
+      alert("이미지 압축 실패");
+    }
   };
 
   return (
@@ -252,9 +277,13 @@ const ReviewImageCapture = ({
                         fileInputRef.current.click();
                       }
                     }}
-                    className="absolute top-4 left-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                    className="absolute bottom-4 flex gap-2 w-32 h-12 justify-center items-center left-4 z-[10000] text-primary-8 text-xl p-2 bg-primary-3 rounded"
                   >
-                    🔁 다시 선택하기
+                    <img
+                      src="/svgs/review/camera/retryIcon.svg"
+                      className="w-6 h-6"
+                    />
+                    <p className="b1">다시 선택</p>
                   </button>
 
                   {/* 다시 찍기 (오른쪽) */}
@@ -265,9 +294,12 @@ const ReviewImageCapture = ({
                       setVideoVisible(true);
                       startCamera();
                     }}
-                    className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                    className="absolute top-4 left-4 z-[10000] p-2"
                   >
-                    🔁 다시 찍기
+                    <img
+                      src="/svgs/review/camera/backIcon.svg"
+                      className="w-8 h-8"
+                    />
                   </button>
                 </>
               ) : (
@@ -277,18 +309,23 @@ const ReviewImageCapture = ({
                     setVideoVisible(true);
                     startCamera();
                   }}
-                  className="absolute top-4 right-4 z-[10000] text-white text-xl p-2 bg-black/50 rounded"
+                  className="absolute bottom-4 left-4 z-[10000] w-32 h-12 bg-primary-3 flex gap-2 justify-center items-center text-primary-8 text-xl p-2 rounded"
                 >
-                  🔁 다시 찍기
+                  <img
+                    src="/svgs/review/camera/retryIcon.svg"
+                    className="w-6 h-6"
+                  />
+                  <p className="b1">다시 찍기</p>
                 </button>
               )}
 
               {/* 사용하기 버튼 (공통) */}
               <button
                 onClick={handleUsePhoto}
-                className="absolute bottom-4 right-4 z-[10000] px-4 py-2 bg-orange-500 text-white rounded shadow font-semibold"
+                className="absolute bottom-4 right-4 z-[10000] w-32 h-12 flex gap-2 justify-center items-center px-4 py-2 bg-primary-8 text-white rounded shadow font-semibold"
               >
-                ✅ 사용하기
+                <img src="/svgs/review/camera/checkIcon.svg" />
+                사용하기
               </button>
 
               {/* ✅ 오류 모달 (가장 마지막에 렌더링되도록) */}
