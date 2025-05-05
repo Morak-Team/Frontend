@@ -16,7 +16,7 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   useEffect(() => {
     setCompanyId(place.companyId);
     console.log(companyId);
-  }, [place.companyId, setCompanyId, place]);
+  }, [place.companyId, setCompanyId, place, companyId]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
