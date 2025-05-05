@@ -49,7 +49,7 @@ const SelectTag = ({ onNext }) => {
 
         <div className="mt-6 mb-10 text-center">
           <p className="text-xl font-bold">
-            <span className="h2 text-orange-500">이 장소</span>
+            <span className="h2 text-primary-8">이 장소</span>
             <span className="h2 text-gray-12">는 어떠셨나요?</span>
           </p>
         </div>
@@ -64,7 +64,7 @@ const SelectTag = ({ onNext }) => {
               슬라이드하여 온도를 남겨 보세요.
             </p>
             <div className="flex justify-center items-center flex-col">
-              <p className="h1 text-orange-500 text-center mt-6">0도</p>
+              <p className="h1 text-primary-8 text-center mt-6">0도</p>
               <img src="/svgs/review/fire.svg" className="w-52 h-56" />
             </div>
           </div>
@@ -84,8 +84,8 @@ const SelectTag = ({ onNext }) => {
                     onClick={() => handleTagClick(tag.value)}
                     className={`flex w-fit shadow-[0px_2px_12px_rgba(46,45,43,0.05)] items-center gap-2 px-3 py-2 rounded-full border transition ${
                       isSelected
-                        ? "border-orange-500 bg-[#FFF4EC] border-[1px]"
-                        : "border-gray-300 text-gray-12 bg-white hover:bg-gray-50"
+                        ? "border-primary-8 bg-[#FFF4EC] border-[1px]"
+                        : "text-gray-12 bg-white hover:bg-gray-50"
                     }`}
                   >
                     <img src={tag.icon} alt="" className="w-5 h-5" />
@@ -102,7 +102,7 @@ const SelectTag = ({ onNext }) => {
       <div className="fixed bottom-0 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={handleClick}
-          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
+          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
         >
           다음
         </button>

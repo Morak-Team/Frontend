@@ -18,7 +18,7 @@ const Complete = () => {
         {/* 제목 */}
         <div className="mt-6 mb-10 text-center">
           <p className="text-xl font-bold">
-            <span className="h1 text-orange-500">리뷰 쓰기</span>
+            <span className="h1 text-primary-8">리뷰 쓰기</span>
             <span className="h1 text-gray-12"> 완료!</span>
           </p>
           <p className="b5 text-gray-9 mt-2">소중한 온기가 전해졌어요 :)</p>
@@ -32,7 +32,7 @@ const Complete = () => {
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
           <button
             onClick={() => navigate(`/review/${companyId}`)}
-            className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
+            className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
           >
             확인
           </button>

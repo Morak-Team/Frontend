@@ -44,25 +44,25 @@ const LocationStep = ({ onNext, onBack }) => {
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
-      <h1 className="text-2xl font-semibold mb-2">어느 동네에 사세요?</h1>
-      <p className="text-sm text-gray-500 mb-8">
+      <h1 className="text-h1 font-semibold mb-2">어느 동네에 사세요?</h1>
+      <p className="text-b5 text-gray-500 mb-8">
         가까운 사회적 기업을 추천해드릴게요.
       </p>
 
       <label
         htmlFor="location"
-        className="text-sm font-medium text-gray-700 mb-1"
+        className="text-b5 font-medium text-gray-8 mb-1"
       >
         주소
       </label>
 
       <div
         className={`relative w-full flex items-center border-b-2 ${
-          trimmed || checked ? "border-orange-500" : "border-gray-300"
+          trimmed || checked ? "border-primary-8" : "border-gray-6"
         } py-2`}
       >
         {!checked && (
-          <span className="text-lg font-semibold text-black whitespace-nowrap">
+          <span className="text-h2 font-semibold text-gray-12 whitespace-nowrap">
             서울특별시&nbsp;
           </span>
         )}
@@ -75,8 +75,8 @@ const LocationStep = ({ onNext, onBack }) => {
           value={location}
           onChange={handleChange}
           readOnly={checked}
-          className={`flex-1 bg-transparent text-lg font-semibold focus:outline-none placeholder-gray-400 ${
-            checked ? "bg-gray-100 cursor-not-allowed" : ""
+          className={`flex-1 bg-transparent text-h2 font-semibold focus:outline-none placeholder-gray-6 ${
+            checked ? "bg-gray-6 cursor-not-allowed" : ""
           }`}
         />
 
@@ -92,7 +92,7 @@ const LocationStep = ({ onNext, onBack }) => {
       </div>
 
       {(showWarningForSeoul || showNotSeoulMessage) && (
-        <p className="text-sm text-orange-500 mt-2">
+        <p className="text-b5 text-primary-8 mt-2">
           현재는 서울에 한해 사회적 기업들을 소개하고 있습니다.
         </p>
       )}
@@ -102,13 +102,11 @@ const LocationStep = ({ onNext, onBack }) => {
         className="flex items-center mt-6 active:opacity-80"
       >
         {checked ? (
-          <IcCheck className="w-5 h-5 mr-2 text-[#FF6F31]" />
+          <IcCheck className="w-5 h-5 mr-2 text-primary-8" />
         ) : (
-          <IcNonCheck className="w-5 h-5 mr-2 text-gray-400" />
+          <IcNonCheck className="w-5 h-5 mr-2 text-gray-6" />
         )}
-        <span
-          className={`text-sm ${checked ? "text-[#2E2D2B]" : "text-gray-400"}`}
-        >
+        <span className={`text-b5 ${checked ? "text-gray-12" : "text-gray-6"}`}>
           현재 서울에 살고 있지 않습니다.
         </span>
       </button>
@@ -124,8 +122,8 @@ const LocationStep = ({ onNext, onBack }) => {
         <button
           disabled={!isActive}
           onClick={() => isActive && onNext(fullLocation)}
-          className={`w-full h-12 mt-10 font-semibold transition-colors ${
-            isActive ? "bg-[#FF6F31] text-white" : "bg-gray-100 text-gray-400"
+          className={`w-full h-12 mt-10 text-b1 font-semibold transition-colors ${
+            isActive ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
           }`}
         >
           확인

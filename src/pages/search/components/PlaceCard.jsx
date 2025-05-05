@@ -19,10 +19,10 @@ const PlaceCard = ({ place, onClick }) => {
           className="w-6 h-6 mt-1"
         />
         <div className="flex flex-col">
-          <h3 className="text-base font-semibold text-zinc-900">
+          <h3 className="text-b2 font-semibold text-gray-12">
             {place.name}
           </h3>
-          <p className="text-sm text-zinc-500 mt-1">{place.address}</p>
+          <p className="text-b6 text-gray-9 mt-1">{place.address}</p>
         </div>
       </div>
 
@@ -32,18 +32,18 @@ const PlaceCard = ({ place, onClick }) => {
             <img
               src={categoryIcon}
               alt={place.category}
-              className="w-6 h-6 rounded bg-orange-50 p-1"
+              className="w-6 h-6 rounded bg-gray-2 p-1"
             />
           )}
           {businessIcon && (
             <img
               src={businessIcon}
               alt={place.businessType}
-              className="w-6 h-6 rounded bg-blue-50 p-1"
+              className="w-6 h-6 rounded bg-gray-2 p-1"
             />
           )}
         </div>
-        <span className="text-sm text-gray-600">{place.formattedDistance}</span>
+        <span className="text-b6 text-gray-11">{place.formattedDistance}</span>
       </div>
     </div>
   );

@@ -13,11 +13,11 @@ const IntroModal = ({ onClose }) => {
         />
       </button>
 
-      <p className="text-xl sm:text-2xl font-semibold text-zinc-900 text-center">
-        우리 동네 <span className="text-orange-500">사회적기업</span> 찾아보기
+      <p className="text-h3 sm:text-h2 font-semibold text-gray-12 text-center">
+        우리 동네 <span className="text-primary-8">사회적기업</span> 찾아보기
       </p>
 
-      <p className="text-sm sm:text-base text-zinc-700 leading-relaxed text-center whitespace-pre-line">
+      <p className="text-b5 sm:text-b3 text-gray-11 text-center whitespace-pre-line">
         사회적기업은, 판매 수익을 사회문제 해결이나
         {"\n"}이웃 돕기에 쓰는 특별한 기업들이에요.
         {"\n"}우리 동네 사회적기업을 찾아보고, 함께 참여해보세요!

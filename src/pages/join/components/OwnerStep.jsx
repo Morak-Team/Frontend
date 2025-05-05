@@ -25,7 +25,7 @@ const OwnerStep = ({ onNext, onBack }) => {
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
-      <h1 className="text-2xl font-semibold mb-10">
+      <h1 className="text-h1 font-semibold mb-10">
         사회적기업의 사장님이신가요?
       </h1>
 
@@ -54,7 +54,7 @@ const OwnerStep = ({ onNext, onBack }) => {
         disabled={!selected}
         onClick={handleSubmit}
         className={`w-full max-w-[700px] h-12 mt-auto mb-6 font-semibold rounded-lg transition-colors ${
-          selected ? "bg-[#FF6F31] text-white" : "bg-gray-100 text-gray-400"
+          selected ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
         }`}
       >
         확인
