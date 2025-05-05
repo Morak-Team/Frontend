@@ -8,7 +8,7 @@ const Step7 = ({ onNext, defaultValue, userInfo, recommendResult }) => {
     <div className="relative w-full min-h-screen bg-white flex justify-center scrollbar-hide">
       <div className="w-full max-w-[760px] px-5 pt-8 pb-24 overflow-y-auto">
         <p className="h2 mt-4">
-          ㅇㅇ 님을 위한 <br /> 금융상품 추천
+          당신을 위한 <br /> 금융상품 추천
         </p>
 
         <div className="mt-10 flex gap-4 shadow-surface px-6 py-5 flex-col">

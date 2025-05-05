@@ -1,16 +1,40 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useGetFOADetail } from "@/apis/announcement/queries";
+
+// 날짜 형식 확인 함수 (YYYY-MM-DD)
+const isValidDateFormat = (dateStr) => {
+  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+};
+
+// D-day 계산 함수
+const calculateDday = (dateStr) => {
+  const today = new Date();
+  const endDate = new Date(dateStr);
+  const diffTime = endDate.getTime() - today.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+};
 
 const SupportItemPage = () => {
-  const { announcementId } = useParams();
   const navigate = useNavigate();
+  const { announcementId } = useParams();
+  const { data, isLoading } = useGetFOADetail(announcementId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const isDdayAvailable = data?.endDate && isValidDateFormat(data.endDate);
+  const dday = isDdayAvailable ? calculateDday(data.endDate) : null;
+
   return (
     <div className="flex flex-col h-[calc(100vh-5.25rem)] overflow-y-auto">
+      {isLoading && (
+        <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
+          <div className="loader"></div>
+          <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
+        </div>
+      )}
       {/* 이미지 영역 */}
       <div className="relative w-full">
         <img
@@ -33,34 +57,45 @@ const SupportItemPage = () => {
 
       <div className="flex flex-col px-5 pb-5">
         <div className="flex gap-1 mt-9">
-          <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
-            D-3
-          </div>
+          {isDdayAvailable && (
+            <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
+              D-{dday}
+            </div>
+          )}
           <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">
-            기술
+            {data?.announcementType}
           </div>
         </div>
 
-        <p className="h2 mt-4">「2025 코리아 엑스포 파리」</p>
-        <p className="b5 text-gray-9 mt-2">대중소기업농어업협력재단</p>
+        <p className="h2 mt-4">{data?.title}</p>
+        <p className="b5 text-gray-9 mt-2">{data?.agency}</p>
 
         <div className="bg-gray-2 w-full mt-5 h-21 rounded-md p-5">
           <p className="b4 text-gray-8">신청기간</p>
-          <p className="b2">2025년 12월 30일 ~ 2025년 12월 30일</p>
+          <p className="b2">
+            {data?.startDate} ~ {data?.endDate}
+          </p>
         </div>
 
         <p className="b4 mt-8 ml-5 text-secondary">지원사업 소개</p>
         <div className="bg-gray-2 w-full rounded-md mt-2 pt-6 pb-6 px-4">
-          <p className="b2">
-            「2025 코리아 엑스포 파리」 참여기업 모집 공고가 나왔어요.
-            중소기업과 특례대상 중견기업들이 해외 홍보와 판로 개척을 위한 기회를
-            잡을 수 있는 행사인데요. 「2025 코리아 엑스포 파리」 참여기업 모집
-            공고가 나왔어요. 중소기업과 특례대상 중견기업들이 해외 홍보와 판로
-            개척을 위한 기회를 잡을 수 있는 행사인데요. 「2025 코리아 엑스포
-            파리」 참여기업 모집 공고가 나왔어요. 중소기업과 특례대상
-            중견기업들이 해외 홍보와 판로 개척을 위한 기회를 잡을 수 있는
-            행사인데요.
-          </p>
+          {data?.summary?.split("\n\n").map((paragraph, idx) => {
+            const isImageUrl = paragraph
+              .trim()
+              .match(/^https?:\/\/.*\.(png|jpg|jpeg|gif|webp)(\?.*)?$/i);
+            return isImageUrl ? (
+              <img
+                key={idx}
+                src={paragraph.trim()}
+                alt="지원사업 이미지"
+                className="w-full mb-4 rounded-md"
+              />
+            ) : (
+              <p key={idx} className="b2 mb-3 leading-relaxed">
+                {paragraph}
+              </p>
+            );
+          })}
         </div>
 
         <div className="caption2 text-gray-8 mt-10 pl-2">
@@ -73,6 +108,19 @@ const SupportItemPage = () => {
             반드시 해당 기관에 직접 확인하시기 바랍니다.
           </p>
         </div>
+
+        <button
+          onClick={() => {
+            if (data.link) {
+              window.open(data.link, "_blank");
+            }
+          }}
+        >
+          <div className="flex gap-2 bg-secondary justify-center items-center mt-14 rounded-md h-12 w-full">
+            <img src="/svgs/support/company/linkIcon.svg" className="w-6 h-6" />
+            <p className="b1 text-white">바로가기</p>
+          </div>
+        </button>
       </div>
     </div>
   );

@@ -2,22 +2,52 @@ import { useNavigate } from "react-router-dom";
 
 const FOACard = ({ data }) => {
   const navigate = useNavigate();
+
+  // 날짜 포맷: 2025-06-05 → 6월 5일까지
+  const formatEndDate = (raw) => {
+    const match = raw?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return raw;
+    const [, , mm, dd] = match;
+    return `${parseInt(mm, 10)}월 ${parseInt(dd, 10)}일까지`;
+  };
+
+  // D-day 계산: 2025-06-05 → D-3
+  const calculateDday = (raw) => {
+    const match = raw?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+
+    const targetDate = new Date(`${match[1]}-${match[2]}-${match[3]}`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? `D-${diffDays}` : null;
+  };
+
+  const formattedEndDate = formatEndDate(data.endDate);
+  const dday = calculateDday(data.endDate);
+
   return (
     <div className="w-80 flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center">
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
           <div className="b4 text-gray-11 bg-gray-3 px-2 py-1 w-fit rounded-md">
-            5월 2일까지
+            {formattedEndDate}
           </div>
-          <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
-            D-3
-          </div>
+          {dday && (
+            <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
+              {dday}
+            </div>
+          )}
         </div>
         <img
           src="/svgs/support/company/forwardIcon.svg"
-          className="w-4 h-4"
+          className="w-4 h-4 cursor-pointer"
           onClick={() => navigate(`/support/list/${data.id}`)}
+          alt="상세 보기"
         />
       </div>
 

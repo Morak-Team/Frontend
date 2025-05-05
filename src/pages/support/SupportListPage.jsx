@@ -1,8 +1,11 @@
 import FOAItem from "@/pages/support/components/FOAItem";
 import { useNavigate } from "react-router-dom";
+import { useGetAnnouncement } from "@/apis/announcement/queries";
 
 const SupportListPage = () => {
   const navigate = useNavigate();
+
+  const { data, isLoading } = useGetAnnouncement();
   return (
     <div className="flex flex-col pr-5 pl-5 h-[calc(100vh-5.25rem)] overflow-y-auto pb-5 mb-5">
       <div className="mt-16 flex justify-between items-center">
@@ -15,15 +18,13 @@ const SupportListPage = () => {
       </div>
 
       <div className="mt-10">
-        <p className="b5 text-gray-9">총 9개</p>
+        <p className="b5 text-gray-9">총 {data.length}개</p>
       </div>
 
       <div className="mt-3 flex flex-col gap-y-3">
-        <FOAItem />
-        <FOAItem />
-        <FOAItem />
-        <FOAItem />
-        <FOAItem />
+        {data.map((item, idx) => (
+          <FOAItem data={item} key={idx} />
+        ))}
       </div>
     </div>
   );
