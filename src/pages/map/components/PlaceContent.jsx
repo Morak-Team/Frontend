@@ -91,7 +91,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
 
       {business && (
         <section className="px-5 sm:px-6">
-          <div className="bg-blue-50 w-full px-4 py-3 rounded-lg text-b5 font-medium whitespace-pre-line text-blue">
+          <div className="bg-secondaryBackground w-full px-4 py-3 rounded-lg text-b5 font-medium whitespace-pre-line text-secondaryText">
             <p className="break-keep whitespace-pre-line">{business}</p>
 
             {companyType && (
@@ -101,7 +101,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
                   alt={companyType}
                   className="w-5 h-5"
                 />
-                <span className="text-caption2 text-blue font-medium">
+                <span className="text-caption2 text-secondaryText font-medium">
                   {companyTypeNameMap[companyType]}
                 </span>
               </div>
