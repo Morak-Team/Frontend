@@ -171,7 +171,7 @@ const ConfirmImage = ({ onReject, data }) => {
 
       <div className="mt-6 mb-14">
         <p className="text-xl font-bold mb-6 text-center">
-          <span className="h2 text-orange-500">{data.storeName}</span>
+          <span className="h2 text-primary-8">{data.storeName}</span>
           <span className="h2 text-gray-12">에 다녀오셨군요!</span>
         </p>
       </div>
@@ -186,7 +186,7 @@ const ConfirmImage = ({ onReject, data }) => {
             {selectedDate.month} {selectedDate.day}
           </p>
           <button
-            className="b4 text-orange-500"
+            className="b4 text-primary-8"
             onClick={() => setShowPickerType("date")}
           >
             수정
@@ -197,7 +197,7 @@ const ConfirmImage = ({ onReject, data }) => {
             {selectedTime.period} {selectedTime.hour} {selectedTime.minute}
           </p>
           <button
-            className="b4 text-orange-500"
+            className="b4 text-primary-8"
             onClick={() => setShowPickerType("time")}
           >
             수정
@@ -267,7 +267,7 @@ const ConfirmImage = ({ onReject, data }) => {
       <div className="flex flex-col gap-1 justify-center items-center mt-14 w-full">
         <button
           onClick={handleClick}
-          className="px-6 py-3 border border-black rounded-md b1 text-gray-0 bg-orange-500 w-80 h-12 sm:w-[77%]"
+          className="px-6 py-3 border border-black rounded-md b1 text-gray-0 bg-primary-8 w-80 h-12 sm:w-[77%]"
         >
           맞아요
         </button>

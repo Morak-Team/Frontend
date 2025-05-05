@@ -41,7 +41,7 @@ const WriteText = ({ onNext, onBack }) => {
         {/* 제목 */}
         <div className="mt-6 mb-10">
           <p className="text-xl font-bold text-center">
-            <span className="h2 text-orange-500">이 장소</span>
+            <span className="h2 text-primary-8">이 장소</span>
             <span className="h2 text-gray-12">는 어떠셨나요?</span>
           </p>
         </div>
@@ -72,7 +72,7 @@ const WriteText = ({ onNext, onBack }) => {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={handleClick}
-          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-orange-500 b1 border border-black"
+          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
         >
           다음
         </button>

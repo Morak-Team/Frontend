@@ -16,11 +16,11 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
         </div>
 
         <button
-          className="text-orange-500 flex justify-center items-center gap-1"
+          className="text-primary-8 flex justify-center items-center gap-1"
           onClick={() => setTurnOnCamera(true)}
         >
           <img src="/svgs/review/writeReviewIcon.svg" className="w-4 h-4" />
-          <p className="b5 text-orange-500">리뷰 쓰기</p>
+          <p className="b5 text-primary-8">리뷰 쓰기</p>
         </button>
       </div>
 

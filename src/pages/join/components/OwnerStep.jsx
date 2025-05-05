@@ -54,7 +54,7 @@ const OwnerStep = ({ onNext, onBack }) => {
         disabled={!selected}
         onClick={handleSubmit}
         className={`w-full max-w-[700px] h-12 mt-auto mb-6 font-semibold rounded-lg transition-colors ${
-          selected ? "bg-orange text-white" : "bg-gray-4 text-white"
+          selected ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
         }`}
       >
         확인

@@ -52,7 +52,7 @@ const NameStep = ({ onNext, onBack }) => {
               placeholder="이름을 입력하세요"
               aria-labelledby="name-label"
               aria-required="true"
-              className="w-full py-3 border-b-2 border-gray-4 focus:border-orange-500 pr-10 outline-none placeholder-gray-3 text-2xl font-h3 transition-colors duration-200"
+              className="w-full py-3 border-b-2 border-gray-4 focus:border-primary-8 pr-10 outline-none placeholder-gray-3 text-2xl font-h3 transition-colors duration-200"
             />
             {name && (
               <button
@@ -80,7 +80,7 @@ const NameStep = ({ onNext, onBack }) => {
           disabled={!name.trim()}
           className={`w-full py-6 text-center text-b1 font-semibold ${
             name.trim()
-              ? "bg-orange text-white"
+              ? "bg-primary-8 text-white"
               : "bg-gray-4 text-white"
           }`}
         >

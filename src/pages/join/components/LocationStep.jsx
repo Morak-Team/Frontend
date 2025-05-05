@@ -58,7 +58,7 @@ const LocationStep = ({ onNext, onBack }) => {
 
       <div
         className={`relative w-full flex items-center border-b-2 ${
-          trimmed || checked ? "border-orange-500" : "border-gray-300"
+          trimmed || checked ? "border-primary-8" : "border-gray-6"
         } py-2`}
       >
         {!checked && (
@@ -76,7 +76,7 @@ const LocationStep = ({ onNext, onBack }) => {
           onChange={handleChange}
           readOnly={checked}
           className={`flex-1 bg-transparent text-h2 font-semibold focus:outline-none placeholder-gray-6 ${
-            checked ? "bg-gray-100 cursor-not-allowed" : ""
+            checked ? "bg-gray-6 cursor-not-allowed" : ""
           }`}
         />
 
@@ -92,7 +92,7 @@ const LocationStep = ({ onNext, onBack }) => {
       </div>
 
       {(showWarningForSeoul || showNotSeoulMessage) && (
-        <p className="text-b5 text-orange mt-2">
+        <p className="text-b5 text-primary-8 mt-2">
           현재는 서울에 한해 사회적 기업들을 소개하고 있습니다.
         </p>
       )}
@@ -102,7 +102,7 @@ const LocationStep = ({ onNext, onBack }) => {
         className="flex items-center mt-6 active:opacity-80"
       >
         {checked ? (
-          <IcCheck className="w-5 h-5 mr-2 text-orange" />
+          <IcCheck className="w-5 h-5 mr-2 text-primary-8" />
         ) : (
           <IcNonCheck className="w-5 h-5 mr-2 text-gray-6" />
         )}
@@ -123,7 +123,7 @@ const LocationStep = ({ onNext, onBack }) => {
           disabled={!isActive}
           onClick={() => isActive && onNext(fullLocation)}
           className={`w-full h-12 mt-10 text-b1 font-semibold transition-colors ${
-            isActive ? "bg-orange text-white" : "bg-gray-4 text-white"
+            isActive ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
           }`}
         >
           확인

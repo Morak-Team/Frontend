@@ -41,7 +41,6 @@ export default {
           12: "rgba(77, 33, 15, 1)",
           13: "rgba(26, 11, 5, 1)",
         },
-        orange: "#FF6F31",
         blue: "#005C9E"
       },
       fontSize: {

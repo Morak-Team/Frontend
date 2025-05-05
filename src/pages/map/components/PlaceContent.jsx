@@ -80,7 +80,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           </h3>
 
           <p className="text-b4 flex items-center gap-2 mt-1">
-            <span className="flex items-center text-orange font-bold">
+            <span className="flex items-center text-primary-8 font-bold">
               <FireIcon className="w-4 h-4 mr-1" />
               {temperature}도
             </span>

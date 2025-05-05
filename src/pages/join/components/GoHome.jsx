@@ -30,7 +30,7 @@ const GoHome = ({ onNext, onBack }) => {
 
       <button
         onClick={handleSubmit}
-        className="w-full h-12 rounded-xl bg-white text-orange text-b1 shadow-sm"
+        className="w-full h-12 rounded-xl bg-white text-primary-8 text-b1 shadow-sm"
       >
         좋아요
       </button>

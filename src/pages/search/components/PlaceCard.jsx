@@ -32,14 +32,14 @@ const PlaceCard = ({ place, onClick }) => {
             <img
               src={categoryIcon}
               alt={place.category}
-              className="w-6 h-6 rounded bg-orange-50 p-1"
+              className="w-6 h-6 rounded bg-gray-2 p-1"
             />
           )}
           {businessIcon && (
             <img
               src={businessIcon}
               alt={place.businessType}
-              className="w-6 h-6 rounded bg-blue-50 p-1"
+              className="w-6 h-6 rounded bg-gray-2 p-1"
             />
           )}
         </div>

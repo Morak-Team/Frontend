@@ -52,7 +52,7 @@ const TimePickerSheet = ({
             onConfirm({ period, hour, minute });
             onClose();
           }}
-          className="w-full py-3 rounded-md bg-orange-500 text-white font-bold"
+          className="w-full py-3 rounded-md bg-primary-8 text-white font-bold"
         >
           확인
         </button>

@@ -14,7 +14,7 @@ const IntroModal = ({ onClose }) => {
       </button>
 
       <p className="text-h3 sm:text-h2 font-semibold text-gray-12 text-center">
-        우리 동네 <span className="text-orange">사회적기업</span> 찾아보기
+        우리 동네 <span className="text-primary-8">사회적기업</span> 찾아보기
       </p>
 
       <p className="text-b5 sm:text-b3 text-gray-11 text-center whitespace-pre-line">

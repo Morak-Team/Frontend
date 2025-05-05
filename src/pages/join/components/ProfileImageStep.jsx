@@ -53,7 +53,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
             <SvgComponent className="w-20 h-20 sm:w-24 sm:h-24 rounded-full" />
             {selected === index && (
               <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8">
-                <IcCheck className="w-full h-full text-orange-500" />
+                <IcCheck className="w-full h-full text-primary-8" />
               </div>
             )}
           </div>
@@ -65,7 +65,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
       <div className="w-full flex justify-center pb-6">
         <button
           onClick={handleConfirm}
-          className="w-full max-w-[33.4rem] h-12 px-4 bg-orange text-white font-semibold rounded-2xl"
+          className="w-full max-w-[33.4rem] h-12 px-4 bg-primary-8 text-white font-semibold rounded-2xl"
         >
           확인
         </button>
