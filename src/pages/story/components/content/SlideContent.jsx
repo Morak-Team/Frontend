@@ -15,21 +15,25 @@ const SlideContent = ({ title, img, author, num, likes = 237 }) => {
       <img src={img} alt={title} className="w-full h-full object-cover" />
 
       {/* 상단 넘버링 */}
-      <div className="absolute top-2 left-2 text-white text-sm font-semibold drop-shadow-sm">
+      {/* <div className="absolute top-2 left-2 text-white text-sm font-semibold drop-shadow-sm">
         {num}
-      </div>
+      </div> */}
+      <img
+        src="/svgs/story/moveIcon.svg"
+        className="absolute top-5 right-5 w-5 h-5"
+      />
 
       {/* 좋아요 + 텍스트 박스 */}
-      <div className="absolute bottom-4 left-0 w-full px-4 pt-6 pb-4 text-white">
+      <div className="absolute bottom-5 left-0 w-full px-4 pt-6 pb-4 text-white">
         {/* 좋아요 아이콘 + 숫자 */}
         <div className="flex items-center gap-1 mb-1">
-          <button className="flex gap-1 bg-white text-primary-8 b4 rounded-md px-1 py-0.5 justify-center items-center">
+          <button className="flex gap-1 bg-primary-3 text-primary-8 b4 rounded-md px-1 py-0.5 justify-center items-center">
             <img
               src="/svgs/story/storyFireIcon.svg"
               className="w-4 h-4"
               alt="like"
             />
-            <span className="text-xs ">{likes}</span>
+            <span className="b4">{likes}</span>
           </button>
         </div>
         {/* 제목 */}

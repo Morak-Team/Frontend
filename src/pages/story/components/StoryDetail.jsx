@@ -1,11 +1,21 @@
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import useUIStore from "@/store/uiStore";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
+  const { setIsStoryDetail } = useUIStore();
+
+  useEffect(() => {
+    setIsStoryDetail(true);
+
+    return () => setIsStoryDetail(false);
+  }, []);
+
   const { storyId } = useParams();
   return (
-    <div className="flex flex-col p-5 h-[calc(100vh-5.25rem)] overflow-y-auto scrollbar-hide">
+    <div className="flex flex-col p-5 overflow-y-auto scrollbar-hide">
       <img
         src="/svgs/story/backIcon.svg"
         className="w-8 h-8 mt-10"
