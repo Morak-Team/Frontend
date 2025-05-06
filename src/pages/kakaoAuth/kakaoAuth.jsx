@@ -47,7 +47,7 @@ const KakaoAuth = () => {
     <div className="flex flex-col justify-center items-center min-h-screen pb-20 px-5 bg-white">
       {!code ? (
         <>
-          <h1 className="text-h2 sm:text-h1 font-semibold text-gray-12 self-start text-left">
+          <h1 className="h2 mt-20 self-start text-left">
             간편하게 로그인하고 <br />
             따뜻한 온기에 동참해보세요.
           </h1>

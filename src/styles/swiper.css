@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 @layer components {
-  .swiper-pagination {
-    @apply mt-[10rem];
+  .custom-pagination {
+    @apply mt-4 flex justify-center gap-2;
   }
 
-  .swiper-pagination-bullet {
-    @apply bg-pink-300 opacity-100 transition-colors;
+  .custom-bullet {
+    @apply w-1.5 h-1 bg-gray-300 rounded-sm transition-all duration-300;
   }
 
-  .swiper-pagination-bullet-active {
-    @apply bg-pink-500;
+  .custom-bullet-active {
+    @apply w-6 h-1 bg-orange-500 rounded-full;
   }
 }
