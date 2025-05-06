@@ -15,6 +15,7 @@ import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
 import SignUp from "@pages/join/SignUp";
 import SupportListPage from "@/pages/support/SupportListPage";
 import SupportItemPage from "@/pages/support/SupportItemPage";
+import SupportRecommendPage from "@/pages/support/SupportRecommendPage";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/support",
         element: <SupportPage />,
+      },
+      {
+        path: "/support/recommend",
+        element: <SupportRecommendPage />,
       },
       {
         path: "/support/list/:announcementId",
