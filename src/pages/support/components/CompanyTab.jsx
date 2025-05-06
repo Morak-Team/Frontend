@@ -2,12 +2,16 @@ import FOACard from "@/pages/support/components/FOACard";
 import useDragScroll from "@/hooks/useDragScroll";
 import useIsTouchDevice from "@/hooks/useIsTouchDevice";
 import { useNavigate } from "react-router-dom";
+import { useGetAnnouncement } from "@/apis/announcement/queries";
+import "@/styles/spinner.css";
 
 const CompanyTab = () => {
   const navigate = useNavigate();
   const isTouch = useIsTouchDevice();
   const rawScrollRef = useDragScroll();
   const scrollRef = isTouch ? undefined : rawScrollRef;
+  const { data = [], isLoading } = useGetAnnouncement(5);
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -32,11 +36,17 @@ const CompanyTab = () => {
           isTouch ? "scroll-snap-x" : ""
         }`}
       >
-        {[...Array(7)].map((_, idx) => (
-          <div key={idx} className="shrink-0 w-80 scroll-snap-align-center">
-            <FOACard />
+        {isLoading ? (
+          <div className="w-full flex justify-center items-center h-32">
+            <div className="loader" />
           </div>
-        ))}
+        ) : (
+          data?.map((item, idx) => (
+            <div key={idx} className="shrink-0 w-80 scroll-snap-align-center">
+              <FOACard data={item} />
+            </div>
+          ))
+        )}
       </div>
 
       <div className="mt-10">
@@ -48,7 +58,12 @@ const CompanyTab = () => {
           <p className="text-white b5 mt-1">맞춤 금융 상품을 추천해 드릴게요</p>
         </div>
 
-        <div className="flex justify-end">
+        <div
+          className="flex justify-end"
+          onClick={() =>
+            navigate("/support/recommend", { state: { category: "company" } })
+          }
+        >
           <button className="flex gap-1 items-center bg-white py-1 pl-2 pr-3 rounded-md">
             <img src="/svgs/support/company/checkListIcon.svg" />
             <p className="b4 text-secondary">입력하기</p>
