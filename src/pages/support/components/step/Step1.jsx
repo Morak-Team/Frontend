@@ -3,7 +3,7 @@ import checkIcon from "/svgs/support/company/checkIcon.svg";
 
 const Step1 = ({ onNext, defaultValue }) => {
   const [industry, setIndustry] = useState(defaultValue?.업종 || "");
-  const [companyType, setCompanyType] = useState(defaultValue?.기업형태 || "");
+  const [companyType, setCompanyType] = useState(defaultValue?.기업_형태 || "");
 
   const handleNext = () => {
     onNext({

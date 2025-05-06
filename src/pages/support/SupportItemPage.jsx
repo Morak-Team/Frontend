@@ -10,7 +10,9 @@ const isValidDateFormat = (dateStr) => {
 // D-day 계산 함수
 const calculateDday = (dateStr) => {
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const endDate = new Date(dateStr);
+  endDate.setHours(0, 0, 0, 0);
   const diffTime = endDate.getTime() - today.getTime();
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
@@ -111,7 +113,7 @@ const SupportItemPage = () => {
 
         <button
           onClick={() => {
-            if (data.link) {
+            if (data?.link) {
               window.open(data.link, "_blank");
             }
           }}

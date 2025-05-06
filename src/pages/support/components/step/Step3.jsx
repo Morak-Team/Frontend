@@ -2,7 +2,7 @@ import { useState } from "react";
 import checkIcon from "/svgs/support/company/checkIcon.svg";
 
 const Step3 = ({ onNext, defaultValue }) => {
-  const [amount, setAmount] = useState(defaultValue?.필요_금액 || "");
+  const [amount, setAmount] = useState(defaultValue?.필요금액 || "");
   const [service, setService] = useState(defaultValue?.필요_서비스_종류 || "");
 
   const handleNext = () => {
