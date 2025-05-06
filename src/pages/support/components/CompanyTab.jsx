@@ -60,7 +60,9 @@ const CompanyTab = () => {
 
         <div
           className="flex justify-end"
-          onClick={() => navigate("/support/recommend")}
+          onClick={() =>
+            navigate("/support/recommend", { state: { category: "company" } })
+          }
         >
           <button className="flex gap-1 items-center bg-white py-1 pl-2 pr-3 rounded-md">
             <img src="/svgs/support/company/checkListIcon.svg" />

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Step1 from "@/pages/support/components/step/Step1";
 import Step2 from "@/pages/support/components/step/Step2";
@@ -14,11 +14,12 @@ const steps = [Step1, Step2, Step3, Step4, Step5, Step6, Step7];
 
 const SupportRecommendPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const prevCategory = location.state?.category || "consummer";
+
   const [userInfo, setUserInfo] = useState({});
   const [step, setStep] = useState(0);
-  const [recommendResult, setRecommendResult] = useState(null); // ✅ 결과 상태 추가
-
-  console.log(userInfo);
+  const [recommendResult, setRecommendResult] = useState(null);
 
   const CurrentStep = steps[step];
 
@@ -35,9 +36,8 @@ const SupportRecommendPage = () => {
     <div className="relative w-full h-[calc(100vh-5.25rem)] overflow-y-auto scrollbar-hide">
       <div className="px-5 pt-3 flex justify-between items-center">
         <div className="w-1/3" />
-
         <img
-          onClick={() => navigate("/support")}
+          onClick={() => navigate(`/support?category=${prevCategory}`)}
           src="/svgs/support/company/xIcon.svg"
           className="w-8 h-8 cursor-pointer"
         />
@@ -56,8 +56,8 @@ const SupportRecommendPage = () => {
             onBack={prevStep}
             defaultValue={userInfo}
             userInfo={userInfo}
-            setRecommendResult={setRecommendResult} // ✅ Step6에 전달
-            recommendResult={recommendResult} // ✅ Step7에 전달
+            setRecommendResult={setRecommendResult}
+            recommendResult={recommendResult}
           />
         </motion.div>
       </AnimatePresence>
