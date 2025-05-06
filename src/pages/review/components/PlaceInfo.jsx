@@ -10,13 +10,11 @@ import { likeToggleCompany } from "@/apis/review/likeToggle";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
-  console.log(placeInfo);
 
   const { companyId } = usePaymentStore();
   console.log(companyId, isLikedPlace(companyId), "좋아요 여부");
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
   const [loading, setLoading] = useState(true); // 로딩 상태 (선택)
-  console.log(isLiked, companyId);
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
@@ -51,10 +49,10 @@ const PlaceInfo = ({ placeInfo }) => {
       <div className="flex justify-between items-start mt-4 w-full">
         <div className="w-full">
           <h3 className="h3">
-            {placeInfo.companyName}
+            {placeInfo?.companyName}
             <span className="ml-2 b5 text-gray-6">
               {businessTypeNameMap[placeInfo.companyCategory] ??
-                placeInfo.companyCategory}
+                placeInfo?.companyCategory}
             </span>
           </h3>
           <div className="flex items-center justify-start mt-1">
@@ -63,20 +61,20 @@ const PlaceInfo = ({ placeInfo }) => {
               className="w-4 h-4 mr-1"
             />
             <p className="b4 text-primary-8">
-              {placeInfo.temperature.toFixed(2)}도
+              {placeInfo?.temperature.toFixed(0)}도
             </p>
-            <p className="b6 ml-2">방문자 리뷰 {placeInfo.reviewCount}개</p>
+            <p className="b6 ml-2">방문자 리뷰 {placeInfo?.reviewCount}개</p>
           </div>
 
           <div className="bg-secondaryBackground flex flex-col b5 text-secondary3 rounded-xl px-4 py-3 mt-4 w-full leading-relaxed">
-            {placeInfo.business}
+            {placeInfo?.business}
 
-            {placeInfo.companyType && (
+            {placeInfo?.companyType && (
               <div className="inline-flex mt-3 items-center gap-2 px-3 py-1 rounded-xl bg-white w-fit">
                 <img
                   src={
                     companyTypeIconMap[
-                      companyTypeNameMap[placeInfo.companyType]
+                      companyTypeNameMap[placeInfo?.companyType]
                     ]
                   }
                   className="w-4 h-4"
@@ -84,12 +82,12 @@ const PlaceInfo = ({ placeInfo }) => {
 
                 <span
                   className={`caption2 ${
-                    placeInfo.companyType === "PRE"
+                    placeInfo?.companyType === "PRE"
                       ? "text-pre"
                       : "text-secondary3"
                   }`}
                 >
-                  {companyTypeNameMap[placeInfo.companyType]}
+                  {companyTypeNameMap[placeInfo?.companyType]}
                 </span>
               </div>
             )}
