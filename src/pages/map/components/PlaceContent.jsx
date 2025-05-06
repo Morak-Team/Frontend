@@ -84,7 +84,9 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
               <FireIcon className="w-4 h-4 mr-1" />
               {temperature}도
             </span>
-            <span className="text-gray-12 text-b6">방문자 리뷰 {reviewCount}</span>
+            <span className="text-gray-12 text-b6">
+              방문자 리뷰 {reviewCount}
+            </span>
           </p>
         </div>
       </div>
