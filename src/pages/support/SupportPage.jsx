@@ -12,12 +12,8 @@ const SupportPage = () => {
   };
 
   return (
-    <div className="flex flex-col p-5 h-[calc(100vh-5.25rem)] overflow-y-auto">
-      <div className="mt-10">
-        <p className="h2">지원</p>
-      </div>
-
-      <div className="mt-8 flex gap-2">
+    <div className="flex flex-col px-5 pt-24 h-[calc(100vh-5.25rem)] overflow-y-auto bg-gray-2">
+      <div className="flex gap-2">
         <button
           onClick={() => handleTabChange("consummer")}
           className={`px-4 py-2 rounded-md b1 transition-all duration-300 ease-in-out
