@@ -30,7 +30,16 @@ const FOACard = ({ data }) => {
   const dday = calculateDday(data.endDate);
 
   return (
-    <div className="w-80 flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center">
+    <div
+      className="w-80 flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center"
+      onClick={() => {
+        if (data?.id) {
+          navigate(`/support/list/${data.id}`);
+        } else {
+          navigate("/support/list");
+        }
+      }}
+    >
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
@@ -46,7 +55,6 @@ const FOACard = ({ data }) => {
         <img
           src="/svgs/support/company/forwardIcon.svg"
           className="w-4 h-4 cursor-pointer"
-          onClick={() => navigate(`/support/list/${data.id}`)}
           alt="상세 보기"
         />
       </div>

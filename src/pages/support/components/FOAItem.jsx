@@ -30,7 +30,16 @@ const FOAItem = ({ data }) => {
   const dday = calculateDday(data.endDate);
 
   return (
-    <div className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full">
+    <div
+      className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full"
+      onClick={() => {
+        if (data?.id) {
+          navigate(`/support/list/${data.id}`);
+        } else {
+          navigate("/support/list");
+        }
+      }}
+    >
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
@@ -44,13 +53,6 @@ const FOAItem = ({ data }) => {
           )}
         </div>
         <img
-          onClick={() => {
-            if (data?.id) {
-              navigate(`/support/list/${data.id}`);
-            } else {
-              navigate("/support/list");
-            }
-          }}
           src="/svgs/support/company/forwardIcon.svg"
           className="w-4 h-4 cursor-pointer"
           alt="상세 보기"
