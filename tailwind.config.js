@@ -68,7 +68,7 @@ export default {
       1.6: "1.6px",
     },
     boxShadow: {
-      surface: "0px 2px 12px rgba(46, 45, 43, 0.05)",
+      surface: "0px 2px 12px 0px rgba(46, 45, 43, 0.05)",
     },
   },
   plugins: [],

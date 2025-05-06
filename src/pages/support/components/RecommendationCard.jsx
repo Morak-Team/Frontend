@@ -1,7 +1,24 @@
-const RecommendationCard = ({ bank, title, description }) => {
+import { useNavigate } from "react-router-dom";
+
+const RecommendationCard = ({
+  productId,
+  bank,
+  title,
+  description,
+  productType,
+  benefit,
+  showDescription = true,
+}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/consumer/list/${productId}`);
+  };
+
   return (
     <div
-      className="relative w-80 h-56 p-5 rounded-xl bg-white flex flex-col gap-2 justify-evenly"
+      onClick={handleClick}
+      className="relative w-full h-56 p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow hover:shadow-sm"
       style={{
         boxShadow: "0px 2px 12px rgba(255, 111, 49, 0.05)",
       }}
@@ -9,19 +26,28 @@ const RecommendationCard = ({ bank, title, description }) => {
       <img
         src="/svgs/support/company/forwardIcon.svg"
         alt="상세보기"
-        className="absolute top-5 right-5 w-4 h-4 cursor-pointer"
+        className="w-4 h-4 absolute top-5 right-5"
       />
 
-      <div className="flex flex-col gap-1">
-        <p className="text-caption2 text-gray-9 font-medium">{bank}</p>
-        <p className="text-h4 text-gray-12 font-semibold leading-snug">
-          {title}
-        </p>
+      <div className="flex items-center gap-2">
+        {productType && (
+          <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+            {productType}
+          </span>
+        )}
+        
       </div>
 
-      <p className="text-b6 font-normal text-gray-11 mt-2 leading-relaxed line-clamp-3">
-        {description}
-      </p>
+      <div className="flex flex-col gap-2">
+        <p className="text-h4 text-gray-12 font-semibold">{title}</p>
+        <p className="text-caption2 text-gray-9 font-medium">{bank}</p>
+      </div>
+
+      {showDescription && (
+        <p className="text-b6 font-normal text-gray-11 mt-6 line-clamp-3">
+          {description}
+        </p>
+      )}
     </div>
   );
 };

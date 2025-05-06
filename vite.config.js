@@ -48,6 +48,11 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/support": {
+        target: "https://api.morak.site",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/support/, "/support"),
+      },
     },
     allowedHosts: [".ngrok-free.app"],
   },
