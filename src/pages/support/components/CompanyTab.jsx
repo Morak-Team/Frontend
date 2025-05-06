@@ -10,7 +10,7 @@ const CompanyTab = () => {
   const isTouch = useIsTouchDevice();
   const rawScrollRef = useDragScroll();
   const scrollRef = isTouch ? undefined : rawScrollRef;
-  const { data, isLoading } = useGetAnnouncement(5);
+  const { data = [], isLoading } = useGetAnnouncement(5);
   console.log(data);
 
   return (
