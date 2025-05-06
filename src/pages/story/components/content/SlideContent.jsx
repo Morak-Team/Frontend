@@ -14,7 +14,7 @@ const SlideContent = ({ data, title }) => {
     >
       {/* 배경 이미지 */}
       <img
-        src="/images/1.jpeg"
+        src={data?.imageUrl}
         alt={title}
         className="w-full h-full object-cover"
       />

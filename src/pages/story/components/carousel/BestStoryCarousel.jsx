@@ -38,7 +38,6 @@ const BestStoryCarousel = ({ data, isLoading }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* 커스텀 인디케이터 */}
       <div className="custom-pagination flex justify-center gap-2 mt-4" />
     </div>
