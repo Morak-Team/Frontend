@@ -5,42 +5,15 @@ import "swiper/css/pagination";
 import "@/styles/swiper.css"; // 👈 아래의 스타일이 여기에 포함되어야 함
 import SlideContent from "@/pages/story/components/content/SlideContent";
 
-const BestStoryCarousel = () => {
-  const sampleData = [
-    {
-      num: 1,
-      title: "슬라이드 1",
-      img: "/images/1.jpeg",
-      author: "가나디1",
-    },
-    {
-      num: 2,
-      title: "슬라이드 2",
-      img: "/images/2.jpeg",
-      author: "가나디2",
-    },
-    {
-      num: 2,
-      title: "슬라이드 2",
-      img: "/images/2.jpeg",
-      author: "가나디2",
-    },
-    {
-      num: 2,
-      title: "슬라이드 2",
-      img: "/images/2.jpeg",
-      author: "가나디2",
-    },
-    {
-      num: 2,
-      title: "슬라이드 2",
-      img: "/images/2.jpeg",
-      author: "가나디2",
-    },
-  ];
-
+const BestStoryCarousel = ({ data, isLoading }) => {
   return (
     <div className="relative pt-4">
+      {isLoading && (
+        <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
+          <div className="loader"></div>
+          <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
+        </div>
+      )}
       <Swiper
         modules={[Autoplay, Pagination]}
         spaceBetween={10}
@@ -59,9 +32,9 @@ const BestStoryCarousel = () => {
         }}
         className="w-full rounded-xl"
       >
-        {sampleData.map((item, idx) => (
+        {data?.map((item, idx) => (
           <SwiperSlide key={idx}>
-            <SlideContent title={item.title} img={item.img} num={item.num} />
+            <SlideContent data={item} />
           </SwiperSlide>
         ))}
       </Swiper>

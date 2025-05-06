@@ -4,13 +4,18 @@ import CategoryCarousel from "@/pages/story/components/carousel/CategoryCarousel
 import StoryCarousel from "@/pages/story/components/carousel/StoryCarousel";
 
 const StoryPage = () => {
-  const { data, isLoading } = useGetBestStory();
-  console.log(data);
-  // 카테고리 캐러셀에 넘겨줄 콜백함수를 지정하고 state를 여기서 관리하면 깔끔할 것 같습니당.
+  const { data: bestData, isLoading } = useGetBestStory();
+
   return (
     <div className="h-[calc(100vh-5.25rem)] overflow-y-auto scrollbar-hide p-5">
       <h1 className="h3 mt-10">많은 응원을 받은 이야기</h1>
-      <BestStoryCarousel />
+      {isLoading && (
+        <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
+          <div className="loader"></div>
+          <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
+        </div>
+      )}
+      <BestStoryCarousel data={bestData} isLoading={isLoading} />
       <h1 className="h3 mt-10">최근 올라온 스토리</h1>
       <CategoryCarousel />
       <StoryCarousel />

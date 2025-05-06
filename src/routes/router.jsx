@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <StoryPage />,
       },
       {
-        path: "/story/:companyId",
+        path: "/story/:storyId",
         element: <StoryDetail />,
       },
       {
