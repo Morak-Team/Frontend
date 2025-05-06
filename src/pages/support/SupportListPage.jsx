@@ -18,7 +18,7 @@ const SupportListPage = () => {
       </div>
 
       <div className="mt-10">
-        <p className="b5 text-gray-9">{data?.length || 0}</p>
+        <p className="b5 text-gray-9">총 {data?.length || 0}개</p>
       </div>
 
       <div className="mt-3 flex flex-col gap-y-3">
