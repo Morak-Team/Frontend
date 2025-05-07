@@ -58,7 +58,7 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
         <ReviewContent item={item} key={idx} />
       ))}
 
-      {!(count == 0) && (
+      {!(count === 0) && (
         <div className="w-full flex justify-center mt-8">
           <Link
             to={`/review/${companyId}`}
@@ -66,6 +66,15 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
           >
             리뷰 더보기
           </Link>
+        </div>
+      )}
+
+      {count === 0 && (
+        <div className="flex flex-col mt-24 justify-center items-center text-center mb-28">
+          <img src="/svgs/storeReview/review0.svg" className="w-24 h-16" />
+          <p className="h4 text-gray-9 mt-12">
+            이 기업에 <br />첫 리뷰를 남겨보세요!
+          </p>
         </div>
       )}
 

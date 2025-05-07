@@ -115,13 +115,6 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
         {isFetchingNextPage && (
           <p className="py-2 text-gray-500">불러오는 중...</p>
         )}
-        {/* {!hasNextPage && (
-          <p className="py-2 text-gray-500">모두 불러왔습니다.</p>
-        )}
-
-        {!hasNextPage || allReviews.length >= countData ? (
-          <p className="py-2 text-gray-500">모두 불러왔습니다.</p>
-        ) : null} */}
       </div>
 
       {/* 로그인 모달 */}
