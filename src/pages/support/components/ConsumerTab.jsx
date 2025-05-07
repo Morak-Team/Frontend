@@ -5,7 +5,6 @@ import Spinner from "@components/common/Spinner";
 import { useConsumptionData } from "../hooks/useConsumptionData";
 import { useFinancialProducts } from "../hooks/useFinancialProducts";
 import { companyTypeNameMap } from "@constants/categoryMap";
-import { useEffect, useState } from "react";
 
 const ConsumerTab = () => {
   const navigate = useNavigate();

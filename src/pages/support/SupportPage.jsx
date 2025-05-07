@@ -7,7 +7,7 @@ import { getMyProfile } from "@apis/member/auth";
 
 const SupportPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // null: 체크 중, true/false: 결과
+  const [isLoggedIn, setIsLoggedIn] = useState(null); 
   const category = searchParams.get("category") || "consummer";
   const navigate = useNavigate();
 
