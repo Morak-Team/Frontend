@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-const HaveToLoginModal = ({ message, subMessage, onClose }) => {
+const HaveToLoginModal = ({
+  message,
+  subMessage,
+  onClose,
+  showButton = true,
+}) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -18,17 +23,23 @@ const HaveToLoginModal = ({ message, subMessage, onClose }) => {
           <img src="/svgs/review/xIcon.svg" className="w-5 h-5" alt="닫기" />
         </button>
 
-        <img src="/svgs/modal/errorIcon.svg" className="w-8 h-8 mb-3" />
+        <img
+          src="/svgs/modal/errorIcon.svg"
+          className="w-8 h-8 mb-3"
+          alt="에러"
+        />
 
         <p className="h4 text-gray-12 font-bold">{message}</p>
-        <p className="b5 mt-2 text-gray-600">{subMessage}</p>
+        {subMessage && <p className="mt-2 b5 text-gray-9">{subMessage}</p>}
 
-        <button
-          onClick={handleLogin}
-          className="mt-5 px-4 py-2 b5 bg-primary-8 text-white rounded-lg"
-        >
-          로그인하러 가기
-        </button>
+        {showButton && (
+          <button
+            onClick={handleLogin}
+            className="mt-5 px-4 py-2 b5 bg-primary-8 text-white rounded-lg"
+          >
+            로그인하러 가기
+          </button>
+        )}
       </div>
     </div>
   );

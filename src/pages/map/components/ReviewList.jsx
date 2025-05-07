@@ -10,7 +10,7 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
   const navigate = useNavigate();
   const { data: count, isLoading } = useGetStoreReviewCount(companyId);
   const { data: preview } = useStoreReviews(companyId);
-  const [showLoginModal, setShowLoginModal] = useState(false); // ✅ 모달 상태
+  const [loginModalConfig, setLoginModalConfig] = useState(null); // 모달 상태를 객체로 관리
 
   const handleClickWrite = async () => {
     try {
@@ -22,9 +22,17 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
       }
     } catch (e) {
       if (e?.response?.status === 401) {
-        setShowLoginModal(true); // ✅ 모달 표시
+        setLoginModalConfig({
+          message: "로그인이 필요한 기능입니다",
+          subMessage: "",
+          showButton: true,
+        });
       } else {
-        alert("사용자 정보를 확인할 수 없습니다.");
+        setLoginModalConfig({
+          message: "사용자 정보를 확인할 수 없습니다",
+          subMessage: "다시 시도해 주세요",
+          showButton: false,
+        });
       }
     }
   };
@@ -61,12 +69,13 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
         </div>
       )}
 
-      {/* ✅ 로그인 모달 */}
-      {showLoginModal && (
+      {/* 로그인 모달 */}
+      {loginModalConfig && (
         <HaveToLoginModal
-          message="로그인이 필요한 기능입니다"
-          subMessage=""
-          onClose={() => setShowLoginModal(false)}
+          message={loginModalConfig.message}
+          subMessage={loginModalConfig.subMessage}
+          showButton={loginModalConfig.showButton}
+          onClose={() => setLoginModalConfig(null)}
         />
       )}
     </div>
