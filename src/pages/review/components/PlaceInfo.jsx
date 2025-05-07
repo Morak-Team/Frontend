@@ -1,41 +1,66 @@
 import { categoryIconMap } from "@constants/iconMap";
 import { useNavigate } from "react-router-dom";
-import { businessTypeNameMap } from "@/constants/categoryMap";
+import {
+  businessTypeNameMap,
+  companyTypeNameMap,
+  companyTypeIconMap,
+} from "@/constants/categoryMap";
 import { useState, useEffect } from "react";
-import { companyTypeNameMap } from "@/constants/categoryMap";
-import { companyTypeIconMap } from "@/constants/categoryMap";
-import { isLikedPlace } from "@/pages/review/utils/isLikedPlace";
 import { usePaymentStore } from "@/store/paymentStore";
-import { likeToggleCompany } from "@/apis/review/likeToggle";
+import {
+  getLikedCompanies,
+  likeCompany,
+  unlikeCompany,
+} from "@/apis/company/getLikedCompanies";
+import { getMyProfile } from "@/apis/member/auth";
+import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { companyId } = usePaymentStore();
-  console.log(companyId, isLikedPlace(companyId), "좋아요 여부");
-  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태 (선택)
+
+  const [isLiked, setIsLiked] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLikeStatus = async () => {
+    const init = async () => {
       try {
-        const result = await isLikedPlace(companyId);
-        setIsLiked(result);
+        const profile = await getMyProfile();
+        if (profile?.name) {
+          setIsLoggedIn(true);
+          const likedList = await getLikedCompanies();
+          const liked = likedList.some(
+            (c) => String(c.companyId) === String(companyId)
+          );
+
+          setIsLiked(liked);
+        }
       } catch (e) {
-        console.error("좋아요 여부 확인 실패:", e);
+        setIsLoggedIn(false); // 인증 실패 → 비로그인 처리
       } finally {
         setLoading(false);
       }
     };
 
-    if (companyId) fetchLikeStatus();
+    if (companyId) init();
   }, [companyId]);
 
-  // 좋아요 토글 클릭
   const handleLikeClick = async () => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true); // 🔥 로그인 모달 표시
+      return;
+    }
+
     try {
       setLoading(true);
-      await likeToggleCompany(companyId);
+      if (isLiked) {
+        await unlikeCompany(companyId);
+      } else {
+        await likeCompany(companyId);
+      }
       setIsLiked((prev) => !prev);
     } catch (e) {
       console.error("좋아요 토글 실패:", e);
@@ -79,7 +104,6 @@ const PlaceInfo = ({ placeInfo }) => {
                   }
                   className="w-4 h-4"
                 />
-
                 <span
                   className={`caption2 ${
                     placeInfo?.companyType === "PRE"
@@ -94,6 +118,7 @@ const PlaceInfo = ({ placeInfo }) => {
           </div>
         </div>
       </div>
+
       <div className="flex items-center gap-2 mt-6 w-full">
         <a
           href={`https://map.naver.com/v5/search/${placeInfo.companyName}`}
@@ -114,7 +139,7 @@ const PlaceInfo = ({ placeInfo }) => {
         >
           <img
             src={
-              isLiked
+              isLoggedIn && isLiked
                 ? "/svgs/storeReview/fullHeartIcon.svg"
                 : "/svgs/storeReview/emptyHeartIcon.svg"
             }
@@ -123,6 +148,15 @@ const PlaceInfo = ({ placeInfo }) => {
           />
         </button>
       </div>
+
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다"
+          subMessage=""
+          showButton={true}
+          onClose={() => setShowLoginModal(false)}
+        />
+      )}
     </div>
   );
 };

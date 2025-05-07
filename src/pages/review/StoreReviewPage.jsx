@@ -1,6 +1,5 @@
-// src/pages/review/StoreReviewPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import PlaceInfo from "@/pages/review/components/PlaceInfo";
 import useUIStore from "@/store/uiStore";
@@ -65,17 +64,6 @@ const StoreReviewPage = () => {
           companyId={companyId}
           turnOnCamera={turnOnCamera}
           onCloseCamera={() => setTurnOnCamera(false)}
-          onCaptureSuccess={() => {
-            setTurnOnCamera(false);
-            setShowConfirm(true);
-          }}
-        />
-      )}
-      {turnOnCamera && (
-        <ReviewImageCapture
-          companyId={companyId}
-          turnOnCamera={turnOnCamera}
-          onCloseCamera={() => setTurnOnCamera(false)}
           onCaptureSuccess={(data) => {
             setCompanyInfo(data); // 즉시 로컬 상태에 저장
             // setReceiptInfo(data); // 전역 상태에도 저장
@@ -87,6 +75,11 @@ const StoreReviewPage = () => {
       {showConfirm && (
         <ConfirmImage
           data={companyInfo}
+          onConfirmComplete={() => {
+            // ✅ 닫기 버튼 누를 때 처리
+            setShowConfirm(false);
+            setCompanyInfo(null);
+          }}
           onReject={() => {
             setShowConfirm(false);
             setTurnOnCamera(true);

@@ -11,7 +11,6 @@ const CompanyTab = () => {
   const rawScrollRef = useDragScroll();
   const scrollRef = isTouch ? undefined : rawScrollRef;
   const { data = [], isLoading } = useGetAnnouncement(5);
-  console.log(data);
 
   return (
     <div className="flex flex-col">

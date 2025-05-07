@@ -1,30 +1,38 @@
+import { useState } from "react";
 import { reviewData } from "@/constants/review/reviewData";
 import ReviewContent from "@/pages/map/components/ReviewContent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
-import { useMyProfile } from "@/apis/member/queries";
-import { useNavigate } from "react-router-dom";
 import { getMyProfile } from "@/apis/member/auth";
+import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
 
 const ReviewList = ({ setTurnOnCamera, companyId }) => {
   const navigate = useNavigate();
   const { data: count, isLoading } = useGetStoreReviewCount(companyId);
   const { data: preview } = useStoreReviews(companyId);
+  const [loginModalConfig, setLoginModalConfig] = useState(null); // 모달 상태를 객체로 관리
 
   const handleClickWrite = async () => {
     try {
-      const res = await getMyProfile(); // auth가 200일 때만 통과
+      const res = await getMyProfile();
       if (res?.name) {
-        setTurnOnCamera(true); // 명시적으로 인증 성공 시에만 실행
+        setTurnOnCamera(true);
       } else {
-        throw new Error("사용자 인증 실패");
+        throw new Error("인증 실패");
       }
     } catch (e) {
       if (e?.response?.status === 401) {
-        alert("로그인이 필요합니다.");
-        navigate("/auth");
+        setLoginModalConfig({
+          message: "로그인이 필요한 기능입니다",
+          subMessage: "",
+          showButton: true,
+        });
       } else {
-        alert("사용자 정보를 확인할 수 없습니다.");
+        setLoginModalConfig({
+          message: "사용자 정보를 확인할 수 없습니다",
+          subMessage: "다시 시도해 주세요",
+          showButton: false,
+        });
       }
     }
   };
@@ -50,7 +58,7 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
         <ReviewContent item={item} key={idx} />
       ))}
 
-      {!(count == 0) && (
+      {!(count === 0) && (
         <div className="w-full flex justify-center mt-8">
           <Link
             to={`/review/${companyId}`}
@@ -59,6 +67,25 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
             리뷰 더보기
           </Link>
         </div>
+      )}
+
+      {count === 0 && (
+        <div className="flex flex-col mt-24 justify-center items-center text-center mb-28">
+          <img src="/svgs/storeReview/review0.svg" className="w-24 h-16" />
+          <p className="h4 text-gray-9 mt-12">
+            이 기업에 <br />첫 리뷰를 남겨보세요!
+          </p>
+        </div>
+      )}
+
+      {/* 로그인 모달 */}
+      {loginModalConfig && (
+        <HaveToLoginModal
+          message={loginModalConfig.message}
+          subMessage={loginModalConfig.subMessage}
+          showButton={loginModalConfig.showButton}
+          onClose={() => setLoginModalConfig(null)}
+        />
       )}
     </div>
   );

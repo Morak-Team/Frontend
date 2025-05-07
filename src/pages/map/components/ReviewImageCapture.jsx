@@ -4,6 +4,7 @@ import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
+import "@/styles/spinner.css";
 
 import { usePaymentStore } from "@/store/paymentStore";
 
@@ -143,8 +144,6 @@ const ReviewImageCapture = ({
     mutationFn: postRecipt,
     retry: 2,
     onSuccess: (res) => {
-      console.log("res", res);
-
       setTimeout(() => {
         onCaptureSuccess?.(res); // props를 통해 부모 컴포넌트로 직접 전달
         onCloseCamera?.();
@@ -159,7 +158,7 @@ const ReviewImageCapture = ({
   // 2) handleUsePhoto 에서도 객체 하나로 넘기기
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
-    console.log(imageBlob.size);
+
     try {
       const options = {
         maxSizeMB: 1,
@@ -167,7 +166,6 @@ const ReviewImageCapture = ({
         initialQuality: 0.8,
       };
       const compressedFile = await imageCompression(imageBlob, options);
-      console.log("압축 후 크기:", compressedFile.size);
 
       // FormData 에 file + companyId 담기
       const form = new FormData();
@@ -259,9 +257,10 @@ const ReviewImageCapture = ({
 
               {/* ✅ isPending일 때 띄우는 오버레이 */}
               {isPending && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[10000]">
-                  <p className="text-white text-xl font-bold animate-pulse">
-                    📷 사진 검증 중입니다...
+                <div className="absolute inset-0 bg-black/60 items-center justify-center z-[10000] flex flex-col gap-2">
+                  <div className="loader"></div>
+                  <p className="text-white b4 animate-pulse">
+                    사진 검수 중입니다 잠시만 기다려 주세요...
                   </p>
                 </div>
               )}

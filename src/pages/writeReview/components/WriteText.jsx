@@ -2,7 +2,9 @@ import { useState } from "react";
 import UploadingModal from "@/pages/writeReview/components/UploadingModal";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
+import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { postReview } from "@/apis/review/postReview";
+import { useMyProfile } from "@/apis/member/queries";
 
 const WriteText = ({ onNext, onBack }) => {
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ const WriteText = ({ onNext, onBack }) => {
   const { reviewInfo } = usePaymentStore();
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
-  console.log(text);
+  const { data, isLoading } = useMyProfile();
 
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
@@ -50,8 +52,15 @@ const WriteText = ({ onNext, onBack }) => {
         <div className="flex justify-center">
           <div className="w-80 sm:w-[77%]">
             <div className="flex items-center gap-2">
-              <img src="/svgs/review/profileIcon.svg" className="w-6 h-6" />
-              <p className="b5">닉네임</p>
+              <img
+                src={
+                  profileColorMap[data?.profileColor?.toLowerCase?.()] ||
+                  profileColorMap.gray
+                }
+                className="w-6 h-6"
+              />
+
+              <p className="b5">{data?.name}</p>
             </div>
           </div>
         </div>
@@ -72,7 +81,12 @@ const WriteText = ({ onNext, onBack }) => {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={handleClick}
-          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
+          disabled={text.trim().length === 0}
+          className={`w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 b1 border border-black ${
+            text.trim().length === 0
+              ? "bg-gray-4 text-gray-6 cursor-not-allowed"
+              : "bg-primary-8 text-white"
+          }`}
         >
           다음
         </button>

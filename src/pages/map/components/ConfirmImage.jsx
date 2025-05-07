@@ -10,18 +10,14 @@ import { usePaymentStore } from "@/store/paymentStore";
 import { getDistanceDiff } from "@/pages/map/utils/getDistanceDiff";
 import { formatToYMDHMS } from "@/store/paymentStore";
 
-const ConfirmImage = ({ onReject, data }) => {
+const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
   const navigate = useNavigate();
   // 이 화면에서 넘겨야 할 것 -> 시간 정보, 결제승인번호
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
-  const { reviewInfo } = usePaymentStore();
-
-  const setPaymentTime = usePaymentStore((s) => s.setPaymentTime);
-
-  console.log("confirm", data);
+  const { companyId } = usePaymentStore();
 
   const moveToReviewPage = () => {
-    navigate(`/review/${780}`);
+    onConfirmComplete?.();
   };
 
   // const handleClick = () => {
@@ -44,8 +40,6 @@ const ConfirmImage = ({ onReject, data }) => {
     const rawDateStr = `2025/${pad(extractNumber(selectedDate.month))}/${pad(extractNumber(selectedDate.day))} ${pad(hour24)}:${pad(extractNumber(selectedTime.minute))}:00`;
 
     const dateObj = new Date(rawDateStr);
-    console.log("✅ raw:", rawDateStr);
-    console.log("📆 dateObj:", dateObj);
 
     if (isNaN(dateObj.getTime())) {
       console.warn("❌ Invalid constructed date", rawDateStr);
@@ -56,7 +50,6 @@ const ConfirmImage = ({ onReject, data }) => {
       paymentInfoTime: formatToYMDHMS(dateObj),
       paymentInfoConfirmNum: data.confirmNumber,
     });
-    console.log(reviewInfo);
 
     navigate("/writereview");
   };
@@ -162,16 +155,17 @@ const ConfirmImage = ({ onReject, data }) => {
       onTouchEnd={(e) => e.stopPropagation()}
       className="fixed min-h-screen inset-0 z-[9999] pt-7 bg-white flex flex-col mx-auto overflow-y-auto pb-10 justify-center items-center"
     >
-      <div
-        className="flex justify-end w-full mt-14 sm:mt-32 pr-5"
-        onClick={moveToReviewPage}
-      >
-        <img src="/svgs/review/xIcon.svg" className="w-8 h-8 mt-5" />
+      <div className="flex justify-end w-full mt-14 sm:mt-32 pr-5">
+        <img
+          src="/svgs/review/xIcon.svg"
+          className="w-8 h-8 mt-5"
+          onClick={() => onConfirmComplete()}
+        />
       </div>
 
       <div className="mt-6 mb-14">
         <p className="text-xl font-bold mb-6 text-center">
-          <span className="h2 text-primary-8">{data.storeName}</span>
+          <span className="h2 text-primary-8">{data?.storeName}</span>
           <span className="h2 text-gray-12">에 다녀오셨군요!</span>
         </p>
       </div>
@@ -183,7 +177,7 @@ const ConfirmImage = ({ onReject, data }) => {
       <div className="flex gap-2 w-full justify-center items-center">
         <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-8">
           <p className="b1 text-gray-12">
-            {selectedDate.month} {selectedDate.day}
+            {selectedDate?.month} {selectedDate?.day}
           </p>
           <button
             className="b4 text-primary-8"
@@ -194,7 +188,7 @@ const ConfirmImage = ({ onReject, data }) => {
         </div>
         <div className="w-40 h-16 sm:w-72 bg-gray-2 rounded-md flex justify-center items-center gap-4">
           <p className="b1 text-gray-12">
-            {selectedTime.period} {selectedTime.hour} {selectedTime.minute}
+            {selectedTime?.period} {selectedTime?.hour} {selectedTime?.minute}
           </p>
           <button
             className="b4 text-primary-8"
@@ -246,7 +240,7 @@ const ConfirmImage = ({ onReject, data }) => {
 
       <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2 sm:w-[77%]">
         <div className="flex gap-2 justify-start items-center">
-          <p className="h3 text-gray-12">{data.storeName}</p>
+          <p className="h3 text-gray-12">{data?.storeName}</p>
           <p className="b4 text-gray-6">{data?.companyCategory ?? "기타"}</p>
         </div>
         <div className="flex gap-2 justify-start items-center">
