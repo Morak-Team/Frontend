@@ -18,7 +18,7 @@ const FireTemperatureSlider = ({ temperature, setTemperature }) => {
       100,
       Math.max(0, startTempRef.current + tempDelta)
     );
-    setTemperature(newTemp);
+    setTemperature(newTemp.toFixed(0));
   };
 
   const handleTouchStart = (e) => {
