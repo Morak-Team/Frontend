@@ -48,13 +48,9 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/support": {
-        target: "https://api.morak.site",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/support/, "/support"),
-      },
     },
     allowedHosts: [".ngrok-free.app"],
+    historyApiFallback: true, // 리액트 라우터 경로 새로고침 시 index.html로 리디렉션
   },
   resolve: {
     alias: {
