@@ -1,97 +1,69 @@
-import { useRef } from "react";
-import StoryContent from "@/pages/story/components/content/StoryContent";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getRecentStories } from "@apis/story/getRecentStories";
 
 const StoryCarousel = () => {
-  const contentSample = [
-    {
-      num: 5,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 6,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 7,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 8,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 9,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 10,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-    {
-      num: 11,
-      title: "A 업체",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqKuLDrxGqOTapgqfxl13u_xeeiDpbr7LSgA&s",
-    },
-  ];
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const scrollRef = useRef(null);
-  let isDown = false;
-  let startX = 0;
-  let scrollLeft = 0;
+  useEffect(() => {
+    const fetchStories = async () => {
+      try {
+        const data = await getRecentStories(10);
+        setStories(data);
+      } catch (err) {
+        console.error("최근 스토리 조회 실패:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleMouseDown = (e) => {
-    isDown = true;
-    const slider = scrollRef.current;
-    slider.classList.add("grabbing");
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-  };
+    fetchStories();
+  }, []);
 
-  const handleMouseLeave = () => {
-    isDown = false;
-    scrollRef.current.classList.remove("grabbing");
-  };
-
-  const handleMouseUp = () => {
-    isDown = false;
-    scrollRef.current.classList.remove("grabbing");
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const slider = scrollRef.current;
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 1.6; // sensitivity 조정 가능
-    slider.scrollLeft = scrollLeft - walk;
-  };
+  if (loading) {
+    return <p className="text-gray-500 mt-4">스토리를 불러오는 중입니다…</p>;
+  }
 
   return (
-    <div
-      ref={scrollRef}
-      className="w-full m-5 overflow-x-auto whitespace-nowrap scrollbar-hide cursor-grab"
-      onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-    >
-      <div className="inline-flex gap-2">
-        {contentSample.map((item, idx) => (
-          <StoryContent
-            key={idx}
-            title={item.title}
-            img={item.img}
-            idx={idx}
-            num={item.num}
+    <div className="flex gap-4 overflow-x-auto scrollbar-hide mt-4 px-1">
+      {stories.map((story) => (
+        <div
+          key={story.storyId}
+          onClick={() => navigate(`/story/${story.storyId}`)}
+          className="relative w-[15.9375rem] sm:w-[17rem] md:w-[18rem] aspect-[255/182] flex-shrink-0 rounded-[0.5rem] overflow-hidden cursor-pointer"
+        >
+          <img
+            src={story.imageUrl}
+            alt={story.storyTitle}
+            className="absolute w-full h-full object-cover"
           />
-        ))}
-      </div>
+
+          <img
+            src="/svgs/story/moveIcon.svg"
+            alt="이동 아이콘"
+            className="absolute top-5 right-5 w-5 h-5"
+          />
+
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex flex-col gap-2">
+            <div className="flex items-center gap-1 bg-primary-3 rounded-lg w-fit px-1.5 py-0.5">
+              <img
+                src="/svgs/story/storyFireIcon.svg"
+                alt="fire"
+                className="w-4 h-4"
+              />
+              <span className="text-caption2 text-primary-8 font-semibold">
+                {story.likes || 0}
+              </span>
+            </div>
+
+            <h2 className="text-white font-semibold text-h4 break-keep">
+              {story.storyTitle}
+            </h2>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
