@@ -4,6 +4,7 @@ import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
+import "@/styles/spinner.css";
 
 import { usePaymentStore } from "@/store/paymentStore";
 
@@ -259,9 +260,10 @@ const ReviewImageCapture = ({
 
               {/* ✅ isPending일 때 띄우는 오버레이 */}
               {isPending && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[10000]">
-                  <p className="text-white text-xl font-bold animate-pulse">
-                    📷 사진 검증 중입니다...
+                <div className="absolute inset-0 bg-black/60 items-center justify-center z-[10000] flex flex-col gap-2">
+                  <div className="loader"></div>
+                  <p className="text-white b4 animate-pulse">
+                    사진 검수 중입니다 잠시만 기다려 주세요...
                   </p>
                 </div>
               )}

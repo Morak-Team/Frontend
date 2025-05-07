@@ -6,9 +6,12 @@ import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 import { usePaymentStore } from "@/store/paymentStore";
+import { useNavigate } from "react-router-dom";
+import { useLayoutEffect } from "react";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
-  console.log("place 정보", place);
+  const navigate = useNavigate();
+  const [shouldNavigateToReview, setShouldNavigateToReview] = useState(false);
 
   const setCompanyId = usePaymentStore((s) => s.setCompanyId);
   const { companyId } = usePaymentStore();
@@ -160,6 +163,14 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
             {showConfirm && (
               <ConfirmImage
                 data={companyInfo}
+                onConfirmComplete={() => {
+                  requestAnimationFrame(() => {
+                    setShowConfirm(false);
+                    setCompanyInfo(null);
+                    setTurnOnCamera(false);
+                    setShouldNavigateToReview(true);
+                  });
+                }}
                 onReject={() => {
                   setShowConfirm(false);
                   setTurnOnCamera(true);
