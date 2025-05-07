@@ -74,27 +74,27 @@ const FinancialProductDetailPage = () => {
           기본 정보
         </p>
         <div className="mt-2 flex flex-col gap-2">
-          <div className="bg-gray-2 rounded-md px-5 py-4">
+          <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
             <p className="text-b4 text-gray-8 mb-1">가입 기간</p>
             <p className="text-b2 text-gray-12 font-medium">
-              {data.duration || "-"}
+              {data.period || "-"}
             </p>
           </div>
-          <div className="bg-gray-2 rounded-md px-5 py-4">
-            <p className="text-b4 text-gray-8 mb-1">저축 방식</p>
+          <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
+            <p className="text-b4 text-gray-8 mb-1">방식</p>
             <p className="text-b2 text-gray-12 font-medium">
-              {data.savingType || "-"}
+              {data.method || "-"}
             </p>
           </div>
-          <div className="bg-gray-2 rounded-md px-5 py-4">
+          <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
             <p className="text-b4 text-gray-8 mb-1">기본 금리</p>
             <p className="text-b2 text-gray-12 font-medium">
-              {data.interestRate || "-"}
+              {data.benefit || "-"}
             </p>
           </div>
         </div>
 
-        <p className="text-b4 mt-8 ml-5 text-primary-8 font-semibold">
+        <p className="text-b4 mt-8 ml-5 text-primary-8 font-semibold break-keep">
           금융상품 소개
         </p>
         <div className="bg-gray-2 w-full rounded-md mt-2 pt-6 pb-6 px-4">
@@ -103,7 +103,7 @@ const FinancialProductDetailPage = () => {
           </p>
         </div>
 
-        <div className="text-caption2 text-gray-8 mt-10 pl-2">
+        <div className="text-caption2 text-gray-8 mt-10 pl-2 break-keep">
           <p>
             • 본 서비스에서 제공하는 상품 정보는 각 기관의 공고를 바탕으로
             수집·정리한 참고용 자료입니다.
