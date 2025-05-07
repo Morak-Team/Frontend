@@ -8,7 +8,7 @@ const ReviewContent = ({ item }) => {
     item.reviewCategories?.includes(tag.value)
   );
 
-  const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}Profile.svg`;
+  const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}.svg`;
   return (
     <div className="flex flex-col mt-5 mb-5 items-start gap-3 border-b-[1.6px] sm:border-b-[3px] border-gray-3">
       <div className="flex gap-2 justify-center items-center">
