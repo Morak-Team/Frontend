@@ -1,0 +1,37 @@
+import { useNavigate } from "react-router-dom";
+
+const HaveToLoginModal = ({ message, subMessage, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    onClose(); // 모달 닫기 먼저
+    navigate("/auth"); // 로그인 페이지로 이동
+  };
+
+  return (
+    <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
+      <div className="bg-white rounded-xl shadow-xl w-[300px] py-8 px-6 flex flex-col items-center text-center relative">
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-700"
+        >
+          <img src="/svgs/review/xIcon.svg" className="w-5 h-5" alt="닫기" />
+        </button>
+
+        <img src="/svgs/modal/errorIcon.svg" className="w-8 h-8 mb-3" />
+
+        <p className="h4 text-gray-12 font-bold">{message}</p>
+        <p className="b5 mt-2 text-gray-600">{subMessage}</p>
+
+        <button
+          onClick={handleLogin}
+          className="mt-5 px-4 py-2 b5 bg-primary-8 text-white rounded-lg"
+        >
+          로그인하러 가기
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default HaveToLoginModal;

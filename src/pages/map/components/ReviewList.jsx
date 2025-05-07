@@ -1,28 +1,28 @@
+import { useState } from "react";
 import { reviewData } from "@/constants/review/reviewData";
 import ReviewContent from "@/pages/map/components/ReviewContent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
-import { useMyProfile } from "@/apis/member/queries";
-import { useNavigate } from "react-router-dom";
 import { getMyProfile } from "@/apis/member/auth";
+import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
 
 const ReviewList = ({ setTurnOnCamera, companyId }) => {
   const navigate = useNavigate();
   const { data: count, isLoading } = useGetStoreReviewCount(companyId);
   const { data: preview } = useStoreReviews(companyId);
+  const [showLoginModal, setShowLoginModal] = useState(false); // ✅ 모달 상태
 
   const handleClickWrite = async () => {
     try {
-      const res = await getMyProfile(); // auth가 200일 때만 통과
+      const res = await getMyProfile();
       if (res?.name) {
-        setTurnOnCamera(true); // 명시적으로 인증 성공 시에만 실행
+        setTurnOnCamera(true);
       } else {
-        throw new Error("사용자 인증 실패");
+        throw new Error("인증 실패");
       }
     } catch (e) {
       if (e?.response?.status === 401) {
-        alert("로그인이 필요합니다.");
-        navigate("/auth");
+        setShowLoginModal(true); // ✅ 모달 표시
       } else {
         alert("사용자 정보를 확인할 수 없습니다.");
       }
@@ -59,6 +59,15 @@ const ReviewList = ({ setTurnOnCamera, companyId }) => {
             리뷰 더보기
           </Link>
         </div>
+      )}
+
+      {/* ✅ 로그인 모달 */}
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다"
+          subMessage=""
+          onClose={() => setShowLoginModal(false)}
+        />
       )}
     </div>
   );
