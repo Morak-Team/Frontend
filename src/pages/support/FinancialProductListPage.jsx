@@ -27,7 +27,7 @@ const FinancialProductList = () => {
       {isLoading && <p className="mt-5">로딩 중...</p>}
       {error && <p className="mt-5">데이터를 불러오지 못했습니다.</p>}
 
-      <div className="mt-3 flex flex-col gap-y-3">
+      <div className="h-28 mt-3 flex flex-col gap-y-3">
         {safeProducts.map((item, idx) => (
           <RecommendationCard
             key={idx}

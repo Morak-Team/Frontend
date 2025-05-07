@@ -18,7 +18,7 @@ const RecommendationCard = ({
   return (
     <div
       onClick={handleClick}
-      className="relative w-full h-56 p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow hover:shadow-sm"
+      className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow hover:shadow-sm"
       style={{
         boxShadow: "0px 2px 12px rgba(255, 111, 49, 0.05)",
       }}

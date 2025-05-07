@@ -52,7 +52,7 @@ const ConsumerTab = () => {
 
         <div className="flex gap-4 overflow-x-auto scrollbar-hide">
           {safeProducts.map((item, idx) => (
-            <div key={idx} className="w-80 flex-shrink-0">
+            <div key={idx} className="w-80 h-56 flex-shrink-0">
               <RecommendationCard
                 key={idx}
                 productId={item.id}
