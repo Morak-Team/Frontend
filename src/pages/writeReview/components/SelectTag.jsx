@@ -3,18 +3,16 @@ import { tagList } from "@/constants/review/tagList";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
 
+import FireTemperatureSlider from "@/pages/writeReview/components/FireTemperatureSlider";
 const SelectTag = ({ onNext }) => {
   const navigate = useNavigate();
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
 
   const { reviewInfo } = usePaymentStore();
   const [selectedTags, setSelectedTags] = useState([]);
-  const [temperature, setTemperature] = useState(87.5);
+  const [temperature, setTemperature] = useState(50);
 
   const companyId = usePaymentStore((s) => s.companyId);
-  console.log("tag", selectedTags);
-
-  console.log("Company ID:", companyId);
 
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
@@ -23,10 +21,6 @@ const SelectTag = ({ onNext }) => {
       setSelectedTags([...selectedTags, tagLabel]);
     }
   };
-
-  useEffect(() => {
-    console.log("updated reviewInfo", reviewInfo);
-  }, [reviewInfo]);
 
   const handleClick = () => {
     setReviewInfo({
@@ -63,9 +57,13 @@ const SelectTag = ({ onNext }) => {
             <p className="b5 text-gray-9 mt-2">
               슬라이드하여 온도를 남겨 보세요.
             </p>
-            <div className="flex justify-center items-center flex-col">
-              <p className="h1 text-primary-8 text-center mt-6">0도</p>
-              <img src="/svgs/review/fire.svg" className="w-52 h-56" />
+            <div className="flex justify-center items-center flex-col mb-10">
+              {/* <p className="h1 text-primary-8 text-center mt-6">0도</p> */}
+              {/* <img src="/svgs/review/fire.svg" className="w-52 h-56" /> */}
+              <FireTemperatureSlider
+                temperature={temperature}
+                setTemperature={setTemperature}
+              />
             </div>
           </div>
 
@@ -102,7 +100,12 @@ const SelectTag = ({ onNext }) => {
       <div className="fixed bottom-0 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={handleClick}
-          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
+          disabled={selectedTags.length === 0}
+          className={`w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 b1 border border-black ${
+            selectedTags.length === 0
+              ? "bg-gray-4 text-gray-6 cursor-not-allowed"
+              : "bg-primary-8 text-white"
+          }`}
         >
           다음
         </button>

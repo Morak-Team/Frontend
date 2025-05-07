@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
-import { usePaymentStore } from "@/store/paymentStore";
 
 const Home = () => {
-  const { reviewInfo } = usePaymentStore();
-  console.log(reviewInfo);
   return (
     <div className="p-6 space-y-4">
       <h2 className="text-xl">모락의 Home page입니다.</h2>

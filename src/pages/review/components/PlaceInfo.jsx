@@ -1,43 +1,66 @@
 import { categoryIconMap } from "@constants/iconMap";
 import { useNavigate } from "react-router-dom";
-import { businessTypeNameMap } from "@/constants/categoryMap";
+import {
+  businessTypeNameMap,
+  companyTypeNameMap,
+  companyTypeIconMap,
+} from "@/constants/categoryMap";
 import { useState, useEffect } from "react";
-import { companyTypeNameMap } from "@/constants/categoryMap";
-import { companyTypeIconMap } from "@/constants/categoryMap";
-import { isLikedPlace } from "@/pages/review/utils/isLikedPlace";
 import { usePaymentStore } from "@/store/paymentStore";
-import { likeToggleCompany } from "@/apis/review/likeToggle";
+import {
+  getLikedCompanies,
+  likeCompany,
+  unlikeCompany,
+} from "@/apis/company/getLikedCompanies";
+import { getMyProfile } from "@/apis/member/auth";
+import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
-  console.log(placeInfo);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { companyId } = usePaymentStore();
-  console.log(companyId, isLikedPlace(companyId), "좋아요 여부");
-  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태 (선택)
-  console.log(isLiked, companyId);
+
+  const [isLiked, setIsLiked] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLikeStatus = async () => {
+    const init = async () => {
       try {
-        const result = await isLikedPlace(companyId);
-        setIsLiked(result);
+        const profile = await getMyProfile();
+        if (profile?.name) {
+          setIsLoggedIn(true);
+          const likedList = await getLikedCompanies();
+          const liked = likedList.some(
+            (c) => String(c.companyId) === String(companyId)
+          );
+
+          setIsLiked(liked);
+        }
       } catch (e) {
-        console.error("좋아요 여부 확인 실패:", e);
+        setIsLoggedIn(false); // 인증 실패 → 비로그인 처리
       } finally {
         setLoading(false);
       }
     };
 
-    if (companyId) fetchLikeStatus();
+    if (companyId) init();
   }, [companyId]);
 
-  // 좋아요 토글 클릭
   const handleLikeClick = async () => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true); // 🔥 로그인 모달 표시
+      return;
+    }
+
     try {
       setLoading(true);
-      await likeToggleCompany(companyId);
+      if (isLiked) {
+        await unlikeCompany(companyId);
+      } else {
+        await likeCompany(companyId);
+      }
       setIsLiked((prev) => !prev);
     } catch (e) {
       console.error("좋아요 토글 실패:", e);
@@ -51,10 +74,10 @@ const PlaceInfo = ({ placeInfo }) => {
       <div className="flex justify-between items-start mt-4 w-full">
         <div className="w-full">
           <h3 className="h3">
-            {placeInfo.companyName}
+            {placeInfo?.companyName}
             <span className="ml-2 b5 text-gray-6">
               {businessTypeNameMap[placeInfo.companyCategory] ??
-                placeInfo.companyCategory}
+                placeInfo?.companyCategory}
             </span>
           </h3>
           <div className="flex items-center justify-start mt-1">
@@ -63,39 +86,39 @@ const PlaceInfo = ({ placeInfo }) => {
               className="w-4 h-4 mr-1"
             />
             <p className="b4 text-primary-8">
-              {placeInfo.temperature.toFixed(2)}도
+              {placeInfo?.temperature.toFixed(0)}도
             </p>
-            <p className="b6 ml-2">방문자 리뷰 {placeInfo.reviewCount}개</p>
+            <p className="b6 ml-2">방문자 리뷰 {placeInfo?.reviewCount}개</p>
           </div>
 
           <div className="bg-secondaryBackground flex flex-col b5 text-secondary3 rounded-xl px-4 py-3 mt-4 w-full leading-relaxed">
-            {placeInfo.business}
+            {placeInfo?.business}
 
-            {placeInfo.companyType && (
+            {placeInfo?.companyType && (
               <div className="inline-flex mt-3 items-center gap-2 px-3 py-1 rounded-xl bg-white w-fit">
                 <img
                   src={
                     companyTypeIconMap[
-                      companyTypeNameMap[placeInfo.companyType]
+                      companyTypeNameMap[placeInfo?.companyType]
                     ]
                   }
                   className="w-4 h-4"
                 />
-
                 <span
                   className={`caption2 ${
-                    placeInfo.companyType === "PRE"
+                    placeInfo?.companyType === "PRE"
                       ? "text-pre"
                       : "text-secondary3"
                   }`}
                 >
-                  {companyTypeNameMap[placeInfo.companyType]}
+                  {companyTypeNameMap[placeInfo?.companyType]}
                 </span>
               </div>
             )}
           </div>
         </div>
       </div>
+
       <div className="flex items-center gap-2 mt-6 w-full">
         <a
           href={`https://map.naver.com/v5/search/${placeInfo.companyName}`}
@@ -116,7 +139,7 @@ const PlaceInfo = ({ placeInfo }) => {
         >
           <img
             src={
-              isLiked
+              isLoggedIn && isLiked
                 ? "/svgs/storeReview/fullHeartIcon.svg"
                 : "/svgs/storeReview/emptyHeartIcon.svg"
             }
@@ -125,6 +148,15 @@ const PlaceInfo = ({ placeInfo }) => {
           />
         </button>
       </div>
+
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다"
+          subMessage=""
+          showButton={true}
+          onClose={() => setShowLoginModal(false)}
+        />
+      )}
     </div>
   );
 };

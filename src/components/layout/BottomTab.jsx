@@ -4,10 +4,12 @@ import useUIStore from "@/store/uiStore";
 const BottomTab = () => {
   const navigate = useNavigate();
   const location = useLocation(); // ✅ 현재 URL 경로 가져오기
-  const { turnOnCamera, isBottomSheetOpen, isWriteReview } = useUIStore();
+  const { turnOnCamera, isBottomSheetOpen, isWriteReview, isStoryDetail } =
+    useUIStore();
 
   // BottomSheet 확장 or 카메라 켜짐 상태면 숨김
-  if (isBottomSheetOpen || turnOnCamera || isWriteReview) return null;
+  if (isBottomSheetOpen || turnOnCamera || isWriteReview || isStoryDetail)
+    return null;
 
   const tabs = [
     {

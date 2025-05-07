@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Step7 = ({ onNext, defaultValue, userInfo, recommendResult }) => {
   const navigate = useNavigate();
-  console.log(recommendResult);
 
   return (
     <div className="relative w-full min-h-screen bg-white flex justify-center scrollbar-hide">

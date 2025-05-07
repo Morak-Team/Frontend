@@ -8,7 +8,7 @@ const ReviewContent = ({ item }) => {
     item.reviewCategories?.includes(tag.value)
   );
 
-  const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}Profile.svg`;
+  const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}.svg`;
   return (
     <div className="flex flex-col mt-5 mb-5 items-start gap-3 border-b-[1.6px] sm:border-b-[3px] border-gray-3">
       <div className="flex gap-2 justify-center items-center">
@@ -18,9 +18,11 @@ const ReviewContent = ({ item }) => {
 
       <div className="flex gap-1 justify-center items-center">
         <img src="/svgs/review/fireIcon.svg" className="w-4 h-4" />
-        <p className="b1 text-primary-8">{item.temperature}도</p>
+        <p className="b1 text-primary-8">
+          {item?.temperature?.toFixed(0) || 0}도
+        </p>
       </div>
-      <p className="b5 text-gray-11">{item.reviewContent}</p>
+      <p className="b5 text-gray-11">{item?.reviewContent}</p>
       <div
         ref={scrollRef}
         className="w-full overflow-x-auto scrollbar-hide mb-5 cursor-grab"

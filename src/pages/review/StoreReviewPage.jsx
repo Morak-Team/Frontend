@@ -1,6 +1,5 @@
-// src/pages/review/StoreReviewPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import PlaceInfo from "@/pages/review/components/PlaceInfo";
 import useUIStore from "@/store/uiStore";
@@ -26,13 +25,19 @@ const StoreReviewPage = () => {
   } = useGetCompanyPreview(companyId);
 
   if (placeLoading) {
-    return <p className="text-center py-8">장소 정보를 불러오는 중...</p>;
+    return (
+      <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
+        <div className="loader"></div>
+        <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
+      </div>
+    );
   }
   if (placeError) {
     return (
-      <p className="text-center py-8">
-        장소 정보 로드 실패: {placeError.message}
-      </p>
+      <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
+        <div className="loader"></div>
+        <p className="mt-4 text-gray-500 b5">오류가 발생했습니다.</p>
+      </div>
     );
   }
 
@@ -59,17 +64,6 @@ const StoreReviewPage = () => {
           companyId={companyId}
           turnOnCamera={turnOnCamera}
           onCloseCamera={() => setTurnOnCamera(false)}
-          onCaptureSuccess={() => {
-            setTurnOnCamera(false);
-            setShowConfirm(true);
-          }}
-        />
-      )}
-      {turnOnCamera && (
-        <ReviewImageCapture
-          companyId={companyId}
-          turnOnCamera={turnOnCamera}
-          onCloseCamera={() => setTurnOnCamera(false)}
           onCaptureSuccess={(data) => {
             setCompanyInfo(data); // 즉시 로컬 상태에 저장
             // setReceiptInfo(data); // 전역 상태에도 저장
@@ -81,6 +75,11 @@ const StoreReviewPage = () => {
       {showConfirm && (
         <ConfirmImage
           data={companyInfo}
+          onConfirmComplete={() => {
+            // ✅ 닫기 버튼 누를 때 처리
+            setShowConfirm(false);
+            setCompanyInfo(null);
+          }}
           onReject={() => {
             setShowConfirm(false);
             setTurnOnCamera(true);

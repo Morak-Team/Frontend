@@ -9,6 +9,9 @@ const useUIStore = create((set) => ({
 
   isWriteReview: false,
   setIsWriteReview: (value) => set({ isWriteReview: value }),
+
+  isStoryDetail: false,
+  setIsStoryDetail: (value) => set({ isStoryDetail: value }),
 }));
 
 export default useUIStore;
