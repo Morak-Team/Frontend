@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import {
   COLOR_MAP,
@@ -7,34 +7,33 @@ import {
   ENUM_TO_KOR_MAP,
 } from "@pages/support/constants/consumerMap";
 import { getConsumptionDetail } from "@apis/consumer/getConsumptionDetail";
-import Spinner from "@components/common/Spinner";
+import CustomTooltip from "./CustomTooltip";
 
 const ConsumptionChart = ({ data, reviewCount }) => {
-  const sortedData = [...data]
-    .filter((d) => !!d.name && d.value > 0)
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 5);
-
   const [topReviewSpeech, setTopReviewSpeech] = useState("");
   const [topTwo, setTopTwo] = useState([]);
   const [chartData, setChartData] = useState([]);
 
-  const priceCacheRef = useRef({});
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setChartData(sortedData);
-    }, 10);
-    return () => clearTimeout(timeout);
+  const sortedData = useMemo(() => {
+    return [...data]
+      .filter((d) => !!d.name && d.value > 0)
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 6);
   }, [data]);
 
   useEffect(() => {
-    const fetchReviewData = async () => {
-      if (reviewCount === 0) {
-        setTopReviewSpeech("리뷰 작성 내역이\n 없습니다.");
-        return;
-      }
+    setChartData(sortedData);
+  }, [sortedData]);
 
+  useEffect(() => {
+    if (reviewCount === 0) {
+      setTopReviewSpeech("리뷰 작성 내역이\n 없습니다.");
+      return;
+    }
+
+    let isMounted = true;
+
+    const fetchReviewData = async () => {
       try {
         const enriched = await Promise.all(
           sortedData.map(async ({ name }) => {
@@ -59,65 +58,27 @@ const ConsumptionChart = ({ data, reviewCount }) => {
         const valid = enriched.filter(Boolean);
         const ranked = valid.sort((a, b) => b.reviewRatio - a.reviewRatio);
 
-        setTopReviewSpeech(ranked[0]?.speech || "리뷰 작성 내역이\n 없습니다.");
-        setTopTwo(ranked.slice(0, 2));
-        setChartData(ranked.slice(0, 5));
+        if (isMounted) {
+          setTopReviewSpeech(
+            ranked[0]?.speech || "리뷰 작성 내역이\n 없습니다."
+          );
+          setTopTwo(ranked.slice(0, 2));
+          setChartData(ranked.slice(0, 6));
+        }
       } catch (err) {
         console.error("전체 오류:", err);
-        setTopReviewSpeech("리뷰 작성 내역이\n 없습니다.");
+        if (isMounted) {
+          setTopReviewSpeech("리뷰 작성 내역이\n 없습니다.");
+        }
       }
     };
 
     fetchReviewData();
-  }, [data, reviewCount]);
 
-  const CustomTooltip = ({ active, payload }) => {
-    const [price, setPrice] = useState(null);
-    const name = payload?.[0]?.name;
-
-    useEffect(() => {
-      const fetchPrice = async () => {
-        if (!name) return;
-        if (priceCacheRef.current[name]) {
-          setPrice(priceCacheRef.current[name]);
-          return;
-        }
-
-        const enumType = KOR_TO_ENUM_MAP[name.trim()];
-        if (!enumType) return;
-
-        try {
-          const res = await getConsumptionDetail(enumType);
-          const total = res?.consumption?.totalPrice || 0;
-          const formatted = `${total.toLocaleString()}원`;
-          priceCacheRef.current[name] = formatted;
-          setPrice(formatted);
-        } catch (err) {
-          console.error("툴팁 가격 조회 실패:", err);
-        }
-      };
-
-      if (active) fetchPrice();
-    }, [active, name]);
-
-    if (!active || !name) return null;
-
-    return (
-      <div className="bg-white px-3 py-2 border border-gray-300 rounded shadow text-sm text-gray-900 z-100 w-max">
-        <p className="font-semibold">{name}</p>
-        <p className="flex items-center gap-1">
-          소비금액:
-          {price ? (
-            <span>{price}</span>
-          ) : (
-            <span className="w-[16px] h-[16px]">
-              <Spinner size={16} />
-            </span>
-          )}
-        </p>
-      </div>
-    );
-  };
+    return () => {
+      isMounted = false;
+    };
+  }, [reviewCount, sortedData]);
 
   return (
     <div className="w-full mx-auto flex items-center justify-center gap-5 sm:gap-8">
@@ -140,9 +101,7 @@ const ConsumptionChart = ({ data, reviewCount }) => {
           </Pie>
           <Tooltip
             content={<CustomTooltip />}
-            wrapperStyle={{
-              zIndex: 1000,
-            }}
+            wrapperStyle={{ zIndex: 1000 }}
           />
         </PieChart>
 
