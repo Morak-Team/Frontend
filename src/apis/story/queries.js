@@ -22,6 +22,7 @@ export const usePatchStoryLike = (storyId) => {
   return useMutation({
     mutationFn: () => patchStoryLike(storyId),
     onSuccess: () => {
+      // 상세 페이지 캐시 업데이트
       queryClient.setQueryData(["bestStoryDetail", storyId], (old) => {
         if (!old) return old;
         return {
@@ -29,6 +30,25 @@ export const usePatchStoryLike = (storyId) => {
           storyLikes: old.storyLikes + 1,
         };
       });
+
+      // 최근 스토리 목록 캐시 업데이트
+      queryClient.setQueryData(["recentStory"], (old) => {
+        if (!Array.isArray(old)) return old;
+        return old.map((story) =>
+          story.storyId === Number(storyId)
+            ? { ...story, likes: (story.likes || 0) + 1 }
+            : story,
+        );
+      });
     },
+  });
+};
+
+import { getRecentStories } from "@/apis/story/getRecentStories";
+
+export const useGetRecentStory = (size = 10) => {
+  return useQuery({
+    queryKey: ["recentStory"],
+    queryFn: () => getRecentStories(size),
   });
 };

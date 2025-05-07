@@ -1,28 +1,11 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getRecentStories } from "@apis/story/getRecentStories";
+import { useGetRecentStory } from "@/apis/story/queries";
 
 const StoryCarousel = () => {
-  const [stories, setStories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { data: stories = [], isLoading } = useGetRecentStory();
 
-  useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const data = await getRecentStories(10);
-        setStories(data);
-      } catch (err) {
-        console.error("최근 스토리 조회 실패:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStories();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <p className="text-gray-500 mt-4">스토리를 불러오는 중입니다…</p>;
   }
 
@@ -32,7 +15,7 @@ const StoryCarousel = () => {
         <div
           key={story.storyId}
           onClick={() => navigate(`/story/${story.storyId}`)}
-          className="relative w-[15.9375rem] sm:w-[17rem] md:w-[18rem] aspect-[255/182] flex-shrink-0 rounded-[0.5rem] overflow-hidden cursor-pointer"
+          className="relative w-64 sm:w-72 md:w-80 aspect-[255/182] flex-shrink-0 rounded-md overflow-hidden cursor-pointer"
         >
           <img
             src={story.imageUrl}
