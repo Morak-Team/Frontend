@@ -13,7 +13,7 @@ import {
   unlikeCompany,
 } from "@/apis/company/getLikedCompanies";
 import { getMyProfile } from "@/apis/member/auth";
-import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import ReviewContent from "@/pages/map/components/ReviewContent";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 import { getMyProfile } from "@/apis/member/auth";
-import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 
 const ReviewList = ({ setTurnOnCamera, companyId }) => {
   const navigate = useNavigate();
