@@ -32,12 +32,10 @@ const PlaceInfo = ({ placeInfo }) => {
         if (profile?.name) {
           setIsLoggedIn(true);
           const likedList = await getLikedCompanies();
-          console.log(likedList);
           const liked = likedList.some(
             (c) => String(c.companyId) === String(companyId)
           );
 
-          console.log(liked);
           setIsLiked(liked);
         }
       } catch (e) {

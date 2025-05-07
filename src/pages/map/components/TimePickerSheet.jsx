@@ -17,8 +17,6 @@ const TimePickerSheet = ({
   const [hour, setHour] = useState(initialHour || "1시");
   const [minute, setMinute] = useState(initialMinute || "0분");
 
-  console.log(period, hour, minute);
-
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-40 flex justify-center items-end">
       {/* 바깥 영역 클릭 시 닫기 */}

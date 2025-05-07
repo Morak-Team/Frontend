@@ -144,8 +144,6 @@ const ReviewImageCapture = ({
     mutationFn: postRecipt,
     retry: 2,
     onSuccess: (res) => {
-      console.log("res", res);
-
       setTimeout(() => {
         onCaptureSuccess?.(res); // props를 통해 부모 컴포넌트로 직접 전달
         onCloseCamera?.();
@@ -160,7 +158,7 @@ const ReviewImageCapture = ({
   // 2) handleUsePhoto 에서도 객체 하나로 넘기기
   const handleUsePhoto = async () => {
     if (!imageBlob) return;
-    console.log(imageBlob.size);
+
     try {
       const options = {
         maxSizeMB: 1,
@@ -168,7 +166,6 @@ const ReviewImageCapture = ({
         initialQuality: 0.8,
       };
       const compressedFile = await imageCompression(imageBlob, options);
-      console.log("압축 후 크기:", compressedFile.size);
 
       // FormData 에 file + companyId 담기
       const form = new FormData();

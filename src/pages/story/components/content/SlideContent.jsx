@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 const SlideContent = ({ data, title }) => {
-  console.log(data, "slide");
   const navigate = useNavigate();
   const moveToDetailPage = () => {
     navigate(`/story/${data.storyId}`);

@@ -13,7 +13,7 @@ const WriteText = ({ onNext, onBack }) => {
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
   const { data, isLoading } = useMyProfile();
-  console.log(data.profileColor);
+
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
 

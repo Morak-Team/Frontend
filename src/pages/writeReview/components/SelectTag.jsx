@@ -13,9 +13,6 @@ const SelectTag = ({ onNext }) => {
   const [temperature, setTemperature] = useState(50);
 
   const companyId = usePaymentStore((s) => s.companyId);
-  console.log("tag", selectedTags);
-
-  console.log("Company ID:", companyId);
 
   const handleTagClick = (tagLabel) => {
     if (selectedTags.includes(tagLabel)) {
@@ -24,10 +21,6 @@ const SelectTag = ({ onNext }) => {
       setSelectedTags([...selectedTags, tagLabel]);
     }
   };
-
-  useEffect(() => {
-    console.log("updated reviewInfo", reviewInfo);
-  }, [reviewInfo]);
 
   const handleClick = () => {
     setReviewInfo({

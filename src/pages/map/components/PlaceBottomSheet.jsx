@@ -18,14 +18,13 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
 
   useEffect(() => {
     setCompanyId(place.companyId);
-    console.log(companyId);
   }, [place.companyId, setCompanyId, place, companyId]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [companyInfo, setCompanyInfo] = useState(null);
-  console.log("company", companyInfo);
+
   const { turnOnCamera, setTurnOnCamera, setBottomSheetOpen } = useUIStore();
 
   const bottomOffset =

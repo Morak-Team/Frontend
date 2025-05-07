@@ -9,8 +9,6 @@ const DatePickerSheet = ({ onClose, onConfirm, initialMonth, initialDay }) => {
   const [selectedMonth, setSelectedMonth] = useState(initialMonth || "2월");
   const [selectedDay, setSelectedDay] = useState(initialDay || "14일");
 
-  console.log(selectedMonth, selectedDay);
-
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-40 flex justify-center items-end">
       {/* 바깥 클릭 시 닫힘 */}

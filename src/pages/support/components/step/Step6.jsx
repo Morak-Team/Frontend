@@ -9,7 +9,6 @@ const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
     try {
       setIsLoading(true);
       const response = await postUserInfo(userInfo);
-      console.log("추천 결과:", response);
       setRecommendResult(response);
       onNext();
     } catch (error) {
