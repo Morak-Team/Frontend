@@ -3,14 +3,14 @@ import { tagList } from "@/constants/review/tagList";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
 
-import FireTemperatureSlider from "@/pages/writeReview/components/\bFireTemperatureSlider";
+import FireTemperatureSlider from "@/pages/writeReview/components/FireTemperatureSlider";
 const SelectTag = ({ onNext }) => {
   const navigate = useNavigate();
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
 
   const { reviewInfo } = usePaymentStore();
   const [selectedTags, setSelectedTags] = useState([]);
-  const [temperature, setTemperature] = useState(87.5);
+  const [temperature, setTemperature] = useState(50);
 
   const companyId = usePaymentStore((s) => s.companyId);
   console.log("tag", selectedTags);

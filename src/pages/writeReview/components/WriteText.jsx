@@ -2,7 +2,9 @@ import { useState } from "react";
 import UploadingModal from "@/pages/writeReview/components/UploadingModal";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
+import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { postReview } from "@/apis/review/postReview";
+import { useMyProfile } from "@/apis/member/queries";
 
 const WriteText = ({ onNext, onBack }) => {
   const navigate = useNavigate();
@@ -10,8 +12,8 @@ const WriteText = ({ onNext, onBack }) => {
   const { reviewInfo } = usePaymentStore();
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
-  console.log(text);
-
+  const { data, isLoading } = useMyProfile();
+  console.log(data.profileColor);
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
 
@@ -50,8 +52,12 @@ const WriteText = ({ onNext, onBack }) => {
         <div className="flex justify-center">
           <div className="w-80 sm:w-[77%]">
             <div className="flex items-center gap-2">
-              <img src="/svgs/review/profileIcon.svg" className="w-6 h-6" />
-              <p className="b5">닉네임</p>
+              <img
+                src={profileColorMap[data?.profileColor?.toLowerCase?.()]}
+                className="w-6 h-6"
+              />
+
+              <p className="b5">{data?.name}</p>
             </div>
           </div>
         </div>
