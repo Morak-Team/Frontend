@@ -6,11 +6,8 @@ import ConfirmImage from "@pages/map/components/ConfirmImage";
 import ReviewList from "@pages/map/components/ReviewList";
 import useUIStore from "@/store/uiStore";
 import { usePaymentStore } from "@/store/paymentStore";
-import { useNavigate } from "react-router-dom";
-import { useLayoutEffect } from "react";
 
 const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
-  const navigate = useNavigate();
   const [shouldNavigateToReview, setShouldNavigateToReview] = useState(false);
 
   const setCompanyId = usePaymentStore((s) => s.setCompanyId);
@@ -153,7 +150,6 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
                 onCloseCamera={() => setTurnOnCamera(false)}
                 onCaptureSuccess={(data) => {
                   setCompanyInfo(data); // 즉시 로컬 상태에 저장
-                  // setReceiptInfo(data); // 전역 상태에도 저장
                   setShowConfirm(true); // 그다음 Confirm 렌더링
                 }}
               />

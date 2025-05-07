@@ -53,7 +53,10 @@ const WriteText = ({ onNext, onBack }) => {
           <div className="w-80 sm:w-[77%]">
             <div className="flex items-center gap-2">
               <img
-                src={profileColorMap[data?.profileColor?.toLowerCase?.()]}
+                src={
+                  profileColorMap[data?.profileColor?.toLowerCase?.()] ||
+                  profileColorMap.gray
+                }
                 className="w-6 h-6"
               />
 
@@ -78,7 +81,12 @@ const WriteText = ({ onNext, onBack }) => {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] flex justify-center bg-white py-4 shadow-md z-50">
         <button
           onClick={handleClick}
-          className="w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 text-white bg-primary-8 b1 border border-black"
+          disabled={text.trim().length === 0}
+          className={`w-80 sm:w-[77%] h-12 rounded-md px-6 py-3 b1 border border-black ${
+            text.trim().length === 0
+              ? "bg-gray-4 text-gray-6 cursor-not-allowed"
+              : "bg-primary-8 text-white"
+          }`}
         >
           다음
         </button>

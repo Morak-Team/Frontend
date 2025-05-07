@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const FireTemperatureSlider = ({ temperature, setTemperature }) => {
@@ -32,8 +32,15 @@ const FireTemperatureSlider = ({ temperature, setTemperature }) => {
   const handleMouseDown = (e) => {
     e.preventDefault();
     handleStart(e.clientY);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+
+    const move = (e) => handleMove(e.clientY);
+    const up = () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", up);
+    };
+
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
   };
 
   const handleMouseMove = (e) => {
