@@ -31,7 +31,7 @@ const SlideContent = ({ data, title }) => {
       <div className="absolute bottom-5 left-0 w-full px-4 pt-6 pb-4 text-white">
         {/* 좋아요 아이콘 + 숫자 */}
         <div className="flex items-center mb-1">
-          <button className="flex gap-1 bg-primary-3 text-primary-8 b4 rounded-md pl-1 pr-1.5 py-0.5 justify-center items-center">
+          <button className="flex gap-1 bg-primary-3 text-primary-8 b4 rounded-lg  pl-1 pr-1.5 py-0.5 justify-center items-center">
             <img
               src="/svgs/story/storyFireIcon.svg"
               className="w-4 h-4"
@@ -41,7 +41,7 @@ const SlideContent = ({ data, title }) => {
           </button>
         </div>
         {/* 제목 */}
-        <div className="h3 text-white mt-4">{data.storyTitle}</div>
+        <div className="h3 font-semibold text-white mt-2 break-keep">{data.storyTitle}</div>
       </div>
     </div>
   );
