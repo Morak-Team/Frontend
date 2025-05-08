@@ -92,7 +92,7 @@ const ConsumptionChart = ({ data, reviewCount }) => {
             cy="50%"
             innerRadius={50}
             outerRadius={65}
-            paddingAngle={2}
+            paddingAngle={0}
             isAnimationActive={true}
           >
             {chartData.map((entry, index) => (

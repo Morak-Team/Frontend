@@ -18,10 +18,7 @@ const RecommendationCard = ({
   return (
     <div
       onClick={handleClick}
-      className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow hover:shadow-sm"
-      style={{
-        boxShadow: "0px 2px 12px rgba(255, 111, 49, 0.05)",
-      }}
+      className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
     >
       <img
         src="/svgs/support/company/forwardIcon.svg"
@@ -44,7 +41,7 @@ const RecommendationCard = ({
       </div>
 
       {showDescription && (
-        <p className="text-b6 font-normal text-gray-11 mt-6 line-clamp-3">
+        <p className="text-b6 font-normal text-gray-11 mt-6 line-clamp-3 break-keep">
           {description}
         </p>
       )}
