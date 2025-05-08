@@ -28,7 +28,7 @@ const ConsumerTab = () => {
   const safeProducts = Array.isArray(consumerProducts) ? consumerProducts : [];
 
   return (
-    <div className="flex flex-col gap-16 px-5 pb-16">
+    <div className="flex flex-col gap-16">
       <div>
         <h1 className="text-h3 font-semibold mb-6">
           {consumptionData?.name || "모락 사용자"}님의 소비 가치
