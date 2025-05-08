@@ -72,16 +72,13 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
     const delta = endY - startY.current;
 
     if (delta < -50) {
-      // 위로 스와이프 → 확장
       controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
     } else if (delta > 100) {
-      // 아래로 스와이프 → 닫기
       controls.start({ height: 0 }).then(() => {
-        onClose?.(); // 부모에서 selectedPlace 초기화 등 가능
+        onClose?.(); 
       });
     } else {
-      // 중간 → 다시 MIN_HEIGHT로 복원
       controls.start({ height: MIN_HEIGHT });
       setIsExpanded(false);
     }
