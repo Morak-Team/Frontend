@@ -48,5 +48,5 @@ export const reverseBusinessNameMap = Object.fromEntries(
 );
 
 export const reverseCompanyNameMap = Object.fromEntries(
-  Object.entries(businessTypeNameMap).map(([en, ko]) => [ko, en]),
+  Object.entries(companyTypeNameMap).map(([en, ko]) => [ko, en]),
 );
