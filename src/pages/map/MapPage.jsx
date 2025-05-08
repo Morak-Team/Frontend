@@ -4,6 +4,7 @@ import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
 import CategoryBar from "./components/CategoryBar";
 import IntroModal from "./components/IntroModal";
+import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
 import { getAllCompanies } from "@apis/company/getAllCompanies";
@@ -23,6 +24,7 @@ const MapPage = () => {
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
   const [isTrackingLocation, setIsTrackingLocation] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -126,8 +128,7 @@ const MapPage = () => {
 
   const handleToggleLikedFilter = async () => {
     if (!isLoggedIn) {
-      alert("로그인이 필요한 기능입니다.");
-      navigate("/auth");
+      setShowLoginModal(true);
       return;
     }
 
@@ -241,6 +242,14 @@ const MapPage = () => {
           onClose={() => setSelectedPlace(null)}
           onToggleLike={handleToggleLike}
           onExpandChange={setIsBottomSheetExpanded}
+        />
+      )}
+
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다."
+          subMessage="해당 기능은 로그인 후 이용할 수 있어요."
+          onClose={() => setShowLoginModal(false)}
         />
       )}
     </>
