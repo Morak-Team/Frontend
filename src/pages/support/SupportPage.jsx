@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import CompanyTab from "@/pages/support/components/CompanyTab";
 import ConsumerTab from "@/pages/support/components/ConsumerTab";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
@@ -7,16 +7,15 @@ import { getMyProfile } from "@apis/member/auth";
 
 const SupportPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoggedIn, setIsLoggedIn] = useState(null); 
-  const category = searchParams.get("category") || "consummer";
-  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const category = searchParams.get("category") || "consumer";
 
   const handleTabChange = (value) => {
     setSearchParams({ category: value });
   };
 
   useEffect(() => {
-    if (category === "consummer") {
+    if (category === "consumer") {
       const checkLogin = async () => {
         try {
           await getMyProfile();
@@ -26,6 +25,9 @@ const SupportPage = () => {
           const code = e?.response?.data?.code;
           if (status === 401 || code === "1002") {
             setIsLoggedIn(false);
+          } else {
+            console.error("로그인 상태 확인 중 오류 발생:", e);
+            setIsLoggedIn(false); // 오류 발생 시 기본적으로 로그인되지 않은 상태로 처리
           }
         }
       };
@@ -37,9 +39,9 @@ const SupportPage = () => {
     <div className="flex flex-col px-5 pt-24 h-[calc(100vh-5.25rem)] overflow-y-auto bg-gray-2">
       <div className="flex gap-2">
         <button
-          onClick={() => handleTabChange("consummer")}
+          onClick={() => handleTabChange("consumer")}
           className={`px-4 py-2 rounded-md b1 transition-all duration-300 ease-in-out ${
-            category === "consummer"
+            category === "consumer"
               ? "shadow-surface text-gray-12 bg-white"
               : "text-gray-6 bg-transparent"
           }`}
@@ -62,7 +64,7 @@ const SupportPage = () => {
       <div className="mt-7">
         {category === "company" && <CompanyTab />}
 
-        {category === "consummer" &&
+        {category === "consumer" &&
           (isLoggedIn === null ? null : isLoggedIn ? (
             <ConsumerTab />
           ) : (

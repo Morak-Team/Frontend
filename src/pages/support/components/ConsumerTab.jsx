@@ -19,10 +19,11 @@ const ConsumerTab = () => {
   if (isLoading || isProductsLoading) return <Spinner />;
   if (error || productsError) return <p>데이터를 불러오지 못했습니다.</p>;
 
-  const transformedData = consumptionData.consumptions.map((item) => ({
-    name: companyTypeNameMap[item.companyType] || item.companyType,
-    value: item.totalPrice,
-  }));
+  const transformedData =
+    consumptionData.consumptions.map((item) => ({
+      name: companyTypeNameMap[item.companyType] || item.companyType,
+      value: item.totalPrice,
+    })) || [];
 
   const safeProducts = Array.isArray(consumerProducts) ? consumerProducts : [];
 
@@ -30,11 +31,11 @@ const ConsumerTab = () => {
     <div className="flex flex-col gap-16 px-5 pb-16">
       <div>
         <h1 className="text-h3 font-semibold mb-6">
-          {consumptionData.name}님의 소비 가치
+          {consumptionData?.name || "모락 사용자"}님의 소비 가치
         </h1>
         <ConsumptionChart
           data={transformedData}
-          reviewCount={consumptionData.reviewCount}
+          reviewCount={consumptionData?.reviewCount || 0}
         />
       </div>
 
@@ -51,10 +52,10 @@ const ConsumerTab = () => {
         </div>
 
         <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-          {safeProducts.map((item, idx) => (
-            <div key={idx} className="w-80 h-56 flex-shrink-0">
+          {safeProducts.map((item, _) => (
+            <div key={item.id} className="w-80 h-56 flex-shrink-0">
               <RecommendationCard
-                key={idx}
+                key={item.id}
                 productId={item.id}
                 bank={item.bankName}
                 title={item.productName}

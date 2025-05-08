@@ -118,7 +118,7 @@ const FinancialProductDetailPage = () => {
           <button
             onClick={() => window.open(data.productLink, "_blank")}
             className="flex gap-2 bg-primary-8 justify-center items-center mt-14 rounded-xl h-12 w-full"
-            aria-label="금융상품 링크"
+            aria-label="금융상품 링크 (새 창에서 열림)"
           >
             <img
               src="/svgs/support/company/linkIcon.svg"

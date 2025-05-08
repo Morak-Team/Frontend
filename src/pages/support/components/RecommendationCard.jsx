@@ -18,6 +18,9 @@ const RecommendationCard = ({
   return (
     <div
       onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`${title} 상품 상세정보`}
       className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
     >
       <img
@@ -32,7 +35,6 @@ const RecommendationCard = ({
             {productType}
           </span>
         )}
-        
       </div>
 
       <div className="flex flex-col gap-2">

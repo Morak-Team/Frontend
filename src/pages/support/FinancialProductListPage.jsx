@@ -1,6 +1,7 @@
 import RecommendationCard from "@/pages/support/components/RecommendationCard";
 import { useNavigate } from "react-router-dom";
 import { useFinancialProducts } from "@/pages/support/hooks/useFinancialProducts";
+import Spinner from "@components/common/Spinner";
 
 const FinancialProductList = () => {
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ const FinancialProductList = () => {
         <p className="b5 text-gray-9">총 {safeProducts.length}개</p>
       </div>
 
-      {isLoading && <p className="mt-5">로딩 중...</p>}
+      {isLoading && <Spinner />}
       {error && <p className="mt-5">데이터를 불러오지 못했습니다.</p>}
 
-      <div className="h-28 mt-3 flex flex-col gap-y-3">
-        {safeProducts.map((item, idx) => (
+      <div className="mt-3 flex flex-col gap-y-3">
+        {safeProducts.map((item, _) => (
           <RecommendationCard
-            key={idx}
+            key={item.id}
             productId={item.id}
             bank={item.bankName}
             title={item.productName}

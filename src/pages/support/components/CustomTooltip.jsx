@@ -55,7 +55,7 @@ const CustomTooltip = ({ active, payload }) => {
           <span>{count}건</span>
         ) : (
           <span className="w-[16px] h-[16px]">
-            <Spinner size={16} />
+            <Spinner />
           </span>
         )}
       </div>
@@ -65,7 +65,7 @@ const CustomTooltip = ({ active, payload }) => {
           <span>{price}</span>
         ) : (
           <span className="w-[16px] h-[16px]">
-            <Spinner size={16} />
+            <Spinner />
           </span>
         )}
       </div>

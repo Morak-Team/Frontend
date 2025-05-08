@@ -82,7 +82,7 @@ const ConsumptionChart = ({ data, reviewCount }) => {
 
   return (
     <div className="w-full mx-auto flex items-center justify-center gap-5 sm:gap-8">
-      <div className="relative w-[140px] h-[140px] shrink-0">
+      <div className="relative w-[140px] h-[140px] shrink-0 ">
         <PieChart width={140} height={140}>
           <Pie
             data={chartData}
