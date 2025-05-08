@@ -7,20 +7,15 @@ const CustomTooltip = ({ active, payload }) => {
   const [price, setPrice] = useState(null);
   const [count, setCount] = useState(null);
   const name = payload?.[0]?.name;
-  const cacheRef = useRef({});
+  const priceCacheRef = useRef({});
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchTooltipData = async () => {
+    const fetchDetail = async () => {
       if (!name) return;
 
-      if (cacheRef.current[name]) {
-        const cached = cacheRef.current[name];
-        if (isMounted) {
-          setPrice(cached.price);
-          setCount(cached.count);
-        }
+      if (priceCacheRef.current[name]) {
+        setPrice(priceCacheRef.current[name].price);
+        setCount(priceCacheRef.current[name].count);
         return;
       }
 
@@ -34,42 +29,46 @@ const CustomTooltip = ({ active, payload }) => {
 
         const formatted = `${total.toLocaleString()}원`;
 
-        if (isMounted) {
-          setPrice(formatted);
-          setCount(reviewCount);
-          cacheRef.current[name] = { price: formatted, count: reviewCount };
-        }
+        priceCacheRef.current[name] = {
+          price: formatted,
+          count: reviewCount,
+        };
+
+        setPrice(formatted);
+        setCount(reviewCount);
       } catch (err) {
         console.error("툴팁 정보 조회 실패:", err);
       }
     };
 
-    if (active) {
-      setPrice(null);
-      setCount(null);
-      fetchTooltipData();
-    }
-
-    return () => {
-      isMounted = false;
-    };
+    if (active) fetchDetail();
   }, [active, name]);
 
   if (!active || !name) return null;
 
   return (
     <div className="bg-white px-3 py-2 border border-gray-300 rounded shadow text-sm text-gray-900 z-100 w-max">
-      <p className="font-semibold">{name}</p>
-
-      <p className="flex items-center gap-1">
+      <div className="font-semibold">{name}</div>
+      <div className="flex items-center gap-1">
         리뷰 수:
-        {count !== null ? <span>{count}건</span> : <Spinner size={16} />}
-      </p>
-
-      <p className="flex items-center gap-1">
+        {count !== null ? (
+          <span>{count}건</span>
+        ) : (
+          <span className="w-[16px] h-[16px]">
+            <Spinner size={16} />
+          </span>
+        )}
+      </div>
+      <div className="flex items-center gap-1">
         소비금액:
-        {price !== null ? <span>{price}</span> : <Spinner size={16} />}
-      </p>
+        {price ? (
+          <span>{price}</span>
+        ) : (
+          <span className="w-[16px] h-[16px]">
+            <Spinner size={16} />
+          </span>
+        )}
+      </div>
     </div>
   );
 };
