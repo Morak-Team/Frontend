@@ -4,7 +4,7 @@ import { useGetStoreReviewCount } from "@/apis/review/queries";
 import { useInfiniteReviews } from "@/apis/review/queries";
 import { useInView } from "react-intersection-observer";
 import { getMyProfile } from "@/apis/member/auth";
-import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 
 const Reviews = ({ setTurnOnCamera, companyId }) => {
   const {

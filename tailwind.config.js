@@ -4,6 +4,7 @@ export default {
     extend: {
       colors: {
         secondary: "rgba(53, 171, 255, 1)",
+        secondary2: "rgba(155, 213, 255, 1)",
         secondary3: "rgba(0, 92, 158, 1)",
         secondaryBackground: "rgba(233, 246, 255, 1)",
         secondaryText: "rgba(0, 92, 158, 1)",
@@ -54,7 +55,7 @@ export default {
         b5: ["0.875rem", { lineHeight: "130%" }],
         b6: ["0.875rem", { lineHeight: "130%" }],
         caption1: ["0.75rem", { lineHeight: "150%" }],
-        caption2: ["0.75rem", { lineHeight: "150%" }],
+        caption2: ["0.75rem", { lineHeight: "140%" }],
       },
       fontFamily: {
         pretendard: ["Pretendard", "sans-serif"],
@@ -67,7 +68,8 @@ export default {
       1.6: "1.6px",
     },
     boxShadow: {
-      surface: "0px 2px 12px rgba(46, 45, 43, 0.05)",
+      surface: "0px 2px 12px 0px rgba(46, 45, 43, 0.05)",
+      shadow: "0px 2px 12px rgba(255, 111, 49, 0.05)",
     },
   },
   plugins: [],
