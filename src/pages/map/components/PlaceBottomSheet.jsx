@@ -68,15 +68,28 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
 
   const handleTouchEnd = (e) => {
     if (!isMobile) return;
+
     const endY = e.changedTouches[0].clientY;
     const delta = endY - startY.current;
+
+    const touchedElement = document.elementFromPoint(
+      e.changedTouches[0].clientX,
+      e.changedTouches[0].clientY
+    );
+
+    const isButtonClick =
+      touchedElement?.closest("button") || touchedElement?.closest("a");
+
+    if (isButtonClick) {
+      return;
+    }
 
     if (delta < -50) {
       controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
     } else if (delta > 100) {
       controls.start({ height: 0 }).then(() => {
-        onClose?.(); 
+        onClose?.();
       });
     } else {
       controls.start({ height: MIN_HEIGHT });
@@ -102,9 +115,11 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
       transition={{ duration: 0.35 }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onClick={handleClickExpand}
     >
-      <div className="relative w-full flex justify-center items-center py-3 cursor-pointer">
+      <div
+        className="relative w-full flex justify-center items-center py-3 cursor-pointer"
+        onClick={handleClickExpand}
+      >
         <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
       </div>
 
