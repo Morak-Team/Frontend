@@ -22,6 +22,7 @@ export const usePatchStoryLike = (storyId) => {
   return useMutation({
     mutationFn: () => patchStoryLike(storyId),
     onSuccess: () => {
+      // 상세 페이지 캐시 업데이트
       queryClient.setQueryData(["bestStoryDetail", storyId], (old) => {
         if (!old) return old;
         return {
@@ -29,15 +30,25 @@ export const usePatchStoryLike = (storyId) => {
           storyLikes: old.storyLikes + 1,
         };
       });
+
+      // 최근 스토리 목록 캐시 업데이트
+      queryClient.setQueryData(["recentStory"], (old) => {
+        if (!Array.isArray(old)) return old;
+        return old.map((story) =>
+          story.storyId === Number(storyId)
+            ? { ...story, likes: (story.likes || 0) + 1 }
+            : story,
+        );
+      });
     },
-    onError: (error) => {
-      if (error?.response?.status === 401) {
-        alert("로그인이 필요합니다.");
-      } else if (error?.response?.status === 400) {
-        alert("이미 응원하신 스토리입니다.");
-      } else {
-        alert("응원 요청이 실패했습니다. 다시 시도해주세요.");
-      }
-    },
+  });
+};
+
+import { getRecentStories } from "@/apis/story/getRecentStories";
+
+export const useGetRecentStory = (size = 10) => {
+  return useQuery({
+    queryKey: ["recentStory"],
+    queryFn: () => getRecentStories(size),
   });
 };
