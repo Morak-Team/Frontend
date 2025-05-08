@@ -53,19 +53,17 @@ const KakaoAuth = () => {
           </h1>
 
           <img
-            src="/images/Img_Start_Morak.png"
-            alt="모락_illust"
+            src="/svgs/signUp/signUp.svg"
             className="w-full aspect-square rounded-2xl object-cover my-14"
             draggable={false}
           />
 
-          <button onClick={handleLoginClick} className="w-full max-w-[30rem]">
-            <img
-              src="/images/kakao_login_large_wide.png"
-              alt="카카오 로그인 버튼"
-              className="w-full"
-              draggable={false}
-            />
+          <button
+            onClick={handleLoginClick}
+            className="w-full max-w-[30rem] flex gap-4 justify-center items-center bg-[#FEE500] h-12 mb-10 rounded-md"
+          >
+            <img src="/svgs/signUp/kakao.svg" className="w-6 h-6" />
+            <p className="b1">카카오 아이디로 시작하기</p>
           </button>
         </>
       ) : (

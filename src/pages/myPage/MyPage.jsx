@@ -1,13 +1,71 @@
 // src/pages/myPage/MyPage.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGetCheerCountOfMember, useMyProfile } from "@/apis/member/queries";
+import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import { profileColorMap } from "@/constants/myPage/profileColorMap";
+import { useGetReviewCountOfMember } from "@/apis/member/queries";
+import { useGetLikeCountOfMember } from "@/apis/member/queries";
+import api from "@/apis/instance/api";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
-  const [nickname] = useState("권하경");
-  const [location] = useState("마포구 서교동");
-  const [counts] = useState({ 찜: 3, 리뷰: 12, 응원: 24 });
+  // const [nickname] = useState("권하경");
+  // const [location] = useState("마포구 서교동");
+  // const [counts] = useState({ 찜: 3, 리뷰: 12, 응원: 24 });
+  // const { data, isLoading, error } = useMyProfile();
+
+  const navigate = useNavigate();
+
+  const { data, isLoading, error } = useMyProfile();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { data: reviewCount } = useGetReviewCountOfMember();
+  const { data: cheerCount } = useGetCheerCountOfMember();
+  const { data: likeCount } = useGetLikeCountOfMember();
+
+  // 프로필에서 받아올 값
+  const nickname = data?.name ?? "";
+  const location = data?.address ?? ""; // 실제 API 스키마에 맞춰 필드명 수정
+  const counts = {
+    찜: likeCount ?? 0,
+    리뷰: reviewCount?.length ?? 0,
+    응원: cheerCount ?? 0,
+  };
+
+  // 에러 핸들링: 401이면 로그인 모달 띄우기
+  useEffect(() => {
+    if (error?.response?.status === 401) {
+      setShowLoginModal(true);
+    }
+  }, [error]);
+
+  const logout = async () => {
+    try {
+      await api.post("/member/logout");
+      navigate("/");
+    } catch (e) {
+      alert("로그아웃에 실패하였습니다.");
+    }
+  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <p>로딩 중…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-2 flex flex-col items-center pt-32 relative p-5">
+      {/* 로그인 필요 모달 */}
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 서비스입니다"
+          subMessage=""
+          showButton={true}
+          showClose={false} // 닫기 아이콘 숨기기
+          onClose={() => {}} // 내부 close는 더 이상 호출되지 않음
+        />
+      )}
       {/* 카드 */}
       <div className="w-full bg-white rounded-2xl shadow-sm pt-20 pb-6 px-5 flex flex-col items-center relative z-10">
         {/* 수정 아이콘 */}
@@ -35,14 +93,17 @@ const MyPage = () => {
       {/* 프로필 이미지 (카드 위로 걸치기) */}
       <div className="absolute top-21 z-20">
         <img
-          src="/svgs/profile/gray.svg"
+          src={profileColorMap[data?.profileColor] ?? profileColorMap.gray}
           alt="profile"
           className="w-24 h-24 rounded-full border-4 border-white shadow-md"
         />
       </div>
 
       {/* 로그아웃 버튼 (화면 하단 오른쪽) */}
-      <div className="flex justify-end items-end w-full py-2 px-3">
+      <div
+        className="flex justify-end items-end w-full py-2 px-3"
+        onClick={logout}
+      >
         <button className="b4 text-gray-8 border rounded-md px-4 py-2 bg-white">
           로그아웃
         </button>

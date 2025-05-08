@@ -5,23 +5,30 @@ const HaveToLoginModal = ({
   subMessage,
   onClose,
   showButton = true,
+  showClose = true,
 }) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    onClose(); // 모달 닫기 먼저
-    navigate("/auth"); // 로그인 페이지로 이동
+    onClose();
+    navigate("/auth");
   };
 
   return (
     <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
-      <div className="bg-white rounded-xl shadow-xl w-[300px] py-8 px-6 flex flex-col items-center text-center relative">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-700"
-        >
-          <img src="/svgs/review/xIcon.svg" className="w-5 h-5" alt="닫기" />
-        </button>
+      <div
+        className="bg-white rounded-xl shadow-xl w-[300px] py-8 px-6 flex flex-col items-center text-center relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {showClose && (
+          <button
+            className="absolute top-2 right-2 p-1 text-gray-500"
+            // close icon removed when showClose is false
+            onClick={onClose}
+          >
+            <img src="/svgs/review/xIcon.svg" className="w-5 h-5" alt="닫기" />
+          </button>
+        )}
 
         <img
           src="/svgs/modal/errorIcon.svg"
