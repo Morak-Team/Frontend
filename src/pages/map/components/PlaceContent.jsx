@@ -135,7 +135,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           className="w-14 h-14 p-2 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
-            src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart_Empty.svg"}
+            src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart-Empty.svg"}
             alt="좋아요 버튼"
             className="w-6 h-6"
           />

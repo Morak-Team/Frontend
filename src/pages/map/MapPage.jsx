@@ -22,6 +22,7 @@ const MapPage = () => {
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [isTrackingLocation, setIsTrackingLocation] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,13 +45,22 @@ const MapPage = () => {
   }, []);
 
   useEffect(() => {
+    let watchId;
+
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) =>
-          setUserCoords({ lat: coords.latitude, lng: coords.longitude }),
-        (err) => console.error("위치 정보 실패:", err)
+      watchId = navigator.geolocation.watchPosition(
+        ({ coords }) => {
+          setUserCoords({ lat: coords.latitude, lng: coords.longitude });
+          if (isTrackingLocation) setMoveToCurrentLocation(true);
+        },
+        (err) => console.error("실시간 위치 추적 실패:", err),
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
     }
+
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
   useEffect(() => {
@@ -178,7 +188,7 @@ const MapPage = () => {
             src={
               showOnlyLiked
                 ? "/svgs/Ic_Heart_Fill.svg"
-                : "/svgs/Ic_Heart_Empty.svg"
+                : "/svgs/Ic_Heart-Empty.svg"
             }
             alt="찜 필터"
             className="w-6 h-6"
