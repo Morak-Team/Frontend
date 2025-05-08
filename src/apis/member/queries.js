@@ -10,6 +10,7 @@ export const useMyProfile = () => {
     queryFn: getMyProfile,
     staleTime: 1000 * 60 * 5, // 5분
     retry: false,
+    refetchOnMount: "always",
   });
 };
 

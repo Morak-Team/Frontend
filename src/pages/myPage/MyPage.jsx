@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGetCheerCountOfMember, useMyProfile } from "@/apis/member/queries";
-import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { useGetReviewCountOfMember } from "@/apis/member/queries";
 import { useGetLikeCountOfMember } from "@/apis/member/queries";
@@ -31,7 +31,7 @@ const MyPage = () => {
   const { data: cheerCount } = useGetCheerCountOfMember();
   const { data: likeCount } = useGetLikeCountOfMember();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const { logout: setLoggedOut } = useAuthStore();
+  const { logout: setLoggedOut, isLogout } = useAuthStore();
 
   const nickname = data?.name ?? "";
   const location = data?.address ?? "";
@@ -42,10 +42,10 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    if (error?.response?.status === 401) {
+    if (error?.response?.status === 401 || isLogout) {
       setShowLoginModal(true);
     }
-  }, [error]);
+  }, [error, isLogout]);
 
   const logout = async () => {
     try {
@@ -64,10 +64,21 @@ const MyPage = () => {
     );
   }
 
+  if (showLoginModal) {
+    return (
+      <HaveToLoginModal
+        message="로그인이 필요한 서비스입니다"
+        subMessage=""
+        showButton={true}
+        showClose={false}
+        onClose={() => {}}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-2 flex flex-col items-center pt-32 relative p-5">
-      {/* 로그인 필요 모달 */}
-      {showLoginModal && (
+      {/* {showLoginModal && (
         <HaveToLoginModal
           message="로그인이 필요한 서비스입니다"
           subMessage=""
@@ -75,8 +86,7 @@ const MyPage = () => {
           showClose={false} // 닫기 아이콘 숨기기
           onClose={() => {}} // 내부 close는 더 이상 호출되지 않음
         />
-      )}
-
+      )} */}
       {/* 로그아웃 완료 모달 */}
       {showLogoutModal && <LogoutSuccessModal onClose={() => navigate("/")} />}
       {/* 카드 */}
@@ -102,7 +112,6 @@ const MyPage = () => {
           ))}
         </div>
       </div>
-
       {/* 프로필 이미지 (카드 위로 걸치기) */}
       <div className="absolute top-21 z-20">
         <img
@@ -111,7 +120,6 @@ const MyPage = () => {
           className="w-24 h-24 rounded-full border-4 border-white shadow-md"
         />
       </div>
-
       {/* 로그아웃 버튼 (화면 하단 오른쪽) */}
       <div
         className="flex justify-end items-end w-full py-2 px-3"
