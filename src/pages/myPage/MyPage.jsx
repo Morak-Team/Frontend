@@ -8,6 +8,20 @@ import { useGetLikeCountOfMember } from "@/apis/member/queries";
 import api from "@/apis/instance/api";
 import { useNavigate } from "react-router-dom";
 
+const LogoutSuccessModal = ({ onClose }) => (
+  <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
+    <div className="bg-white rounded-xl shadow-xl w-[300px] py-8 px-6 flex flex-col items-center text-center">
+      <p className="h4 text-gray-12 font-bold">로그아웃이 완료되었습니다!</p>
+      <button
+        onClick={onClose}
+        className="mt-6 px-4 py-2 b5 bg-primary-8 text-white rounded-lg"
+      >
+        확인
+      </button>
+    </div>
+  </div>
+);
+
 const MyPage = () => {
   // const [nickname] = useState("권하경");
   // const [location] = useState("마포구 서교동");
@@ -21,6 +35,7 @@ const MyPage = () => {
   const { data: reviewCount } = useGetReviewCountOfMember();
   const { data: cheerCount } = useGetCheerCountOfMember();
   const { data: likeCount } = useGetLikeCountOfMember();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   // 프로필에서 받아올 값
   const nickname = data?.name ?? "";
@@ -41,7 +56,7 @@ const MyPage = () => {
   const logout = async () => {
     try {
       await api.post("/member/logout");
-      navigate("/");
+      setShowLogoutModal(true);
     } catch (e) {
       alert("로그아웃에 실패하였습니다.");
     }
@@ -66,6 +81,9 @@ const MyPage = () => {
           onClose={() => {}} // 내부 close는 더 이상 호출되지 않음
         />
       )}
+
+      {/* 로그아웃 완료 모달 */}
+      {showLogoutModal && <LogoutSuccessModal onClose={() => navigate("/")} />}
       {/* 카드 */}
       <div className="w-full bg-white rounded-2xl shadow-sm pt-20 pb-6 px-5 flex flex-col items-center relative z-10">
         {/* 수정 아이콘 */}
