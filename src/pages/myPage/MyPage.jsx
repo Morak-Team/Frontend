@@ -1,4 +1,3 @@
-// src/pages/myPage/MyPage.jsx
 import { useState, useEffect } from "react";
 import { useGetCheerCountOfMember, useMyProfile } from "@/apis/member/queries";
 import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
@@ -7,6 +6,7 @@ import { useGetReviewCountOfMember } from "@/apis/member/queries";
 import { useGetLikeCountOfMember } from "@/apis/member/queries";
 import api from "@/apis/instance/api";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/authStore";
 
 const LogoutSuccessModal = ({ onClose }) => (
   <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
@@ -31,6 +31,7 @@ const MyPage = () => {
   const { data: cheerCount } = useGetCheerCountOfMember();
   const { data: likeCount } = useGetLikeCountOfMember();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const { logout: setLoggedOut } = useAuthStore();
 
   const nickname = data?.name ?? "";
   const location = data?.address ?? "";
@@ -49,6 +50,7 @@ const MyPage = () => {
   const logout = async () => {
     try {
       await api.post("/member/logout");
+      setLoggedOut();
       setShowLogoutModal(true);
     } catch (e) {
       alert("로그아웃에 실패하였습니다.");
