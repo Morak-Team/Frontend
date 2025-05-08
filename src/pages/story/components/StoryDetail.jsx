@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useUIStore from "@/store/uiStore";
 import { useGetBestStoryDetail } from "@/apis/story/queries";
 import { usePatchStoryLike } from "@/apis/story/queries";
+import HaveToLoginModal from "@components/common/HaveToLoginModal";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
@@ -20,8 +21,39 @@ const StoryDetail = () => {
   const { mutate: likeStory } = usePatchStoryLike(storyId);
 
   const handleLike = () => {
-    likeStory(); // 좋아요 요청 및 낙관적 업데이트 실행
+    likeStory(undefined, {
+      onError: (error) => {
+        const status = error?.response?.status;
+
+        if (status === 401) {
+          setErrorModal({
+            open: true,
+            message: "로그인이 필요합니다.",
+            subMessage: "응원 기능은 로그인 후 이용할 수 있어요!",
+          });
+        } else if (status === 400) {
+          setErrorModal({
+            open: true,
+            message: "이미 응원하신 스토리입니다.",
+            subMessage: "아쉽지만 한 번만 응원할 수 있어요",
+          });
+        } else {
+          setErrorModal({
+            open: true,
+            message: "응원 요청 실패",
+            subMessage: "잠시 후 다시 시도해주세요.",
+          });
+        }
+      },
+    });
   };
+
+  // 모달 상태 구조
+  const [errorModal, setErrorModal] = useState({
+    open: false,
+    message: "",
+    subMessage: "",
+  });
 
   return (
     <div className="flex flex-col p-5 overflow-y-auto scrollbar-hide">
@@ -86,6 +118,15 @@ const StoryDetail = () => {
           <p className="b1">응원하기</p>
         </button>
       </div>
+
+      {errorModal.open && (
+        <HaveToLoginModal
+          message={errorModal.message}
+          subMessage={errorModal.subMessage}
+          onClose={() => setErrorModal({ ...errorModal, open: false })}
+          showButton={errorModal.message === "로그인이 필요합니다."}
+        />
+      )}
     </div>
   );
 };
