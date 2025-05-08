@@ -23,11 +23,6 @@ const LogoutSuccessModal = ({ onClose }) => (
 );
 
 const MyPage = () => {
-  // const [nickname] = useState("권하경");
-  // const [location] = useState("마포구 서교동");
-  // const [counts] = useState({ 찜: 3, 리뷰: 12, 응원: 24 });
-  // const { data, isLoading, error } = useMyProfile();
-
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useMyProfile();
@@ -37,16 +32,14 @@ const MyPage = () => {
   const { data: likeCount } = useGetLikeCountOfMember();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // 프로필에서 받아올 값
   const nickname = data?.name ?? "";
-  const location = data?.address ?? ""; // 실제 API 스키마에 맞춰 필드명 수정
+  const location = data?.address ?? "";
   const counts = {
     찜: likeCount ?? 0,
     리뷰: reviewCount?.length ?? 0,
     응원: cheerCount ?? 0,
   };
 
-  // 에러 핸들링: 401이면 로그인 모달 띄우기
   useEffect(() => {
     if (error?.response?.status === 401) {
       setShowLoginModal(true);
