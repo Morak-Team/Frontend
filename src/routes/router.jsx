@@ -4,18 +4,20 @@ import LayoutWithTab from "@/components/layout/LayoutWithTab";
 import Home from "@pages/home/Home";
 import KakaoAuth from "@pages/kakaoAuth/kakaoAuth";
 import MapPage from "@pages/map/MapPage";
-import MyPage from "@/pages/myPage/MyPage";
-import StoreReviewPage from "@/pages/review/StoreReviewPage";
-import SearchPage from "@/pages/search/SearchPage";
-import StoryPage from "@/pages/story/StoryPage";
-import SupportPage from "@/pages/support/SupportPage";
-import ErrorPage from "@/pages/error/ErrorPage";
-import StoryDetail from "@/pages/story/components/StoryDetail";
+import MyPage from "@pages/myPage/MyPage";
+import StoreReviewPage from "@pages/review/StoreReviewPage";
+import SearchPage from "@pages/search/SearchPage";
+import StoryPage from "@pages/story/StoryPage";
+import SupportPage from "@pages/support/SupportPage";
+import ErrorPage from "@pages/error/ErrorPage";
+import StoryDetail from "@pages/story/components/StoryDetail";
 import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
 import SignUp from "@pages/join/SignUp";
-import SupportListPage from "@/pages/support/SupportListPage";
-import SupportItemPage from "@/pages/support/SupportItemPage";
-import SupportRecommendPage from "@/pages/support/SupportRecommendPage";
+import SupportListPage from "@pages/support/SupportListPage";
+import SupportItemPage from "@pages/support/SupportItemPage";
+import SupportRecommendPage from "@pages/support/SupportRecommendPage";
+import FinancialProductList from "@pages/support/FinancialProductListPage";
+import FinancialProductDetailPage from "@pages/support/FinancialProductDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
       {
         path: "/support/list/:announcementId",
         element: <SupportItemPage />,
+      },
+      {
+        path: "/consumer/list",
+        element: <FinancialProductList />,
+      },
+      {
+        path: "/consumer/list/:productId",
+        element: <FinancialProductDetailPage />,
       },
       {
         path: "/support/list",
