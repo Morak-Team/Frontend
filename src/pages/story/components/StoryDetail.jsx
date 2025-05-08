@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useUIStore from "@/store/uiStore";
 import { useGetBestStoryDetail } from "@/apis/story/queries";
 import { usePatchStoryLike } from "@/apis/story/queries";
-import HaveToLoginModal from "@/pages/map/components/HaveToLoginModal";
+import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
