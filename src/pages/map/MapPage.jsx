@@ -61,7 +61,7 @@ const MapPage = () => {
     return () => {
       if (watchId) navigator.geolocation.clearWatch(watchId);
     };
-  }, []);
+  }, [isTrackingLocation]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
