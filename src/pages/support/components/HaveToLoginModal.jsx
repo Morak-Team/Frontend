@@ -32,7 +32,7 @@ const HaveToLoginModal = ({
         <img
           src="/svgs/support/consumer/Ic_Alert.svg"
           className="w-8 h-8 mb-3"
-          alt="에러"
+          alt="로그인 필요 알림"
         />
 
         <p className="h4 text-gray-12 font-bold">{message}</p>
