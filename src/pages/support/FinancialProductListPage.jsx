@@ -39,6 +39,8 @@ const FinancialProductList = () => {
             showDescription={false}
             productType={item.productType}
             benefit={item.benefit}
+            recommendedCategory={item.recommendedCategory}
+            defaultCategory={item.defaultCategory}
           />
         ))}
       </div>

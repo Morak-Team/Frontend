@@ -6,7 +6,8 @@ const RecommendationCard = ({
   title,
   description,
   productType,
-  benefit,
+  recommendedCategory,
+  defaultCategory,
   showDescription = true,
 }) => {
   const navigate = useNavigate();
@@ -30,10 +31,18 @@ const RecommendationCard = ({
       />
 
       <div className="flex items-center gap-2">
-        {productType && (
-          <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
-            {productType}
-          </span>
+        {productType && recommendedCategory && defaultCategory && (
+          <>
+            <span className="text-caption2 font-medium text-error bg-errorContainer px-2 py-1 rounded">
+              {productType}
+            </span>
+            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+              {recommendedCategory}
+            </span>
+            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+              {defaultCategory}
+            </span>
+          </>
         )}
       </div>
 

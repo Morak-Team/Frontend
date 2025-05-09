@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConsumptionChart from "./ConsumptionChart";
 import RecommendationCard from "./RecommendationCard";
@@ -5,8 +6,10 @@ import Spinner from "@components/common/Spinner";
 import { useConsumptionData } from "../hooks/useConsumptionData";
 import { useFinancialProducts } from "../hooks/useFinancialProducts";
 import { companyTypeNameMap } from "@constants/categoryMap";
+import { ENUM_TO_KOR_MAP } from "../constants/consumerMap";
 
 const ConsumerTab = () => {
+  const [topCategory, setTopCategory] = useState(null);
   const navigate = useNavigate();
 
   const { data: consumptionData, isLoading, error } = useConsumptionData();
@@ -15,6 +18,16 @@ const ConsumerTab = () => {
     isLoading: isProductsLoading,
     error: productsError,
   } = useFinancialProducts();
+
+  const safeProducts = Array.isArray(consumerProducts) ? consumerProducts : [];
+
+  const filteredProducts = topCategory
+    ? safeProducts.filter(
+        (item) =>
+          item.recommendedCategory === ENUM_TO_KOR_MAP[topCategory] ||
+          item.defaultCategory === ENUM_TO_KOR_MAP[topCategory]
+      )
+    : safeProducts;
 
   if (isLoading || isProductsLoading) return <Spinner />;
   if (error || productsError) return <p>데이터를 불러오지 못했습니다.</p>;
@@ -25,8 +38,6 @@ const ConsumerTab = () => {
       value: item.totalPrice,
     })) || [];
 
-  const safeProducts = Array.isArray(consumerProducts) ? consumerProducts : [];
-
   return (
     <div className="flex flex-col gap-16">
       <div>
@@ -36,6 +47,7 @@ const ConsumerTab = () => {
         <ConsumptionChart
           data={transformedData}
           reviewCount={consumptionData?.reviewCount || 0}
+          onTopCategory={setTopCategory}
         />
       </div>
 
@@ -52,7 +64,7 @@ const ConsumerTab = () => {
         </div>
 
         <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-          {safeProducts.map((item, _) => (
+          {filteredProducts.map((item, _) => (
             <div key={item.id} className="w-80 h-56 flex-shrink-0">
               <RecommendationCard
                 key={item.id}
@@ -62,6 +74,8 @@ const ConsumerTab = () => {
                 description={item.productDescription}
                 productType={item.productType}
                 benefit={item.benefit}
+                recommendedCategory={item.recommendedCategory}
+                defaultCategory={item.defaultCategory}
               />
             </div>
           ))}
