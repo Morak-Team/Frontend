@@ -56,6 +56,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
     formattedDistance,
     companyLocation,
     companyTelNum,
+    companyUrl,
     liked,
   } = place;
 
@@ -169,6 +170,25 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
 
       <div className="w-full h-2 bg-gray-3 my-4 " />
       <div className="flex flex-col gap-3 px-5 sm:px-6">
+        {companyUrl && (
+          <a
+            href={
+              companyUrl.startsWith("http")
+                ? companyUrl
+                : `https://${companyUrl}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-b5 text-gray-11 break-keep hover:underline"
+          >
+            <img
+              src="/svgs/map/Ic_Link.svg"
+              alt="기업 홈페이지 주소"
+              className="w-5 h-5"
+            />
+            {companyUrl}
+          </a>
+        )}
         {companyLocation && (
           <div className="flex items-center gap-2 text-b5 text-gray-11 break-keep">
             <img
