@@ -9,7 +9,6 @@ const useMapViewer = ({
   userCoords,
   moveToCurrentLocation,
   onMoveComplete,
-  resetMap,
   center,
   markerPosition,
   zoom,
@@ -129,20 +128,6 @@ const useMapViewer = ({
       onMoveComplete?.();
     }
   }, [moveToCurrentLocation, userCoords, onMoveComplete]);
-
-  useEffect(() => {
-    if (resetMap && mapInstance.current) {
-      mapInstance.current.setCenter(
-        new window.naver.maps.LatLng(37.5665, 126.978),
-      );
-      mapInstance.current.setZoom(11.5);
-
-      if (userMarkerRef.current) {
-        userMarkerRef.current.setMap(null);
-        userMarkerRef.current = null;
-      }
-    }
-  }, [resetMap]);
 
   useEffect(() => {
     if (!mapInstance.current || !isMapInitialized) return;
