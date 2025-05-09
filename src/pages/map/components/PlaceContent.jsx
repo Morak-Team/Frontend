@@ -16,8 +16,34 @@ import {
   IcFire90,
   IcFire100,
 } from "@assets/svgs/fire";
+import { useUserCoords } from "@pages/search/hooks/useUserCoords";
+import { openNaverMapRoute } from "../utils/openNaverMapRoute";
 
 const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
+  const userCoords = useUserCoords();
+
+  const handleRouteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (userCoords) {
+      openNaverMapRoute({
+        slat: userCoords.lat,
+        slng: userCoords.lng,
+        sname: "사용자 위치",
+        dlat: place.coords?.lat,
+        dlng: place.coords?.lng,
+        dname: place.companyName,
+        appName: "com.example.yourapp",
+      });
+    } else {
+      window.open(
+        `https://map.naver.com/v5/search/${place.companyName}`,
+        "_blank"
+      );
+    }
+  };
+
   const {
     id,
     companyName,
@@ -30,6 +56,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
     formattedDistance,
     companyLocation,
     companyTelNum,
+    companyUrl,
     liked,
   } = place;
 
@@ -114,9 +141,8 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
       <div className="flex flex-wrap sm:flex-nowrap gap-2 px-5 sm:px-6">
         {showMapLink && (
           <a
-            href={`https://map.naver.com/v5/search/${companyName}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#"
+            onClick={handleRouteClick}
             className="flex-1 min-w-[12rem] py-3 px-4 flex items-center justify-center gap-2 rounded-md bg-gray-2 text-b4 text-gray-9 font-semibold"
           >
             <img
@@ -144,6 +170,25 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
 
       <div className="w-full h-2 bg-gray-3 my-4 " />
       <div className="flex flex-col gap-3 px-5 sm:px-6">
+        {companyUrl && (
+          <a
+            href={
+              companyUrl.startsWith("http")
+                ? companyUrl
+                : `https://${companyUrl}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-b5 text-gray-11 break-keep hover:underline"
+          >
+            <img
+              src="/svgs/map/Ic_Link.svg"
+              alt="기업 홈페이지 주소"
+              className="w-5 h-5"
+            />
+            {companyUrl}
+          </a>
+        )}
         {companyLocation && (
           <div className="flex items-center gap-2 text-b5 text-gray-11 break-keep">
             <img

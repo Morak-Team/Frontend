@@ -53,7 +53,6 @@ const MapPage = () => {
       watchId = navigator.geolocation.watchPosition(
         ({ coords }) => {
           setUserCoords({ lat: coords.latitude, lng: coords.longitude });
-          if (isTrackingLocation) setMoveToCurrentLocation(true);
         },
         (err) => console.error("실시간 위치 추적 실패:", err),
         { enableHighAccuracy: true, maximumAge: 0 }
@@ -63,7 +62,12 @@ const MapPage = () => {
     return () => {
       if (watchId) navigator.geolocation.clearWatch(watchId);
     };
-  }, [isTrackingLocation]);
+  }, []);
+
+  useEffect(() => {
+    if (!userCoords || !isTrackingLocation || !isMapReady) return;
+    setMoveToCurrentLocation(true);
+  }, [userCoords, isTrackingLocation, isMapReady]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -83,16 +87,6 @@ const MapPage = () => {
     };
     fetchCompanies();
   }, []);
-
-  useEffect(() => {
-    if (location.state?.resetMap) {
-      setSelectedPlace(null);
-      setMoveToCurrentLocation(false);
-      setShowOnlyLiked(false);
-      setPlaces(originalPlaces);
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location, navigate, originalPlaces]);
 
   const enrichedPlaces = useMemo(() => {
     return places.map((p) => {
@@ -229,7 +223,6 @@ const MapPage = () => {
           userCoords={userCoords}
           moveToCurrentLocation={moveToCurrentLocation}
           onMoveComplete={() => setMoveToCurrentLocation(false)}
-          resetMap={location.state?.resetMap}
           selectedPlace={selectedPlace}
           showOnlyLiked={showOnlyLiked}
           onMapReady={() => setIsMapReady(true)}
