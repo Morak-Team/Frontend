@@ -12,14 +12,13 @@ const useMapViewer = ({
   resetMap,
   center,
   markerPosition,
-  zoom = 11,
+  zoom,
   selectedPlace,
   showOnlyLiked,
 }) => {
   const mapInstance = useRef(null);
   const userMarkerRef = useRef(null);
   const markersRef = useRef({});
-  const hasAnimatedRef = useRef(false);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   const handleMarkerClick = useCallback(
@@ -41,20 +40,28 @@ const useMapViewer = ({
   );
 
   useEffect(() => {
-    if (isMapInitialized || (!userCoords && !center)) return;
+    if (isMapInitialized || !mapRef.current || !userCoords) return;
 
     loadNaverMapScript().then(() => {
-      const mapCenter = center
-        ? new window.naver.maps.LatLng(center.lat, center.lng)
-        : new window.naver.maps.LatLng(37.5665, 126.978);
+      const userLatLng = new window.naver.maps.LatLng(
+        userCoords.lat,
+        userCoords.lng,
+      );
 
       mapInstance.current = new window.naver.maps.Map(mapRef.current, {
-        center: mapCenter,
-        zoom,
+        center: userLatLng,
+        zoom: 17,
       });
 
       setIsMapInitialized(true);
 
+      userMarkerRef.current = new window.naver.maps.Marker({
+        position: userLatLng,
+        map: mapInstance.current,
+        icon: createUserMarkerIcon(),
+      });
+
+      // 마커 렌더링
       places.forEach((place) => {
         if (!place.coords?.lat || !place.coords?.lng) return;
 
@@ -101,39 +108,6 @@ const useMapViewer = ({
     mapRef,
     showOnlyLiked,
   ]);
-
-  useEffect(() => {
-    if (
-      userCoords &&
-      mapInstance.current &&
-      !hasAnimatedRef.current &&
-      isMapInitialized
-    ) {
-      hasAnimatedRef.current = true;
-
-      const target = new window.naver.maps.LatLng(
-        userCoords.lat,
-        userCoords.lng,
-      );
-      mapInstance.current.panTo(target);
-
-      const zoomTimeout = setTimeout(() => {
-        mapInstance.current.setZoom(17, true);
-
-        if (userMarkerRef.current) {
-          userMarkerRef.current.setMap(null);
-        }
-
-        userMarkerRef.current = new window.naver.maps.Marker({
-          position: target,
-          map: mapInstance.current,
-          icon: createUserMarkerIcon(),
-        });
-      }, 1800);
-
-      return () => clearTimeout(zoomTimeout);
-    }
-  }, [userCoords, isMapInitialized]);
 
   useEffect(() => {
     if (moveToCurrentLocation && userCoords && mapInstance.current) {

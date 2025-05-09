@@ -111,20 +111,20 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           </div>
         </section>
       )}
-      <div className="flex items-center gap-2 px-5 sm:px-6">
+      <div className="flex flex-wrap sm:flex-nowrap gap-2 px-5 sm:px-6">
         {showMapLink && (
           <a
             href={`https://map.naver.com/v5/search/${companyName}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 py-4 px-14 gap-2 flex items-center justify-center rounded-md bg-gray-2 text-b4 text-gray-9 font-semibold"
+            className="flex-1 min-w-[12rem] py-3 px-4 flex items-center justify-center gap-2 rounded-md bg-gray-2 text-b4 text-gray-9 font-semibold"
           >
             <img
               src="/svgs/map/Ic_NaverMap.svg"
               alt="네이버 지도 로고"
-              className="w-6 h-6"
+              className="w-5 h-5"
             />
-            <span>네이버 지도에서 길찾기</span>
+            <span className="whitespace-nowrap">네이버 지도에서 길찾기</span>
           </a>
         )}
         <button
@@ -132,15 +132,16 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
             e.stopPropagation();
             onToggleLike?.(place.id);
           }}
-          className="w-14 h-14 p-2 flex items-center justify-center rounded-md bg-gray-2"
+          className="w-14 h-14 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
-            src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart_Empty.svg"}
+            src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart-Empty.svg"}
             alt="좋아요 버튼"
             className="w-6 h-6"
           />
         </button>
       </div>
+
       <div className="w-full h-2 bg-gray-3 my-4 " />
       <div className="flex flex-col gap-3 px-5 sm:px-6">
         {companyLocation && (

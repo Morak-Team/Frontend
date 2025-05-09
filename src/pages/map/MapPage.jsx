@@ -4,6 +4,7 @@ import MapViewer from "@pages/map/components/MapViewer";
 import PlaceBottomSheet from "./components/PlaceBottomSheet";
 import CategoryBar from "./components/CategoryBar";
 import IntroModal from "./components/IntroModal";
+import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import { getDistanceFromLatLon } from "./utils/getDistanceFromLatLon";
 import { formatDistance } from "./utils/formatDistance";
 import { getAllCompanies } from "@apis/company/getAllCompanies";
@@ -22,6 +23,8 @@ const MapPage = () => {
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [isTrackingLocation, setIsTrackingLocation] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,14 +47,23 @@ const MapPage = () => {
   }, []);
 
   useEffect(() => {
+    let watchId;
+
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) =>
-          setUserCoords({ lat: coords.latitude, lng: coords.longitude }),
-        (err) => console.error("위치 정보 실패:", err)
+      watchId = navigator.geolocation.watchPosition(
+        ({ coords }) => {
+          setUserCoords({ lat: coords.latitude, lng: coords.longitude });
+          if (isTrackingLocation) setMoveToCurrentLocation(true);
+        },
+        (err) => console.error("실시간 위치 추적 실패:", err),
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
     }
-  }, []);
+
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
+  }, [isTrackingLocation]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -116,8 +128,7 @@ const MapPage = () => {
 
   const handleToggleLikedFilter = async () => {
     if (!isLoggedIn) {
-      alert("로그인이 필요한 기능입니다.");
-      navigate("/auth");
+      setShowLoginModal(true);
       return;
     }
 
@@ -178,7 +189,7 @@ const MapPage = () => {
             src={
               showOnlyLiked
                 ? "/svgs/Ic_Heart_Fill.svg"
-                : "/svgs/Ic_Heart_Empty.svg"
+                : "/svgs/Ic_Heart-Empty.svg"
             }
             alt="찜 필터"
             className="w-6 h-6"
@@ -231,6 +242,14 @@ const MapPage = () => {
           onClose={() => setSelectedPlace(null)}
           onToggleLike={handleToggleLike}
           onExpandChange={setIsBottomSheetExpanded}
+        />
+      )}
+
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다."
+          subMessage="해당 기능은 로그인 후 이용할 수 있어요."
+          onClose={() => setShowLoginModal(false)}
         />
       )}
     </>

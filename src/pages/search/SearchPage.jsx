@@ -10,6 +10,7 @@ import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { useCompanyData } from "./hooks/useCompanyData";
 import { useUserCoords } from "./hooks/useUserCoords";
 import useAuthStore from "@/store/authStore";
+import HaveToLoginModal from "@components/common/HaveToLoginModal";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -21,6 +22,7 @@ const SearchPage = () => {
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [step, setStep] = useState(1);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
   const userCoords = useUserCoords();
@@ -135,7 +137,7 @@ const SearchPage = () => {
 
   const handleToggleLike = (id) => {
     if (!isLoggedIn) {
-      alert("로그인이 필요한 기능입니다.");
+      setShowLoginModal(true);
       return;
     }
 
@@ -146,6 +148,14 @@ const SearchPage = () => {
 
   return (
     <div className="relative min-h-screen bg-white">
+      {showLoginModal && (
+        <HaveToLoginModal
+          message="로그인이 필요한 기능입니다."
+          subMessage="해당 기능은 로그인 후 이용할 수 있어요."
+          onClose={() => setShowLoginModal(false)}
+        />
+      )}
+
       {step === 5 ? (
         <div className="absolute top-0 left-0 right-0 z-50 px-[1.6rem] pt-16 bg-transparent">
           <SearchBar

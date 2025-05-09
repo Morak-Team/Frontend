@@ -37,7 +37,7 @@ const StoryCarousel = () => {
                 className="w-4 h-4"
               />
               <span className="text-caption2 text-primary-8 font-semibold">
-                {story.likes || 0}
+                {story.storyLikes || 0}
               </span>
             </div>
 
