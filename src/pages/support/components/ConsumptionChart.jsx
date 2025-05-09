@@ -9,7 +9,7 @@ import {
 import { getConsumptionDetail } from "@apis/consumer/getConsumptionDetail";
 import CustomTooltip from "./CustomTooltip";
 
-const ConsumptionChart = ({ data, reviewCount }) => {
+const ConsumptionChart = ({ data, reviewCount, onTopCategory }) => {
   const [topReviewSpeech, setTopReviewSpeech] = useState("");
   const [topTwo, setTopTwo] = useState([]);
   const [chartData, setChartData] = useState([]);
@@ -51,6 +51,7 @@ const ConsumptionChart = ({ data, reviewCount }) => {
               reviewCount: typeReviewCount,
               reviewRatio: typeReviewCount / reviewCount,
               speech: SPEECH_BUBBLE_MAP[korTypeName],
+              companyType: consumption?.companyType?.trim(),
             };
           })
         );
@@ -64,6 +65,9 @@ const ConsumptionChart = ({ data, reviewCount }) => {
           );
           setTopTwo(ranked.slice(0, 2));
           setChartData(ranked.slice(0, 6));
+          if (ranked[0]?.companyType && onTopCategory) {
+            onTopCategory(ranked[0].companyType);
+          }
         }
       } catch (err) {
         console.error("전체 오류:", err);
@@ -78,7 +82,7 @@ const ConsumptionChart = ({ data, reviewCount }) => {
     return () => {
       isMounted = false;
     };
-  }, [reviewCount, sortedData]);
+  }, [reviewCount, sortedData, onTopCategory]);
 
   return (
     <div className="w-full mx-auto flex items-center justify-center gap-5 sm:gap-8">

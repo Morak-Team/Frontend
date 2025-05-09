@@ -60,11 +60,21 @@ const FinancialProductDetailPage = () => {
 
       <div className="flex flex-col px-5 pb-5">
         <div className="flex gap-2 mt-9">
-          {data.productType && (
-            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
-              {data.productType}
-            </span>
-          )}
+          {data.productType &&
+            data.recommendedCategory &&
+            data.defaultCategory && (
+              <>
+                <span className="text-caption2 font-medium text-error bg-errorContainer px-2 py-1 rounded">
+                  {data.productType}
+                </span>
+                <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+                  {data.recommendedCategory}
+                </span>
+                <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+                  {data.defaultCategory}
+                </span>
+              </>
+            )}
         </div>
 
         <p className="text-h2 mt-4">{data.productName}</p>
