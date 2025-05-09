@@ -1,13 +1,63 @@
+import { useEffect, useState } from "react";
 import RecommendationCard from "@/pages/support/components/RecommendationCard";
 import { useNavigate } from "react-router-dom";
 import { useFinancialProducts } from "@/pages/support/hooks/useFinancialProducts";
 import Spinner from "@components/common/Spinner";
+import { getConsumptionDetail } from "@apis/consumer/getConsumptionDetail";
+import { KOR_TO_ENUM_MAP } from "@pages/support/constants/consumerMap";
 
 const FinancialProductList = () => {
   const navigate = useNavigate();
   const { data: products, isLoading, error } = useFinancialProducts();
 
-  const safeProducts = Array.isArray(products) ? products : [];
+  const [sortedProducts, setSortedProducts] = useState([]);
+
+  useEffect(() => {
+    const sortProductsByReviewCount = async () => {
+      if (!products || products.length === 0) return;
+
+      const uniqueCategories = new Set();
+      products.forEach((item) => {
+        if (item.recommendedCategory)
+          uniqueCategories.add(item.recommendedCategory);
+        if (item.defaultCategory) uniqueCategories.add(item.defaultCategory);
+      });
+
+      const reviewCountMap = new Map();
+
+      await Promise.all(
+        [...uniqueCategories].map(async (korName) => {
+          const enumKey = KOR_TO_ENUM_MAP[korName];
+          if (!enumKey) return;
+
+          try {
+            const res = await getConsumptionDetail(enumKey);
+            reviewCountMap.set(korName, res?.reviewCount || 0);
+          } catch {
+            reviewCountMap.set(korName, 0);
+          }
+        })
+      );
+
+      const sorted = [...products].sort((a, b) => {
+        const aCount =
+          reviewCountMap.get(a.recommendedCategory) ||
+          reviewCountMap.get(a.defaultCategory) ||
+          0;
+        const bCount =
+          reviewCountMap.get(b.recommendedCategory) ||
+          reviewCountMap.get(b.defaultCategory) ||
+          0;
+        return bCount - aCount;
+      });
+
+      setSortedProducts(sorted);
+    };
+
+    sortProductsByReviewCount();
+  }, [products]);
+
+  const safeProducts = Array.isArray(sortedProducts) ? sortedProducts : [];
 
   return (
     <div className="flex flex-col pr-5 pl-5 h-[calc(100vh-5.25rem)] overflow-y-auto pb-5 mb-5">
@@ -25,11 +75,11 @@ const FinancialProductList = () => {
         <p className="b5 text-gray-9">총 {safeProducts.length}개</p>
       </div>
 
-      {isLoading && <Spinner />}
+      {(isLoading || safeProducts.length === 0) && <Spinner />}
       {error && <p className="mt-5">데이터를 불러오지 못했습니다.</p>}
 
       <div className="mt-3 flex flex-col gap-y-3">
-        {safeProducts.map((item, _) => (
+        {safeProducts.map((item) => (
           <RecommendationCard
             key={item.id}
             productId={item.id}
