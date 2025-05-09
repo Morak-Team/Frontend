@@ -71,8 +71,9 @@ const FinancialProductList = () => {
         />
       </div>
 
-      <div className="mt-10">
+      <div className="flex items-center justify-between mt-10">
         <p className="b5 text-gray-9">총 {safeProducts.length}개</p>
+        <p className="caption2 text-primary-8">리뷰 건수가 많은 순으로 정렬되어 있습니다.</p>
       </div>
 
       {(isLoading || safeProducts.length === 0) && <Spinner />}
