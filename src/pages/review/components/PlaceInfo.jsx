@@ -4,19 +4,23 @@ import {
   businessTypeNameMap,
   companyTypeNameMap,
   companyTypeIconMap,
-} from "@/constants/categoryMap";
+} from "@constants/categoryMap";
 import { useState, useEffect } from "react";
 import { usePaymentStore } from "@/store/paymentStore";
 import {
   getLikedCompanies,
   likeCompany,
   unlikeCompany,
-} from "@/apis/company/getLikedCompanies";
-import { getMyProfile } from "@/apis/member/auth";
-import HaveToLoginModal from "@/components/common/HaveToLoginModal";
+} from "@apis/company/getLikedCompanies";
+import { getMyProfile } from "@apis/member/auth";
+import HaveToLoginModal from "@components/common/HaveToLoginModal";
+import { openNaverMapRoute } from "@pages/map/utils/openNaverMapRoute";
+import { useUserCoords } from "@pages/search/hooks/useUserCoords";
 
 const PlaceInfo = ({ placeInfo }) => {
   const navigate = useNavigate();
+  const userCoords = useUserCoords();
+
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { companyId } = usePaymentStore();
@@ -24,6 +28,27 @@ const PlaceInfo = ({ placeInfo }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const handleRouteClick = (e) => {
+    e.preventDefault();
+
+    if (userCoords) {
+      openNaverMapRoute({
+        slat: userCoords.lat,
+        slng: userCoords.lng,
+        sname: "사용자 위치",
+        dlat: placeInfo.latitude,
+        dlng: placeInfo.longitude,
+        dname: placeInfo.companyName,
+        appName: "com.example.yourapp",
+      });
+    } else {
+      window.open(
+        `https://map.naver.com/v5/search/${placeInfo.companyName}`,
+        "_blank"
+      );
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -39,7 +64,7 @@ const PlaceInfo = ({ placeInfo }) => {
           setIsLiked(liked);
         }
       } catch (e) {
-        setIsLoggedIn(false); // 인증 실패 → 비로그인 처리
+        setIsLoggedIn(false);
       } finally {
         setLoading(false);
       }
@@ -50,7 +75,7 @@ const PlaceInfo = ({ placeInfo }) => {
 
   const handleLikeClick = async () => {
     if (!isLoggedIn) {
-      setShowLoginModal(true); // 🔥 로그인 모달 표시
+      setShowLoginModal(true);
       return;
     }
 
@@ -121,9 +146,8 @@ const PlaceInfo = ({ placeInfo }) => {
 
       <div className="flex items-center gap-2 mt-6 w-full">
         <a
-          href={`https://map.naver.com/v5/search/${placeInfo.companyName}`}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#"
+          onClick={handleRouteClick}
           className="flex-1 min-w-0 py-3 flex items-center justify-center gap-2 rounded-md bg-[#FAFAF9] text-sm text-zinc-900 font-medium overflow-hidden"
         >
           <img

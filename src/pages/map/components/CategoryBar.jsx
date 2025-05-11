@@ -11,7 +11,7 @@ const categories = Object.entries(businessTypeNameMap).map(([en, ko]) => ({
 
 const CategoryBar = ({ onSelect }) => {
   return (
-    <div className="absolute top-36 sm:top-44 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-40 px-4 sm:px-0">
+    <div className="absolute top-36 sm:top-44 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-40">
       <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
         {categories.map((cate) => (
           <button
