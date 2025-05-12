@@ -16,11 +16,14 @@ import {
   IcFire90,
   IcFire100,
 } from "@assets/svgs/fire";
+import ToastModal from "@components/common/ToastModal";
 import { useUserCoords } from "@pages/search/hooks/useUserCoords";
 import { openNaverMapRoute } from "../utils/openNaverMapRoute";
+import { useState } from "react";
 
 const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
   const userCoords = useUserCoords();
+  const [showToast, setShowToast] = useState(false);
 
   const handleRouteClick = (e) => {
     e.preventDefault();
@@ -67,7 +70,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("복사되었습니다.");
+      setShowToast(true);
     } catch (err) {
       console.error("복사 실패:", err);
     }
@@ -228,6 +231,13 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
               />
             </button>
           </div>
+        )}
+
+        {showToast && (
+          <ToastModal
+            message="복사되었습니다."
+            onClose={() => setShowToast(false)}
+          />
         )}
       </div>
       <div className="w-full h-2 bg-gray-3 mt-4" />

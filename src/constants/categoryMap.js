@@ -8,6 +8,7 @@ export const companyTypeIconMap = {
 };
 
 export const businessTypeIconMap = {
+  전체: "/svgs/categoryBar/Ic_All.svg",
   카페: "/svgs/categoryBar/Ic_Cafe.svg",
   음식점: "/svgs/categoryBar/Ic_Restaurent.svg",
   쇼핑: "/svgs/categoryBar/Ic_Shopping.svg",
@@ -30,6 +31,7 @@ export const companyTypeNameMap = {
 };
 
 export const businessTypeNameMap = {
+  ALL: "전체",
   CAFE: "카페",
   RESTAURANT: "음식점",
   SHOPPING: "쇼핑",
