@@ -3,7 +3,6 @@ import SearchBar from "./components/SearchBar";
 import RecentSearchList from "./components/RecentSearchList";
 import PlaceList from "./components/SearchPlaceList";
 import PlaceBottomSheet from "@pages/map/components/PlaceBottomSheet";
-import MapViewer from "../map/components/MapViewer";
 import { getDistanceFromLatLon } from "../map/utils/getDistanceFromLatLon";
 import { formatDistance } from "../map/utils/formatDistance";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
@@ -11,6 +10,7 @@ import { useCompanyData } from "./hooks/useCompanyData";
 import { useUserCoords } from "./hooks/useUserCoords";
 import useAuthStore from "@/store/authStore";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
+import MapViewer from "./components/MapViewer";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
