@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import { loadNaverMapScript } from "@/pages/map/utils/loadMapScript";
 import { useEffect, useRef, useState } from "react";
-import DatePickerSheet from "@/pages/map/components/DatePickerSheet";
-import TimePickerSheet from "@/pages/map/components/TimePickerSheet";
+import DatePickerSheet from "@/pages/map/components/picker/DatePickerSheet";
+import TimePickerSheet from "@/pages/map/components/picker/TimePickerSheet";
 import { AnimatePresence } from "framer-motion";
 import { formatDateTime } from "@/pages/map/utils/formatDateTime";
 import { usePaymentStore } from "@/store/paymentStore";

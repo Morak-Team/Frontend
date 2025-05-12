@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PlaceContent from "./PlaceContent";
-import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
-import ConfirmImage from "@pages/map/components/ConfirmImage";
-import ReviewList from "@pages/map/components/ReviewList";
+import ReviewImageCapture from "@/pages/map/components/review/ReviewImageCapture";
+import ConfirmImage from "@/pages/map/components/review/ConfirmImage";
+import ReviewList from "@/pages/map/components/review/ReviewList";
 import useUIStore from "@/store/uiStore";
 import { usePaymentStore } from "@/store/paymentStore";
 

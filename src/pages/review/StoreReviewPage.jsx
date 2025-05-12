@@ -4,8 +4,8 @@ import { useState } from "react";
 import PlaceInfo from "@/pages/review/components/PlaceInfo";
 import useUIStore from "@/store/uiStore";
 
-import ReviewImageCapture from "@/pages/map/components/ReviewImageCapture";
-import ConfirmImage from "@/pages/map/components/ConfirmImage";
+import ReviewImageCapture from "@/pages/map/components/review/ReviewImageCapture";
+import ConfirmImage from "@/pages/map/components/review/ConfirmImage";
 import Reviews from "@/pages/review/components/Reviews";
 import { useGetCompanyPreview } from "@/apis/company/queries";
 

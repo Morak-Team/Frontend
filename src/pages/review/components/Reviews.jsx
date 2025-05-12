@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ReviewContent from "@/pages/map/components/ReviewContent";
+import ReviewContent from "@/pages/map/components/review/ReviewContent";
 import { useGetStoreReviewCount } from "@/apis/review/queries";
 import { useInfiniteReviews } from "@/apis/review/queries";
 import { useInView } from "react-intersection-observer";
