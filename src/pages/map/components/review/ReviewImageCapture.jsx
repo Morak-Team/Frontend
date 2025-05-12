@@ -6,8 +6,6 @@ import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/review/ReceiptErrorModal";
 import "@/styles/spinner.css";
 
-import { usePaymentStore } from "@/store/paymentStore";
-
 import imageCompression from "browser-image-compression";
 const ReviewImageCapture = ({
   companyId,
@@ -170,7 +168,7 @@ const ReviewImageCapture = ({
       // FormData 에 file + companyId 담기
       const form = new FormData();
       form.append("file", compressedFile, compressedFile.name);
-      form.append("companyId", String(780));
+      form.append("companyId", String(companyId));
 
       // 단일 인자로 FormData 전달
       mutate(form);
