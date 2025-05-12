@@ -117,12 +117,18 @@ const MapPage = () => {
   const handleSearchClick = () => navigate("/map/search");
 
   const handleCategorySelect = (englishCategory) => {
+    setSelectedPlace(null);
+    setShowOnlyLiked(false);
+
+    if (englishCategory === "ALL") {
+      setPlaces(originalPlaces);
+      return;
+    }
+
     const filtered = originalPlaces
       .filter((p) => p.companyCategory === englishCategory)
       .map((p) => ({ ...p, isSearchResult: true }));
 
-    setSelectedPlace(null);
-    setShowOnlyLiked(false);
     setPlaces(filtered);
   };
 
