@@ -13,10 +13,8 @@ import { companyCategoryMap } from "@/constants/review/companyCategoryMap";
 
 const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
   const navigate = useNavigate();
-  console.log("data, ", data);
 
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
-  const { companyId } = usePaymentStore();
 
   const handleClick = () => {
     const pad = (n) => String(n).padStart(2, "0");

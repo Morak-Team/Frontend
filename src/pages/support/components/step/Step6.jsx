@@ -1,6 +1,6 @@
 import { postUserInfo } from "@/apis/recommend/postUserInfo";
 import { useState } from "react";
-import "@/styles/spinner.css"; // ✅ 스피너 CSS import
+import "@/styles/spinner.css";
 
 const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
   const [isLoading, setIsLoading] = useState(false);

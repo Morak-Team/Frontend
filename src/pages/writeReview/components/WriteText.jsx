@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { postReview } from "@/apis/review/postReview";
 import { useMyProfile } from "@/apis/member/queries";
+import ToastModal from "@/components/common/ToastModal";
 
 const WriteText = ({ onNext, onBack }) => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const WriteText = ({ onNext, onBack }) => {
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
   const { data, isLoading } = useMyProfile();
+  const [showToast, setShowToast] = useState(true);
 
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
@@ -24,7 +26,8 @@ const WriteText = ({ onNext, onBack }) => {
     } catch (e) {
       console.log(e);
       setIsUploading(false); // 실패 시도 닫기
-      alert("리뷰 등록에 실패했습니다. 다시 시도해 주세요.");
+      setShowToast(true);
+      // alert("리뷰 등록에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -32,6 +35,7 @@ const WriteText = ({ onNext, onBack }) => {
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         {isUploading && <UploadingModal message="리뷰를 등록중입니다..." />}
+
         {/* 닫기 버튼 */}
         <div
           className="flex justify-end"
