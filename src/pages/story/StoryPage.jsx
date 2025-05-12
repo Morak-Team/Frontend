@@ -6,7 +6,7 @@ const StoryPage = () => {
   const { data: bestData, isLoading } = useGetBestStory();
 
   return (
-    <div className="story-container overflow-y-auto scrollbar-hide p-5">
+    <div className="container overflow-y-auto scrollbar-hide p-5">
       <h1 className="h3 mt-20">많은 응원을 받은 이야기</h1>
       {isLoading && (
         <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
