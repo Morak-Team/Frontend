@@ -1,4 +1,4 @@
-import Picker from "./Picker";
+import Picker from "@/pages/map/components/picker/Picker";
 import { useState } from "react";
 import { motion } from "framer-motion";
 

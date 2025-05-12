@@ -77,6 +77,12 @@
 .scroll-snap-x {
   scroll-snap-type: x mandatory;
 }
+
 .scroll-snap-align-center {
   scroll-snap-align: center;
+}
+
+.story-container {
+  /* 100vh 대신 100 * --vh */
+  height: calc(var(--vh) * 100 - 5.25rem);
 }
