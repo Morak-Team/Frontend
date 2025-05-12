@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postRecipt } from "@/apis/review/postRecipt";
 import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
-import ReceiptErrorModal from "@/pages/map/components/ReceiptErrorModal";
+import ReceiptErrorModal from "@/pages/map/components/review/ReceiptErrorModal";
 import "@/styles/spinner.css";
 
 import { usePaymentStore } from "@/store/paymentStore";
