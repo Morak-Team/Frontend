@@ -1,5 +1,3 @@
-import { categoryIconMap } from "@constants/iconMap";
-import { useNavigate } from "react-router-dom";
 import {
   businessTypeNameMap,
   companyTypeNameMap,
@@ -12,22 +10,63 @@ import {
   likeCompany,
   unlikeCompany,
 } from "@apis/company/getLikedCompanies";
-import { getMyProfile } from "@apis/member/auth";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import { openNaverMapRoute } from "@pages/map/utils/openNaverMapRoute";
 import { useUserCoords } from "@pages/search/hooks/useUserCoords";
+import useAuthStore from "@/store/authStore";
 
 const PlaceInfo = ({ placeInfo }) => {
-  const navigate = useNavigate();
   const userCoords = useUserCoords();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const { companyId } = usePaymentStore();
-
   const [isLiked, setIsLiked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const { companyId } = usePaymentStore();
+
+  // 로그인 여부 + 찜 여부 확인
+  useEffect(() => {
+    const checkLoginAndLiked = async () => {
+      const isAuthenticated = await useAuthStore.getState().checkAuth();
+      setIsLoggedIn(isAuthenticated);
+
+      if (isAuthenticated && companyId) {
+        const likedList = await getLikedCompanies();
+        const liked = likedList.some(
+          (c) => String(c.companyId) === String(companyId)
+        );
+        setIsLiked(liked);
+      }
+      setLoading(false);
+    };
+
+    if (companyId) checkLoginAndLiked();
+  }, [companyId]);
+
+  const handleLikeClick = async () => {
+    const isAuthenticated = await useAuthStore.getState().checkAuth();
+    setIsLoggedIn(isAuthenticated);
+
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      if (isLiked) {
+        await unlikeCompany(companyId);
+      } else {
+        await likeCompany(companyId);
+      }
+      setIsLiked((prev) => !prev);
+    } catch (e) {
+      console.error("좋아요 토글 실패:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleRouteClick = (e) => {
     e.preventDefault();
@@ -47,50 +86,6 @@ const PlaceInfo = ({ placeInfo }) => {
         `https://map.naver.com/v5/search/${placeInfo.companyName}`,
         "_blank"
       );
-    }
-  };
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const profile = await getMyProfile();
-        if (profile?.name) {
-          setIsLoggedIn(true);
-          const likedList = await getLikedCompanies();
-          const liked = likedList.some(
-            (c) => String(c.companyId) === String(companyId)
-          );
-
-          setIsLiked(liked);
-        }
-      } catch (e) {
-        setIsLoggedIn(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (companyId) init();
-  }, [companyId]);
-
-  const handleLikeClick = async () => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      if (isLiked) {
-        await unlikeCompany(companyId);
-      } else {
-        await likeCompany(companyId);
-      }
-      setIsLiked((prev) => !prev);
-    } catch (e) {
-      console.error("좋아요 토글 실패:", e);
-    } finally {
-      setLoading(false);
     }
   };
 

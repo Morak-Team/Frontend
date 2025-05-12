@@ -10,15 +10,20 @@ export const useToggleLike = ({
   showOnlyLiked,
   selectedPlace,
   setSelectedPlace,
+  onRequireLogin,
 }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const toggleLike = async (targetId) => {
-    if (!isLoggedIn) {
-      alert("로그인이 필요한 기능입니다.");
-      navigate("/auth");
+    const isAuthenticated = await useAuthStore.getState().checkAuth();
+
+    if (!isAuthenticated) {
+      if (onRequireLogin) {
+        onRequireLogin();
+      } else {
+        navigate("/auth");
+      }
       return;
     }
 
@@ -31,15 +36,7 @@ export const useToggleLike = ({
       if (currentPlace.liked) {
         await unlikeCompany(targetId);
       } else {
-        try {
-          await likeCompany(targetId);
-        } catch (err) {
-          if (err.response?.status === 409) {
-            console.warn("이미 찜한 기업입니다.");
-            return;
-          }
-          throw err;
-        }
+        await likeCompany(targetId);
       }
 
       const updated = placesWithDistance.map((p) =>
@@ -58,16 +55,10 @@ export const useToggleLike = ({
 
       setFilteredPlaces((prev) => {
         if (!prev) return [];
-        if (showOnlyLiked) return updated.filter((p) => p.liked);
-        return updated;
+        return showOnlyLiked ? updated.filter((p) => p.liked) : updated;
       });
     } catch (err) {
-      if (err.response?.status === 401) {
-        alert("로그인이 필요한 기능입니다.");
-        navigate("/auth");
-      } else {
-        console.error("찜 토글 실패:", err);
-      }
+      console.error("찜 토글 실패:", err);
     } finally {
       setLoading(false);
     }

@@ -12,6 +12,7 @@ import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { getLikedCompanies } from "@apis/company/getLikedCompanies";
 import { useToggleLike } from "./hooks/useToggleLike";
 import useAuthStore from "@/store/authStore";
+import { getMyProfile } from "@apis/member/auth";
 
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(false);
@@ -37,7 +38,12 @@ const MapPage = () => {
     showOnlyLiked,
     selectedPlace,
     setSelectedPlace,
+    onRequireLogin: () => setShowLoginModal(true),
   });
+
+  useEffect(() => {
+    useAuthStore.getState().checkAuth(); // 전역 로그인 상태 초기화
+  }, []);
 
   useEffect(() => {
     if (!sessionStorage.getItem("seenIntro")) {
@@ -121,34 +127,30 @@ const MapPage = () => {
   };
 
   const handleToggleLikedFilter = async () => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
+    try {
+      const profile = await getMyProfile();
+      if (!profile?.name) throw new Error("Unauthenticated");
 
-    const next = !showOnlyLiked;
-    setShowOnlyLiked(next);
-    setSelectedPlace(null);
+      const next = !showOnlyLiked;
+      setShowOnlyLiked(next);
+      setSelectedPlace(null);
 
-    if (next) {
-      try {
+      if (next) {
         const likedCompanies = await getLikedCompanies();
         const likedIds = likedCompanies.map((c) => c.companyId);
-
         const updated = originalPlaces.map((p) => ({
           ...p,
           liked: likedIds.includes(p.id),
         }));
-
         setPlaces(updated);
-      } catch (err) {
-        console.error("찜 목록 불러오기 실패:", err);
+      } else {
+        setPlaces(originalPlaces);
       }
-    } else {
-      setPlaces(originalPlaces);
+    } catch (err) {
+      console.error("로그인 확인 실패:", err);
+      setShowLoginModal(true);
     }
   };
-
   const handleMarkerClick = async (place) => {
     try {
       const preview = await getCompanyPreview(place.id);
