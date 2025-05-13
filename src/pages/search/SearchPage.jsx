@@ -11,6 +11,7 @@ import { useUserCoords } from "./hooks/useUserCoords";
 import useAuthStore from "@/store/authStore";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import MapViewer from "./components/MapViewer";
+import { useToggleLike } from "../map/hooks/useToggleLike";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -19,10 +20,13 @@ const SearchPage = () => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
+
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [step, setStep] = useState(1);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [bottomSheetHeight, setBottomSheetHeight] = useState(220);
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
   const userCoords = useUserCoords();
@@ -114,15 +118,17 @@ const SearchPage = () => {
   };
 
   const handleSelectPlace = async (place) => {
-    window.history.pushState({}, "");
     try {
       const preview = await getCompanyPreview(place.id);
-      const enriched = { ...place, ...preview };
-      setKeyword(enriched.name);
+      const enriched = {
+        ...place,
+        ...preview,
+        liked: preview.isSaved ?? false,
+      };
       setSelectedPlace(enriched);
       setIsBottomSheetVisible(true);
       setIsBottomSheetExpanded(false);
-      setStep(5);
+      setStep?.(5); // SearchPage인 경우
     } catch (err) {
       console.error("기업 상세 정보 불러오기 실패:", err);
     }
@@ -135,16 +141,15 @@ const SearchPage = () => {
     }
   };
 
-  const handleToggleLike = (id) => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    setSelectedPlace((prev) =>
-      prev?.id === id ? { ...prev, liked: !prev.liked } : prev
-    );
-  };
+  const { toggleLike: handleToggleLike } = useToggleLike({
+    placesWithDistance: selectedPlace ? [selectedPlace] : [],
+    setPlacesWithDistance: () => {},
+    setFilteredPlaces: () => {},
+    showOnlyLiked: false,
+    selectedPlace,
+    setSelectedPlace,
+    onRequireLogin: () => setShowLoginModal(true),
+  });
 
   return (
     <div className="relative min-h-screen bg-white">
@@ -218,7 +223,30 @@ const SearchPage = () => {
             zoom={17}
             selectedPlace={selectedPlace}
             onMarkerClick={() => setIsBottomSheetVisible(true)}
+            moveToCurrentLocation={moveToCurrentLocation}
+            onMoveComplete={() => setMoveToCurrentLocation(false)}
+            userCoords={userCoords}
+            disableAutoUserPan={true}
           />
+
+          {bottomSheetHeight <= 220 && (
+            <div
+              className={`absolute ${
+                bottomSheetHeight === 0 ? "bottom-28 sm:bottom-30" : "bottom-80"
+              } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10003] flex justify-end transition-all duration-300`}
+            >
+              <button
+                onClick={() => setMoveToCurrentLocation(true)}
+                className="w-10 h-10 p-2 bg-white rounded-full shadow flex items-center justify-center"
+              >
+                <img
+                  src="/svgs/map/Ic_Current_Location.svg"
+                  alt="사용자 현재 위치 버튼"
+                  className="w-6 h-6"
+                />
+              </button>
+            </div>
+          )}
 
           {selectedPlace && isBottomSheetVisible && (
             <PlaceBottomSheet
@@ -226,6 +254,7 @@ const SearchPage = () => {
               onClose={() => setIsBottomSheetVisible(false)}
               onExpandChange={setIsBottomSheetExpanded}
               onToggleLike={handleToggleLike}
+              onHeightChange={setBottomSheetHeight}
             />
           )}
         </div>

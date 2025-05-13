@@ -18,6 +18,7 @@ const useMapViewer = ({
   zoom = 11,
   selectedPlace,
   showOnlyLiked,
+  disableAutoUserPan,
 }) => {
   const mapInstance = useRef(null);
   const userMarkerRef = useRef(null);
@@ -76,9 +77,10 @@ const useMapViewer = ({
 
         markersRef.current[place.id] = marker;
 
-        window.naver.maps.Event.addListener(marker, "click", () =>
-          handleMarkerClick(place),
-        );
+        window.naver.maps.Event.addListener(marker, "click", () => {
+          handleMarkerClick(place);
+          console.log("marker");
+        });
       });
 
       if (markerPosition) {
@@ -110,7 +112,8 @@ const useMapViewer = ({
       userCoords &&
       mapInstance.current &&
       !hasAnimatedRef.current &&
-      isMapInitialized
+      isMapInitialized &&
+      !disableAutoUserPan
     ) {
       hasAnimatedRef.current = true;
 
@@ -122,7 +125,6 @@ const useMapViewer = ({
 
       const zoomTimeout = setTimeout(() => {
         mapInstance.current.setZoom(17, true);
-
         if (userMarkerRef.current) {
           userMarkerRef.current.setMap(null);
         }
@@ -136,7 +138,7 @@ const useMapViewer = ({
 
       return () => clearTimeout(zoomTimeout);
     }
-  }, [userCoords, isMapInitialized]);
+  }, [userCoords, isMapInitialized, disableAutoUserPan]);
 
   useEffect(() => {
     if (moveToCurrentLocation && userCoords && mapInstance.current) {

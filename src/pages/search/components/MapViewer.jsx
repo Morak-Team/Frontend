@@ -13,6 +13,7 @@ const MapViewer = ({
   zoom = 11,
   selectedPlace,
   showOnlyLiked,
+  disableAutoUserPan = false,
 }) => {
   const mapRef = useRef(null);
 
@@ -28,6 +29,7 @@ const MapViewer = ({
     markerPosition,
     zoom,
     selectedPlace,
+    disableAutoUserPan,
   });
 
   return <div ref={mapRef} className="h-screen" />;
