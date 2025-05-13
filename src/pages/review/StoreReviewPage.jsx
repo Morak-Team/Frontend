@@ -47,7 +47,7 @@ const StoreReviewPage = () => {
         <img
           src="/svgs/storeReview/backIcon.svg"
           className="w-8 h-8"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
         />
       </div>
 

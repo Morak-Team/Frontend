@@ -36,7 +36,7 @@ const ReviewImageCapture = ({
     message: "",
     icon: null,
   });
-  const fireToast = (message, icon = ErrorIcon, duration = 2000) => {
+  const fireToast = (message, icon = ErrorIcon, duration = 4000) => {
     setToast({ show: true, message, icon });
     setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
   };
@@ -201,7 +201,7 @@ const ReviewImageCapture = ({
           <ToastModal
             message={toast.message}
             icon={toast.icon}
-            duration={8000}
+            duration={4000}
             onClose={() => setToast((t) => ({ ...t, show: false }))}
           />
         )}

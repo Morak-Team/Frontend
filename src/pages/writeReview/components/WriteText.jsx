@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { postReview } from "@/apis/review/postReview";
 import { useMyProfile } from "@/apis/member/queries";
+import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
 import ToastModal from "@/components/common/ToastModal";
 
 const WriteText = ({ onNext, onBack }) => {
@@ -14,7 +15,16 @@ const WriteText = ({ onNext, onBack }) => {
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
   const { data, isLoading } = useMyProfile();
-  const [showToast, setShowToast] = useState(true);
+
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    icon: null,
+  });
+  const fireToast = (message, icon = ErrorIcon, duration = 4000) => {
+    setToast({ show: true, message, icon });
+    setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
+  };
 
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
@@ -26,8 +36,7 @@ const WriteText = ({ onNext, onBack }) => {
     } catch (e) {
       console.log(e);
       setIsUploading(false); // 실패 시도 닫기
-      setShowToast(true);
-      // alert("리뷰 등록에 실패했습니다. 다시 시도해 주세요.");
+      fireToast("리뷰 등록에 실패했습니다.\n다시 시도해 주세요.", ErrorIcon);
     }
   };
 
@@ -95,6 +104,15 @@ const WriteText = ({ onNext, onBack }) => {
           다음
         </button>
       </div>
+
+      {toast.show && (
+        <ToastModal
+          message={toast.message}
+          icon={toast.icon}
+          duration={4000}
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        />
+      )}
     </div>
   );
 };

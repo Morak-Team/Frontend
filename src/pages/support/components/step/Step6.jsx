@@ -1,9 +1,20 @@
 import { postUserInfo } from "@/apis/recommend/postUserInfo";
 import { useState } from "react";
 import "@/styles/spinner.css";
+import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
+import ToastModal from "@/components/common/ToastModal";
 
 const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    icon: null,
+  });
+  const fireToast = (message, icon = ErrorIcon, duration = 4000) => {
+    setToast({ show: true, message, icon });
+    setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
+  };
 
   const handleNext = async () => {
     try {
@@ -13,7 +24,7 @@ const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
       onNext();
     } catch (error) {
       console.error("추천 요청 실패:", error);
-      alert("추천 결과를 불러오는 데 실패했어요. 다시 시도해주세요.");
+      fireToast("추천 결과를 불러오는 데 실패했어요.\n다시 시도해주세요.");
     } finally {
       setIsLoading(false);
     }
@@ -49,6 +60,15 @@ const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
           </button>
         )}
       </div>
+
+      {toast.show && (
+        <ToastModal
+          message={toast.message}
+          icon={toast.icon}
+          duration={4000}
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        />
+      )}
     </div>
   );
 };
