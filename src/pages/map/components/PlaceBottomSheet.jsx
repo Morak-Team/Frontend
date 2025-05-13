@@ -94,16 +94,15 @@ const PlaceBottomSheet = ({
     if (delta < -50) {
       controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
-      onHeightChange?.(MAX_HEIGHT.current); 
     } else if (delta > 100) {
       controls.start({ height: 0 }).then(() => {
-        onHeightChange?.(0); 
+        onHeightChange?.(0);
         onClose?.();
       });
     } else {
       controls.start({ height: MIN_HEIGHT });
       setIsExpanded(false);
-      onHeightChange?.(MIN_HEIGHT); 
+      onHeightChange?.(MIN_HEIGHT);
     }
   };
 
@@ -111,6 +110,7 @@ const PlaceBottomSheet = ({
     if (!isMobile && !isExpanded) {
       controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
+      onHeightChange?.(MAX_HEIGHT.current);
     }
   };
 
@@ -180,8 +180,8 @@ const PlaceBottomSheet = ({
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
                 onCaptureSuccess={(data) => {
-                  setCompanyInfo(data); 
-                  setShowConfirm(true); 
+                  setCompanyInfo(data);
+                  setShowConfirm(true);
                 }}
               />
             )}

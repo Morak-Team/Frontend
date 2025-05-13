@@ -27,6 +27,16 @@ const SearchPage = () => {
   const [step, setStep] = useState(1);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [bottomSheetHeight, setBottomSheetHeight] = useState(220);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateSize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
   const userCoords = useUserCoords();
@@ -229,11 +239,16 @@ const SearchPage = () => {
             disableAutoUserPan={true}
           />
 
-          {bottomSheetHeight <= 220 && (
+          {!isBottomSheetExpanded && (
             <div
-              className={`absolute ${
-                bottomSheetHeight === 0 ? "bottom-28 sm:bottom-30" : "bottom-80"
-              } left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10003] flex justify-end transition-all duration-300`}
+              className="absolute left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10003] flex justify-end transition-all duration-300"
+              style={{
+                bottom: !isBottomSheetVisible
+                  ? isDesktop
+                    ? "8rem"
+                    : "6rem"
+                  : `calc(${bottomSheetHeight}px + 6rem)`,
+              }}
             >
               <button
                 onClick={() => setMoveToCurrentLocation(true)}

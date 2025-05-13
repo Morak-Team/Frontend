@@ -214,7 +214,13 @@ const useMapViewer = ({
         marker.setIcon(createMarkerIcon(isHighlighted, place.liked));
       }
     });
-  }, [places, selectedPlace, isMapInitialized, handleMarkerClick]);
+  }, [
+    places,
+    selectedPlace,
+    isMapInitialized,
+    handleMarkerClick,
+    showOnlyLiked,
+  ]);
 };
 
 export default useMapViewer;
