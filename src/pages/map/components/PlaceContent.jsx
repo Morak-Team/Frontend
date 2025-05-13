@@ -24,6 +24,7 @@ import { useState } from "react";
 const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
   const userCoords = useUserCoords();
   const [showToast, setShowToast] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
 
   const handleRouteClick = (e) => {
     e.preventDefault();
@@ -73,6 +74,20 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
       setShowToast(true);
     } catch (err) {
       console.error("복사 실패:", err);
+    }
+  };
+
+  const handleLikeClick = async (e) => {
+    e.stopPropagation();
+    if (isLiking) return;
+
+    setIsLiking(true);
+    try {
+      await onToggleLike?.(place.id);
+    } catch (err) {
+      console.error("좋아요 처리 실패:", err);
+    } finally {
+      setIsLiking(false);
     }
   };
 
@@ -157,10 +172,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           </a>
         )}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleLike?.(place.id);
-          }}
+          onClick={handleLikeClick}
           className="w-14 h-14 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img

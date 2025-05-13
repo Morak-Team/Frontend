@@ -36,13 +36,12 @@ const LocationStep = ({ onNext, onBack }) => {
   const showNotSeoulMessage = checked;
 
   return (
-    <div className="flex flex-col justify-start items-start h-screen mt-20 px-6 bg-white relative overflow-auto">
-      <button
-        onClick={onBack}
-        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
-      >
-        <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
-      </button>
+    <div className="flex flex-col justify-start items-start h-screen pt-40 px-6 bg-white relative overflow-auto">
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 sm:px-6 z-50">
+        <button onClick={onBack} aria-label="뒤로가기" className="w-8 h-8">
+          <img src={BackIcon} alt="뒤로가기 버튼" className="w-8 h-8" />
+        </button>
+      </div>
 
       <h1 className="text-h1 font-semibold mb-2">어느 동네에 사세요?</h1>
       <p className="text-b5 text-gray-500 mb-8">
