@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 
 const FireTemperatureSlider = ({ temperature, setTemperature }) => {

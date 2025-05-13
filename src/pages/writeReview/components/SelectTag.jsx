@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { tagList } from "@/constants/review/tagList";
 import { usePaymentStore } from "@/store/paymentStore";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,6 @@ const SelectTag = ({ onNext }) => {
   const navigate = useNavigate();
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
 
-  const { reviewInfo } = usePaymentStore();
   const [selectedTags, setSelectedTags] = useState([]);
   const [temperature, setTemperature] = useState(50);
 
@@ -58,8 +57,6 @@ const SelectTag = ({ onNext }) => {
               슬라이드하여 온도를 남겨 보세요.
             </p>
             <div className="flex justify-center items-center flex-col mb-10">
-              {/* <p className="h1 text-primary-8 text-center mt-6">0도</p> */}
-              {/* <img src="/svgs/review/fire.svg" className="w-52 h-56" /> */}
               <FireTemperatureSlider
                 temperature={temperature}
                 setTemperature={setTemperature}

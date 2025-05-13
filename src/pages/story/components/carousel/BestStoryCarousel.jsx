@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import "@/styles/swiper.css"; // 👈 아래의 스타일이 여기에 포함되어야 함
+import "@/styles/swiper.css";
 import SlideContent from "@/pages/story/components/content/SlideContent";
 
 const BestStoryCarousel = ({ data, isLoading }) => {
