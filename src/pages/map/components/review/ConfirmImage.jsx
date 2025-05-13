@@ -9,7 +9,7 @@ import { formatDateTime } from "@/pages/map/utils/formatDateTime";
 import { usePaymentStore } from "@/store/paymentStore";
 import { getDistanceDiff } from "@/pages/map/utils/getDistanceDiff";
 import { formatToYMDHMS } from "@/store/paymentStore";
-import { companyCategoryMap } from "@/constants/review/companyCategoryMap";
+import { businessTypeNameMap } from "@/constants/categoryMap";
 
 const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
   const navigate = useNavigate();
@@ -231,7 +231,7 @@ const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
         <div className="flex gap-2 justify-start items-center">
           <p className="h3 text-gray-12">{data?.storeName}</p>
           <p className="b4 text-gray-6">
-            {companyCategoryMap[data?.companyCategory] ?? "기타"}
+            {businessTypeNameMap[data?.companyCategory] ?? "기타"}
           </p>
         </div>
         <div className="flex gap-2 justify-start items-center">
