@@ -47,7 +47,7 @@ const StoreReviewPage = () => {
         <img
           src="/svgs/storeReview/backIcon.svg"
           className="w-8 h-8"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
         />
       </div>
 
@@ -66,7 +66,6 @@ const StoreReviewPage = () => {
           onCloseCamera={() => setTurnOnCamera(false)}
           onCaptureSuccess={(data) => {
             setCompanyInfo(data); // 즉시 로컬 상태에 저장
-            // setReceiptInfo(data); // 전역 상태에도 저장
             setShowConfirm(true); // 그다음 Confirm 렌더링
           }}
         />

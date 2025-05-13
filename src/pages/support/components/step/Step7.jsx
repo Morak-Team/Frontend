@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const Step7 = ({ onNext, defaultValue, userInfo, recommendResult }) => {
+const Step7 = ({ recommendResult }) => {
   const navigate = useNavigate();
 
   return (

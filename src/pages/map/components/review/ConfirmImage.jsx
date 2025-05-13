@@ -9,23 +9,12 @@ import { formatDateTime } from "@/pages/map/utils/formatDateTime";
 import { usePaymentStore } from "@/store/paymentStore";
 import { getDistanceDiff } from "@/pages/map/utils/getDistanceDiff";
 import { formatToYMDHMS } from "@/store/paymentStore";
+import { businessTypeNameMap } from "@/constants/categoryMap";
 
 const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
   const navigate = useNavigate();
-  // 이 화면에서 넘겨야 할 것 -> 시간 정보, 결제승인번호
+
   const setReviewInfo = usePaymentStore((s) => s.setReviewInfo);
-  const { companyId } = usePaymentStore();
-
-  const moveToReviewPage = () => {
-    onConfirmComplete?.();
-  };
-
-  // const handleClick = () => {
-  //   const newDate = new Date(/* year, month-1, day, hour, minute */);
-  //   setPaymentTime(newDate);
-
-  //   navigate("/writereview");
-  // };
 
   const handleClick = () => {
     const pad = (n) => String(n).padStart(2, "0");
@@ -241,7 +230,9 @@ const ConfirmImage = ({ onReject, data, onConfirmComplete }) => {
       <div className="w-80 h-24 bg-gray-2 px-5 py-4 flex flex-col gap-2 mt-2 sm:w-[77%]">
         <div className="flex gap-2 justify-start items-center">
           <p className="h3 text-gray-12">{data?.storeName}</p>
-          <p className="b4 text-gray-6">{data?.companyCategory ?? "기타"}</p>
+          <p className="b4 text-gray-6">
+            {businessTypeNameMap[data?.companyCategory] ?? "기타"}
+          </p>
         </div>
         <div className="flex gap-2 justify-start items-center">
           <p className="b4 text-gray-12">

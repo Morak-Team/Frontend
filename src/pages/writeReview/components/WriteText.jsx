@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { profileColorMap } from "@/constants/myPage/profileColorMap";
 import { postReview } from "@/apis/review/postReview";
 import { useMyProfile } from "@/apis/member/queries";
+import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
+import ToastModal from "@/components/common/ToastModal";
 
 const WriteText = ({ onNext, onBack }) => {
   const navigate = useNavigate();
@@ -13,6 +15,16 @@ const WriteText = ({ onNext, onBack }) => {
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
   const { data, isLoading } = useMyProfile();
+
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    icon: null,
+  });
+  const fireToast = (message, icon = ErrorIcon, duration = 4000) => {
+    setToast({ show: true, message, icon });
+    setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
+  };
 
   const handleClick = async () => {
     setIsUploading(true); // 모달 띄우기
@@ -24,7 +36,7 @@ const WriteText = ({ onNext, onBack }) => {
     } catch (e) {
       console.log(e);
       setIsUploading(false); // 실패 시도 닫기
-      alert("리뷰 등록에 실패했습니다. 다시 시도해 주세요.");
+      fireToast("리뷰 등록에 실패했습니다.\n다시 시도해 주세요.", ErrorIcon);
     }
   };
 
@@ -32,6 +44,7 @@ const WriteText = ({ onNext, onBack }) => {
     <div className="relative w-full min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         {isUploading && <UploadingModal message="리뷰를 등록중입니다..." />}
+
         {/* 닫기 버튼 */}
         <div
           className="flex justify-end"
@@ -91,6 +104,15 @@ const WriteText = ({ onNext, onBack }) => {
           다음
         </button>
       </div>
+
+      {toast.show && (
+        <ToastModal
+          message={toast.message}
+          icon={toast.icon}
+          duration={2000}
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        />
+      )}
     </div>
   );
 };

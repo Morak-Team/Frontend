@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { reviewData } from "@/constants/review/reviewData";
 import ReviewContent from "@/pages/map/components/review/ReviewContent";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";

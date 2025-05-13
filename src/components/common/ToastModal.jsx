@@ -20,7 +20,7 @@ const ToastModal = ({
 
       <div className="relative flex items-center bg-white px-4 py-3 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.08)] min-w-[240px] max-w-[90vw]">
         <IconComponent className="w-6 h-6 mr-3" />
-        <span className="text-b1 text-gray-12 font-semibold whitespace-nowrap">
+        <span className="text-b1 text-gray-12 b4 whitespace-pre-line">
           {message}
         </span>
       </div>
