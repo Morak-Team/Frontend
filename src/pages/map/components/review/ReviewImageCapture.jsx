@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { postRecipt } from "@/apis/review/postRecipt";
-import { useNavigate } from "react-router-dom";
 import Modal from "@/pages/map/components/Modal";
 import ReceiptErrorModal from "@/pages/map/components/review/ReceiptErrorModal";
 import "@/styles/spinner.css";
+import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
+import ToastModal from "@/components/common/ToastModal";
 
 import imageCompression from "browser-image-compression";
 const ReviewImageCapture = ({
@@ -13,8 +14,6 @@ const ReviewImageCapture = ({
   onCloseCamera,
   onCaptureSuccess,
 }) => {
-  const navigate = useNavigate();
-
   useEffect(() => () => stopCamera(), []);
 
   const streamRef = useRef(null);
@@ -30,6 +29,17 @@ const ReviewImageCapture = ({
 
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [showReceiptError, setShowReceiptError] = useState(false);
+
+  // 1) 토스트 상태 & 실행 함수
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    icon: null,
+  });
+  const fireToast = (message, icon = ErrorIcon, duration = 2000) => {
+    setToast({ show: true, message, icon });
+    setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
+  };
 
   useEffect(() => {
     const hasSeenModal = localStorage.getItem("hasSeenCameraIntro");
@@ -53,7 +63,10 @@ const ReviewImageCapture = ({
       }
     } catch (error) {
       console.log("카메라 접근 실패", error);
-      alert("카메라 접근에 실패했습니다. 카메라 접근 권한을 확인해 주세요!");
+      fireToast(
+        "카메라 접근에 실패했습니다.\n카메라 권한을 확인해 주세요!",
+        ErrorIcon
+      );
     }
   };
 
@@ -99,7 +112,7 @@ const ReviewImageCapture = ({
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        alert("이미지 파일만 선택 가능합니다.");
+        fireToast("이미지 파일만 선택 가능합니다.", ErrorIcon);
         e.target.value = "";
         fileInputRef.current?.click();
         return;
@@ -174,7 +187,7 @@ const ReviewImageCapture = ({
       mutate(form);
     } catch (e) {
       console.error(e);
-      alert("이미지 압축 실패");
+      fireToast("이미지 압축에 실패했습니다. 다시 시도해 주세요!", ErrorIcon);
     }
   };
 
@@ -184,6 +197,14 @@ const ReviewImageCapture = ({
         onTouchStart={(e) => e.stopPropagation()}
         onTouchEnd={(e) => e.stopPropagation()}
       >
+        {toast.show && (
+          <ToastModal
+            message={toast.message}
+            icon={toast.icon}
+            duration={8000}
+            onClose={() => setToast((t) => ({ ...t, show: false }))}
+          />
+        )}
         <div>
           {/* 숨겨진 input */}
           <input
