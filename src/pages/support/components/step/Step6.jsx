@@ -65,7 +65,7 @@ const Step6 = ({ onNext, defaultValue, userInfo, setRecommendResult }) => {
         <ToastModal
           message={toast.message}
           icon={toast.icon}
-          duration={4000}
+          duration={2000}
           onClose={() => setToast((t) => ({ ...t, show: false }))}
         />
       )}
