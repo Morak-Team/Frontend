@@ -24,7 +24,7 @@ const OwnerStep = ({ onNext, onBack }) => {
         </button>
       </div>
 
-      <h1 className="text-h1 font-semibold mb-10">
+      <h1 className="h1 mb-10">
         사회적기업의 사장님이신가요?
       </h1>
 

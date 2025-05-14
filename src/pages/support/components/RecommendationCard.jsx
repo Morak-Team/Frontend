@@ -6,7 +6,8 @@ const RecommendationCard = ({
   title,
   description,
   productType,
-  benefit,
+  recommendedCategory,
+  defaultCategory,
   showDescription = true,
 }) => {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ const RecommendationCard = ({
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      aria-label={`${title} 상품 상세정보`}
-      className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
+      aria-label={`${title} 상품 정보`}
+      className="relative w-full h-full py-5 px-6 bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
     >
       <img
         src="/svgs/support/company/forwardIcon.svg"
@@ -30,20 +31,28 @@ const RecommendationCard = ({
       />
 
       <div className="flex items-center gap-2">
-        {productType && (
-          <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
-            {productType}
-          </span>
+        {productType && recommendedCategory && defaultCategory && (
+          <>
+            <span className="caption2 text-gray-11 bg-gray-3 px-2 py-1 rounded-lg">
+              {productType}
+            </span>
+            <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
+              {recommendedCategory}
+            </span>
+            <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
+              {defaultCategory}
+            </span>
+          </>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-h4 text-gray-12 font-semibold">{title}</p>
-        <p className="text-caption2 text-gray-9 font-medium">{bank}</p>
+        <p className="h4 text-gray-12">{title}</p>
+        <p className="caption2 text-gray-9">{bank}</p>
       </div>
 
       {showDescription && (
-        <p className="text-b6 font-normal text-gray-11 mt-6 line-clamp-3 break-keep">
+        <p className="b6 text-gray-11 mt-6 line-clamp-3 break-keep">
           {description}
         </p>
       )}

@@ -36,12 +36,12 @@ const StoryCarousel = () => {
                 alt="fire"
                 className="w-4 h-4"
               />
-              <span className="text-caption2 text-primary-8 font-semibold">
+              <span className="caption2 text-primary-8">
                 {story.storyLikes || 0}
               </span>
             </div>
 
-            <h2 className="text-white font-semibold text-h4 break-keep">
+            <h2 className="text-white h4 break-keep">
               {story.storyTitle}
             </h2>
           </div>

@@ -43,14 +43,14 @@ const LocationStep = ({ onNext, onBack }) => {
         </button>
       </div>
 
-      <h1 className="text-h1 font-semibold mb-2">어느 동네에 사세요?</h1>
-      <p className="text-b5 text-gray-500 mb-8">
+      <h1 className="h1 mb-2">어느 동네에 사세요?</h1>
+      <p className="b5 text-gray-500 mb-8">
         가까운 사회적 기업을 추천해드릴게요.
       </p>
 
       <label
         htmlFor="location"
-        className="text-b5 font-medium text-gray-8 mb-1"
+        className="b5 text-gray-8 mb-1"
       >
         주소
       </label>
@@ -61,7 +61,7 @@ const LocationStep = ({ onNext, onBack }) => {
         } py-2`}
       >
         {!checked && (
-          <span className="text-h2 font-semibold text-gray-12 whitespace-nowrap">
+          <span className="h2 text-gray-12 whitespace-nowrap">
             서울특별시&nbsp;
           </span>
         )}
@@ -74,7 +74,7 @@ const LocationStep = ({ onNext, onBack }) => {
           value={location}
           onChange={handleChange}
           readOnly={checked}
-          className={`flex-1 bg-transparent text-h2 font-semibold focus:outline-none placeholder-gray-6 ${
+          className={`flex-1 bg-transparent h2 focus:outline-none placeholder-gray-6 ${
             checked ? "bg-gray-6 cursor-not-allowed" : ""
           }`}
         />
@@ -91,7 +91,7 @@ const LocationStep = ({ onNext, onBack }) => {
       </div>
 
       {(showWarningForSeoul || showNotSeoulMessage) && (
-        <p className="text-b5 text-primary-8 mt-2">
+        <p className="b5 text-primary-8 mt-2">
           현재는 서울에 한해 사회적 기업들을 소개하고 있습니다.
         </p>
       )}
@@ -105,7 +105,7 @@ const LocationStep = ({ onNext, onBack }) => {
         ) : (
           <IcNonCheck className="w-5 h-5 mr-2 text-gray-6" />
         )}
-        <span className={`text-b5 ${checked ? "text-gray-12" : "text-gray-6"}`}>
+        <span className={`b5 ${checked ? "text-gray-12" : "text-gray-6"}`}>
           현재 서울에 살고 있지 않습니다.
         </span>
       </button>
@@ -121,7 +121,7 @@ const LocationStep = ({ onNext, onBack }) => {
         <button
           disabled={!isActive}
           onClick={() => isActive && onNext(fullLocation)}
-          className={`w-full h-12 mt-10 text-b1 font-semibold transition-colors ${
+          className={`w-full h-12 mt-10 b1 font-semibold transition-colors ${
             isActive ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
           }`}
         >

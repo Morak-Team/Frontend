@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CompanyTab from "@/pages/support/components/CompanyTab";
 import ConsumerTab from "@/pages/support/components/ConsumerTab";
-import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import { getMyProfile } from "@apis/member/auth";
+import HaveToLoginModal from "./components/HaveToLoginModal";
 
 const SupportPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

@@ -31,7 +31,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
         </button>
       </div>
 
-      <h1 className="pt-24 sm:pt-32 text-h1 text-gray-12 sm:text-4xl font-semibold text-center">
+      <h1 className="pt-24 sm:pt-32 h1 text-gray-12 sm:text-4xl text-center">
         프로필사진을 설정해주세요.
       </h1>
 

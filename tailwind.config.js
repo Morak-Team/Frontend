@@ -12,6 +12,9 @@ export default {
         error: "rgba(232, 58, 58, 1)",
         errorContainer: "rgba(255, 232, 232, 1)",
         Scrim: "rgba(46, 45, 43, 0.20)",
+        supportMessage:
+          "linear-gradient(90deg, rgba(255, 111, 49, 0.20) 0%, rgba(255, 255, 255, 0.20) 100%), #FFF",
+
         gray: {
           0: "rgba(255, 255, 255, 1)",
           1: "rgba(253, 253, 253, 1)",

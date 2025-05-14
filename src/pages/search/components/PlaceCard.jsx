@@ -19,10 +19,10 @@ const PlaceCard = ({ place, onClick }) => {
           className="w-6 h-6 mt-1"
         />
         <div className="flex flex-col">
-          <h3 className="text-b2 font-semibold text-gray-12">
+          <h3 className="b2 text-gray-12">
             {place.name}
           </h3>
-          <p className="text-b6 text-gray-9 mt-1">{place.address}</p>
+          <p className="b6 text-gray-9 mt-1">{place.address}</p>
         </div>
       </div>
 
@@ -43,7 +43,7 @@ const PlaceCard = ({ place, onClick }) => {
             />
           )}
         </div>
-        <span className="text-b6 text-gray-11">{place.formattedDistance}</span>
+        <span className="b6 text-gray-11">{place.formattedDistance}</span>
       </div>
     </div>
   );

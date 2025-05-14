@@ -21,23 +21,23 @@ const NameStep = ({ onNext, onBack }) => {
       onSubmit={handleSubmit}
       className="flex flex-col justify-start mt-48 bg-white h-screen overflow-auto relative"
     >
-      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 sm:px-6 z-50">
-        <button onClick={onBack} aria-label="뒤로가기" className="w-8 h-8">
-          <img src={BackIcon} alt="뒤로가기 버튼" className="w-8 h-8" />
-        </button>
-      </div>
+      <button
+        onClick={onBack}
+        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
+        aria-label="뒤로가기"
+      >
+        <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
+      </button>
 
       <section className="px-8">
-        <h1 className="text-h1 font-semibold text-gray-12">
-          이름을 입력해주세요.
-        </h1>
-        <p className="text-b5 text-gray-9 mt-2">투명한 리뷰에 사용됩니다.</p>
+        <h1 className="h1 text-gray-12">이름을 입력해주세요.</h1>
+        <p className="b5 text-gray-9 mt-2">투명한 리뷰에 사용됩니다.</p>
 
         <div className="mt-8">
           <label
             id="name-label"
             htmlFor="name"
-            className="block text-b5 text-gray-8 mb-1.5"
+            className="block b5 text-gray-8 mb-1.5"
           >
             이름
           </label>
@@ -78,8 +78,10 @@ const NameStep = ({ onNext, onBack }) => {
         <button
           type="submit"
           disabled={!name.trim()}
-          className={`w-full py-6 text-center text-b1 font-semibold ${
-            name.trim() ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
+          className={`w-full py-6 text-center b1 ${
+            name.trim()
+              ? "bg-primary-8 text-white"
+              : "bg-gray-4 text-white"
           }`}
         >
           확인
