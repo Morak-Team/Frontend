@@ -21,7 +21,7 @@ const GoHome = ({ onNext, onBack }) => {
       </button>
 
       <div className="pt-24 px-1">
-        <h1 className="text-h1 text-gray-12">
+        <h1 className="h1 text-gray-12">
           가치있는 동네여행,
           <br />
           시작해볼까요?
@@ -30,7 +30,7 @@ const GoHome = ({ onNext, onBack }) => {
 
       <button
         onClick={handleSubmit}
-        className="w-full h-12 rounded-xl bg-white text-primary-8 text-b1 shadow-sm"
+        className="w-full h-12 rounded-xl bg-white text-primary-8 b1 shadow-sm"
       >
         좋아요
       </button>

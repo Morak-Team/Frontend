@@ -110,16 +110,16 @@ const ConsumptionChart = ({ data, reviewCount, onTopCategory }) => {
         </PieChart>
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <p className="text-h1 font-bold text-gray-11">
-            <span className="text-caption2 font-semibold text-gray-8 mr-1">
+          <p className="h1 text-gray-11">
+            <span className="caption2 text-gray-8 mr-1">
               총
             </span>
             {reviewCount}
-            <span className="text-caption2 font-semibold text-gray-8 ml-1">
+            <span className="caption2 text-gray-8 ml-1">
               건
             </span>
           </p>
-          <p className="text-caption2 font-semibold text-gray-8">기반</p>
+          <p className="caption2 text-gray-8">기반</p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@ const ConsumptionChart = ({ data, reviewCount, onTopCategory }) => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 text-caption2 font-semibold mt-4 ml-0 sm:ml-5">
+        <div className="flex flex-col gap-2 caption2 mt-4 ml-0 sm:ml-5">
           {topTwo.map((item, index) => (
             <div key={item.name} className="flex items-center gap-2">
               <div

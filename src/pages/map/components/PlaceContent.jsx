@@ -70,21 +70,21 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
     <div className="flex flex-col gap-3 ">
       <div className="flex justify-between items-start px-5 sm:px-6">
         <div>
-          <h3 className="text-h3 font-bold break-words text-gray-12">
-            <div className="max-w-full text-h3 font-bold text-gray-12 break-keep whitespace-normal mt-6">
+          <h3 className="h3 break-words text-gray-12">
+            <div className="max-w-full h3 text-gray-12 break-keep whitespace-normal mt-6">
               {companyName}
-              <span className="ml-2 text-b5 text-gray-6 font-medium">
+              <span className="ml-2 b5 text-gray-6">
                 {businessTypeNameMap[companyCategory] ?? companyCategory}
               </span>
             </div>
           </h3>
 
-          <p className="text-b4 flex items-center gap-2 mt-1">
+          <p className="b4 flex items-center gap-2 mt-1">
             <span className="flex items-center text-primary-8 font-bold">
               <FireIcon className="w-4 h-4 mr-1" />
               {temperature}도
             </span>
-            <span className="text-gray-12 text-b6">
+            <span className="text-gray-12 b6">
               방문자 리뷰 {reviewCount}
             </span>
           </p>
@@ -93,7 +93,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
 
       {business && (
         <section className="px-5 sm:px-6">
-          <div className="bg-secondaryBackground w-full px-4 py-3 rounded-lg text-b5 font-medium whitespace-pre-line text-secondaryText">
+          <div className="bg-secondaryBackground w-full px-4 py-3 rounded-lg b5 whitespace-pre-line text-secondaryText">
             <p className="break-keep whitespace-pre-line">{business}</p>
 
             {companyType && (
@@ -103,7 +103,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
                   alt={companyType}
                   className="w-5 h-5"
                 />
-                <span className="text-caption2 text-secondaryText font-medium">
+                <span className="caption2 text-secondaryText">
                   {companyTypeNameMap[companyType]}
                 </span>
               </div>
@@ -145,7 +145,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
       <div className="w-full h-2 bg-gray-3 my-4 " />
       <div className="flex flex-col gap-3 px-5 sm:px-6">
         {companyLocation && (
-          <div className="flex items-center gap-2 text-b5 text-gray-11 break-keep">
+          <div className="flex items-center gap-2 b5 text-gray-11 break-keep">
             <img
               src="/svgs/map/Ic_Location.svg"
               alt="기업 주소"
@@ -165,7 +165,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           </div>
         )}
         {companyTelNum && (
-          <div className="flex items-center gap-2 text-b5 text-gray-11">
+          <div className="flex items-center gap-2 b5 text-gray-11">
             <img
               src="/svgs/map/Ic_Location.svg"
               alt="기업 전화번호"

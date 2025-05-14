@@ -77,7 +77,7 @@ const FinancialProductList = () => {
   return (
     <div className="flex flex-col pr-5 pl-5 h-[calc(100vh-5.25rem)] overflow-y-auto pb-5 mb-5">
       <div className="mt-16 flex justify-between items-center">
-        <p className="text-h3 font-semibold">소비한 가치에 맞는 금융상품</p>
+        <p className="h3">소비한 가치에 맞는 금융상품</p>
         <img
           src="/svgs/support/company/xIcon.svg"
           className="w-8 h-8 cursor-pointer"
@@ -87,10 +87,10 @@ const FinancialProductList = () => {
       </div>
 
       <div className="flex items-center justify-between mt-10">
-        <p className="text-b5 font-medium text-gray-9">
+        <p className="b5 text-gray-9">
           총 {safeProducts.length}개
         </p>
-        <p className="text-caption2 text-primary-8 text-right">
+        <p className="caption2 text-primary-8 text-right">
           {userName}님이 리뷰를 남긴 기업 특성과
           <br /> 연관된 금융상품 순으로 보여드려요!
         </p>

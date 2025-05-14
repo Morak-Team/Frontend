@@ -33,13 +33,13 @@ const RecommendationCard = ({
       <div className="flex items-center gap-2">
         {productType && recommendedCategory && defaultCategory && (
           <>
-            <span className="text-caption2 font-medium text-gray-11 bg-gray-3 px-2 py-1 rounded-lg">
+            <span className="caption2 text-gray-11 bg-gray-3 px-2 py-1 rounded-lg">
               {productType}
             </span>
-            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
+            <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
               {recommendedCategory}
             </span>
-            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
+            <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
               {defaultCategory}
             </span>
           </>
@@ -47,12 +47,12 @@ const RecommendationCard = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-h4 text-gray-12 font-semibold">{title}</p>
-        <p className="text-caption2 text-gray-9 font-medium">{bank}</p>
+        <p className="h4 text-gray-12">{title}</p>
+        <p className="caption2 text-gray-9">{bank}</p>
       </div>
 
       {showDescription && (
-        <p className="text-b6 font-normal text-gray-11 mt-6 line-clamp-3 break-keep">
+        <p className="b6 text-gray-11 mt-6 line-clamp-3 break-keep">
           {description}
         </p>
       )}

@@ -25,7 +25,7 @@ const OwnerStep = ({ onNext, onBack }) => {
         <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
       </button>
 
-      <h1 className="text-h1 font-semibold mb-10">
+      <h1 className="h1 mb-10">
         사회적기업의 사장님이신가요?
       </h1>
 

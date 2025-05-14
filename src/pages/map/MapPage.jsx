@@ -170,7 +170,7 @@ const MapPage = () => {
         onClick={handleSearchClick}
         className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[33.5rem] h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between bg-white rounded-2xl shadow cursor-pointer"
       >
-        <span className="text-gray-6 text-b2">내 주변 가치가게 찾기</span>
+        <span className="text-gray-6 b2">내 주변 가치가게 찾기</span>
         <img
           src="/svgs/map/Ic_Search.svg"
           alt="검색 아이콘"

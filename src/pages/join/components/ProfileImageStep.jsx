@@ -33,7 +33,7 @@ const ProfileImageStep = ({ onNext, onBack }) => {
         <img src={BackIcon} alt="뒤로가기" className="w-6 h-6 sm:w-7 sm:h-7" />
       </button>
 
-      <h1 className="pt-24 sm:pt-32 text-h1 text-gray-12 sm:text-4xl font-semibold text-center">
+      <h1 className="pt-24 sm:pt-32 h1 text-gray-12 sm:text-4xl text-center">
         프로필사진을 설정해주세요.
       </h1>
 

@@ -50,7 +50,7 @@ const ConsumerTab = () => {
   return (
     <div className="flex flex-col gap-14">
       <div>
-        <h1 className="text-h3 font-semibold mb-6">
+        <h1 className="h3 mb-6">
           {consumptionData?.name || "모락 사용자"}님의 소비 가치
         </h1>
         <ConsumptionChart
@@ -62,12 +62,12 @@ const ConsumerTab = () => {
 
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-h3 font-semibold">추천</h2>
+          <h2 className="h3">추천</h2>
           <div
             className="flex items-center gap-1 cursor-pointer"
             onClick={() => navigate("/consumer/list")}
           >
-            <p className="text-b5 font-medium text-gray-9">전체 보기</p>
+            <p className="b5 text-gray-9">전체 보기</p>
             <img src="/svgs/Ic_All.svg" className="w-3 h-3" alt="전체 보기" />
           </div>
         </div>
@@ -84,7 +84,7 @@ const ConsumerTab = () => {
               alt="추천 금융상품 안내 아이콘"
               className="w-4 h-4"
             />
-            <p className="text-b4 font-semibold text-primary-8">
+            <p className="b4 text-primary-8">
               {RECOMMEND_MESSAGE_MAP[ENUM_TO_KOR_MAP[topCategory]]}
             </p>
           </div>

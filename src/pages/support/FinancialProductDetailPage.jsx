@@ -23,7 +23,7 @@ const FinancialProductDetailPage = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-5.25rem)]">
-        <p className="text-b3 text-gray-10">데이터를 불러오지 못했습니다.</p>
+        <p className="b3 text-gray-10">데이터를 불러오지 못했습니다.</p>
       </div>
     );
   }
@@ -31,7 +31,7 @@ const FinancialProductDetailPage = () => {
   if (!data) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-5.25rem)]">
-        <p className="text-b3 text-gray-10">
+        <p className="b3 text-gray-10">
           해당 상품 정보를 찾을 수 없습니다.
         </p>
       </div>
@@ -64,56 +64,52 @@ const FinancialProductDetailPage = () => {
             data.recommendedCategory &&
             data.defaultCategory && (
               <>
-                <span className="text-caption2 font-medium text-error bg-errorContainer px-2 py-1 rounded">
+                <span className="caption2 text-error bg-errorContainer px-2 py-1 rounded">
                   {data.productType}
                 </span>
-                <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+                <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded">
                   {data.recommendedCategory}
                 </span>
-                <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+                <span className="caption2 text-secondary bg-secondaryBackground px-2 py-1 rounded">
                   {data.defaultCategory}
                 </span>
               </>
             )}
         </div>
 
-        <p className="text-h2 mt-4">{data.productName}</p>
-        <p className="text-b5 text-gray-9 mt-2">{data.bankName}</p>
+        <p className="h2 mt-4">{data.productName}</p>
+        <p className="b5 text-gray-9 mt-2">{data.bankName}</p>
 
-        <p className="text-b4 mt-8 ml-5 text-primary-8 font-semibold">
-          기본 정보
-        </p>
+        <p className="b4 mt-8 ml-5 text-primary-8">기본 정보</p>
         <div className="mt-2 flex flex-col gap-2">
           <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
-            <p className="text-b4 text-gray-8 mb-1">가입 기간</p>
-            <p className="text-b2 text-gray-12 font-medium">
-              {data.period || "-"}
-            </p>
+            <p className="b4 text-gray-8 mb-1">가입 기간</p>
+            <p className="b2 text-gray-12">{data.period || "-"}</p>
           </div>
           <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
-            <p className="text-b4 text-gray-8 mb-1">방식</p>
-            <p className="text-b2 text-gray-12 font-medium">
+            <p className="b4 text-gray-8 mb-1">방식</p>
+            <p className="b2 text-gray-12 font-medium">
               {data.method || "-"}
             </p>
           </div>
           <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
-            <p className="text-b4 text-gray-8 mb-1">기본 금리</p>
-            <p className="text-b2 text-gray-12 font-medium">
+            <p className="b4 text-gray-8 mb-1">기본 금리</p>
+            <p className="b2 text-gray-12 font-medium">
               {data.benefit || "-"}
             </p>
           </div>
         </div>
 
-        <p className="text-b4 mt-8 ml-5 text-primary-8 font-semibold break-keep">
+        <p className="b4 mt-8 ml-5 text-primary-8 break-keep">
           금융상품 소개
         </p>
         <div className="bg-gray-2 w-full rounded-md mt-2 pt-6 pb-6 px-4">
-          <p className="text-b2 font-medium text-gray-12 whitespace-pre-wrap">
+          <p className="b2 text-gray-12 whitespace-pre-wrap">
             {data.productDescription || "상품 설명이 없습니다."}
           </p>
         </div>
 
-        <div className="text-caption2 text-gray-8 mt-10 pl-2 break-keep">
+        <div className="caption2 text-gray-8 mt-10 pl-2 break-keep">
           <p>
             • 본 서비스에서 제공하는 상품 정보는 각 기관의 공고를 바탕으로
             수집·정리한 참고용 자료입니다.
@@ -135,7 +131,7 @@ const FinancialProductDetailPage = () => {
               className="w-6 h-6"
               alt="바로가기"
             />
-            <p className="text-b1 text-white font-semibold text-center">
+            <p className="b1 text-white text-center">
               바로가기
             </p>
           </button>

@@ -182,7 +182,7 @@ const SearchPage = () => {
       )}
 
       {step === 1 && (
-        <div className="flex flex-col items-center justify-center text-center h-full my-44 text-h4 text-gray-9">
+        <div className="flex flex-col items-center justify-center text-center h-full my-44 h4 text-gray-9">
           <img
             src="/svgs/map/Ic_Illustration_Search.svg"
             alt="검색기록 없음"

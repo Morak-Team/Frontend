@@ -67,7 +67,7 @@ const KakaoAuth = () => {
           </button>
         </>
       ) : (
-        <div className="text-h3">카카오 로그인 처리 중입니다...</div>
+        <div className="h3">카카오 로그인 처리 중입니다...</div>
       )}
     </div>
   );
