@@ -67,7 +67,7 @@ const ConsumerTab = () => {
             className="flex items-center gap-1 cursor-pointer"
             onClick={() => navigate("/consumer/list")}
           >
-            <p className="b5 text-gray-9">전체 보기</p>
+            <p className="text-b5 font-medium text-gray-9">전체 보기</p>
             <img src="/svgs/Ic_All.svg" className="w-3 h-3" alt="전체 보기" />
           </div>
         </div>
