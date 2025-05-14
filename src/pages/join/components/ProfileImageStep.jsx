@@ -25,13 +25,11 @@ const ProfileImageStep = ({ onNext, onBack }) => {
 
   return (
     <div className="flex flex-col h-screen px-6 bg-white overflow-hidden relative">
-      <button
-        onClick={onBack}
-        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
-        aria-label="뒤로가기"
-      >
-        <img src={BackIcon} alt="뒤로가기" className="w-6 h-6 sm:w-7 sm:h-7" />
-      </button>
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 sm:px-6 z-50">
+        <button onClick={onBack} aria-label="뒤로가기" className="w-8 h-8">
+          <img src={BackIcon} alt="뒤로가기 버튼" className="w-8 h-8" />
+        </button>
+      </div>
 
       <h1 className="pt-24 sm:pt-32 h1 text-gray-12 sm:text-4xl text-center">
         프로필사진을 설정해주세요.

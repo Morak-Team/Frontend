@@ -1,6 +1,9 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { loadNaverMapScript } from "@pages/map/utils/loadMapScript";
-import { createMarkerIcon, createUserMarkerIcon } from "../utils/mapHelpers";
+import {
+  createMarkerIcon,
+  createUserMarkerIcon,
+} from "@pages/map/utils/mapHelpers";
 
 const useMapViewer = ({
   mapRef,
@@ -9,15 +12,18 @@ const useMapViewer = ({
   userCoords,
   moveToCurrentLocation,
   onMoveComplete,
+  resetMap,
   center,
   markerPosition,
-  zoom,
+  zoom = 11,
   selectedPlace,
   showOnlyLiked,
+  disableAutoUserPan,
 }) => {
   const mapInstance = useRef(null);
   const userMarkerRef = useRef(null);
   const markersRef = useRef({});
+  const hasAnimatedRef = useRef(false);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   const handleMarkerClick = useCallback(
@@ -39,28 +45,20 @@ const useMapViewer = ({
   );
 
   useEffect(() => {
-    if (isMapInitialized || !mapRef.current || !userCoords) return;
+    if (isMapInitialized || (!userCoords && !center)) return;
 
     loadNaverMapScript().then(() => {
-      const userLatLng = new window.naver.maps.LatLng(
-        userCoords.lat,
-        userCoords.lng,
-      );
+      const mapCenter = center
+        ? new window.naver.maps.LatLng(center.lat, center.lng)
+        : new window.naver.maps.LatLng(37.5665, 126.978);
 
       mapInstance.current = new window.naver.maps.Map(mapRef.current, {
-        center: userLatLng,
-        zoom: 17,
+        center: mapCenter,
+        zoom,
       });
 
       setIsMapInitialized(true);
 
-      userMarkerRef.current = new window.naver.maps.Marker({
-        position: userLatLng,
-        map: mapInstance.current,
-        icon: createUserMarkerIcon(),
-      });
-
-      // 마커 렌더링
       places.forEach((place) => {
         if (!place.coords?.lat || !place.coords?.lng) return;
 
@@ -79,9 +77,10 @@ const useMapViewer = ({
 
         markersRef.current[place.id] = marker;
 
-        window.naver.maps.Event.addListener(marker, "click", () =>
-          handleMarkerClick(place),
-        );
+        window.naver.maps.Event.addListener(marker, "click", () => {
+          handleMarkerClick(place);
+          console.log("marker");
+        });
       });
 
       if (markerPosition) {
@@ -109,6 +108,39 @@ const useMapViewer = ({
   ]);
 
   useEffect(() => {
+    if (
+      userCoords &&
+      mapInstance.current &&
+      !hasAnimatedRef.current &&
+      isMapInitialized &&
+      !disableAutoUserPan
+    ) {
+      hasAnimatedRef.current = true;
+
+      const target = new window.naver.maps.LatLng(
+        userCoords.lat,
+        userCoords.lng,
+      );
+      mapInstance.current.panTo(target);
+
+      const zoomTimeout = setTimeout(() => {
+        mapInstance.current.setZoom(17, true);
+        if (userMarkerRef.current) {
+          userMarkerRef.current.setMap(null);
+        }
+
+        userMarkerRef.current = new window.naver.maps.Marker({
+          position: target,
+          map: mapInstance.current,
+          icon: createUserMarkerIcon(),
+        });
+      }, 1800);
+
+      return () => clearTimeout(zoomTimeout);
+    }
+  }, [userCoords, isMapInitialized, disableAutoUserPan]);
+
+  useEffect(() => {
     if (moveToCurrentLocation && userCoords && mapInstance.current) {
       const newCenter = new window.naver.maps.LatLng(
         userCoords.lat,
@@ -128,6 +160,20 @@ const useMapViewer = ({
       onMoveComplete?.();
     }
   }, [moveToCurrentLocation, userCoords, onMoveComplete]);
+
+  useEffect(() => {
+    if (resetMap && mapInstance.current) {
+      mapInstance.current.setCenter(
+        new window.naver.maps.LatLng(37.5665, 126.978),
+      );
+      mapInstance.current.setZoom(11.5);
+
+      if (userMarkerRef.current) {
+        userMarkerRef.current.setMap(null);
+        userMarkerRef.current = null;
+      }
+    }
+  }, [resetMap]);
 
   useEffect(() => {
     if (!mapInstance.current || !isMapInitialized) return;
@@ -168,7 +214,13 @@ const useMapViewer = ({
         marker.setIcon(createMarkerIcon(isHighlighted, place.liked));
       }
     });
-  }, [places, selectedPlace, isMapInitialized, handleMarkerClick]);
+  }, [
+    places,
+    selectedPlace,
+    isMapInitialized,
+    handleMarkerClick,
+    showOnlyLiked,
+  ]);
 };
 
 export default useMapViewer;

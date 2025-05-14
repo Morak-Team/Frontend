@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
-import { likeCompany, unlikeCompany } from "@apis/company/getLikedCompanies";
+import {
+  likeCompany,
+  unlikeCompany,
+  getLikedCompanies,
+} from "@apis/company/getLikedCompanies";
 
 export const useToggleLike = ({
   placesWithDistance,
@@ -10,65 +14,79 @@ export const useToggleLike = ({
   showOnlyLiked,
   selectedPlace,
   setSelectedPlace,
+  onRequireLogin,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const toggleLike = async (targetId) => {
-    if (!isLoggedIn) {
-      alert("로그인이 필요한 기능입니다.");
-      navigate("/auth");
+    const isAuthenticated = await useAuthStore.getState().checkAuth();
+
+    if (!isAuthenticated) {
+      onRequireLogin ? onRequireLogin() : navigate("/auth");
       return;
     }
 
     const currentPlace = placesWithDistance.find((p) => p.id === targetId);
-    if (!currentPlace) return;
+    if (!currentPlace || isProcessing) return;
+
+    setIsProcessing(true);
+    setLoading(true);
 
     try {
-      setLoading(true);
+      // 서버 liked 상태 확인 (불일치 방지용)
+      const likedList = await getLikedCompanies();
+      const isActuallyLiked = likedList.some(
+        (c) => String(c.companyId) === String(targetId),
+      );
 
-      if (currentPlace.liked) {
-        await unlikeCompany(targetId);
-      } else {
-        try {
-          await likeCompany(targetId);
-        } catch (err) {
-          if (err.response?.status === 409) {
-            console.warn("이미 찜한 기업입니다.");
-            return;
-          }
-          throw err;
+      // 로컬 상태와 서버 상태 불일치 시 보정
+      if (currentPlace.liked !== isActuallyLiked) {
+        const corrected = placesWithDistance.map((p) =>
+          p.id === targetId ? { ...p, liked: isActuallyLiked } : p,
+        );
+        setPlacesWithDistance(corrected);
+        if (selectedPlace?.id === targetId) {
+          setSelectedPlace({
+            ...selectedPlace,
+            liked: isActuallyLiked,
+          });
         }
       }
 
+      // 서버 상태 기준으로 실제 토글 실행
+      if (isActuallyLiked) {
+        await unlikeCompany(targetId);
+      } else {
+        await likeCompany(targetId);
+      }
+
+      // 최종 로컬 상태 반영
       const updated = placesWithDistance.map((p) =>
-        p.id === targetId ? { ...p, liked: !p.liked } : p,
+        p.id === targetId ? { ...p, liked: !isActuallyLiked } : p,
       );
       setPlacesWithDistance(updated);
 
       if (selectedPlace?.id === targetId) {
         setSelectedPlace({
           ...selectedPlace,
-          liked: !selectedPlace.liked,
+          liked: !isActuallyLiked,
           distance: currentPlace.distance,
           formattedDistance: currentPlace.formattedDistance,
         });
       }
 
-      setFilteredPlaces((prev) => {
-        if (!prev) return [];
-        if (showOnlyLiked) return updated.filter((p) => p.liked);
-        return updated;
-      });
-    } catch (err) {
-      if (err.response?.status === 401) {
-        alert("로그인이 필요한 기능입니다.");
-        navigate("/auth");
-      } else {
-        console.error("찜 토글 실패:", err);
+      if (setFilteredPlaces) {
+        setFilteredPlaces((prev) => {
+          if (!prev) return [];
+          return showOnlyLiked ? updated.filter((p) => p.liked) : updated;
+        });
       }
+    } catch (err) {
+      console.error("찜 토글 실패:", err);
     } finally {
+      setIsProcessing(false);
       setLoading(false);
     }
   };

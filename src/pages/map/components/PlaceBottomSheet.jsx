@@ -1,13 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PlaceContent from "./PlaceContent";
-import ReviewImageCapture from "@pages/map/components/ReviewImageCapture";
-import ConfirmImage from "@pages/map/components/ConfirmImage";
-import ReviewList from "@pages/map/components/ReviewList";
+import ReviewImageCapture from "@/pages/map/components/review/ReviewImageCapture";
+import ConfirmImage from "@/pages/map/components/review/ConfirmImage";
+import ReviewList from "@/pages/map/components/review/ReviewList";
 import useUIStore from "@/store/uiStore";
 import { usePaymentStore } from "@/store/paymentStore";
 
-const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
+const PlaceBottomSheet = ({
+  place,
+  onClose,
+  onToggleLike,
+  onExpandChange,
+  onHeightChange,
+}) => {
   const [shouldNavigateToReview, setShouldNavigateToReview] = useState(false);
 
   const setCompanyId = usePaymentStore((s) => s.setCompanyId);
@@ -59,7 +65,8 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
   useEffect(() => {
     controls.start({ height: MIN_HEIGHT });
     setIsExpanded(false);
-  }, [controls]);
+    onHeightChange?.(MIN_HEIGHT);
+  }, [controls, onHeightChange]);
 
   const handleTouchStart = (e) => {
     if (!isMobile) return;
@@ -89,11 +96,13 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
       setIsExpanded(true);
     } else if (delta > 100) {
       controls.start({ height: 0 }).then(() => {
+        onHeightChange?.(0);
         onClose?.();
       });
     } else {
       controls.start({ height: MIN_HEIGHT });
       setIsExpanded(false);
+      onHeightChange?.(MIN_HEIGHT);
     }
   };
 
@@ -101,6 +110,7 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
     if (!isMobile && !isExpanded) {
       controls.start({ height: MAX_HEIGHT.current });
       setIsExpanded(true);
+      onHeightChange?.(MAX_HEIGHT.current);
     }
   };
 
@@ -170,8 +180,8 @@ const PlaceBottomSheet = ({ place, onClose, onToggleLike, onExpandChange }) => {
                 turnOnCamera={turnOnCamera}
                 onCloseCamera={() => setTurnOnCamera(false)}
                 onCaptureSuccess={(data) => {
-                  setCompanyInfo(data); // 즉시 로컬 상태에 저장
-                  setShowConfirm(true); // 그다음 Confirm 렌더링
+                  setCompanyInfo(data);
+                  setShowConfirm(true);
                 }}
               />
             )}

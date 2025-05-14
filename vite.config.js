@@ -13,9 +13,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "My PWA App",
-        short_name: "PWAApp",
-        description: "React + Vite 기반 PWA",
+        name: "Morak",
+        short_name: "Morak",
+        description: "Morak",
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
@@ -49,7 +49,6 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
-    allowedHosts: [".ngrok-free.app"],
     historyApiFallback: true, // 리액트 라우터 경로 새로고침 시 index.html로 리디렉션
   },
   resolve: {

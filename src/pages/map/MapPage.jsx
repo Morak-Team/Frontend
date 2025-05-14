@@ -12,6 +12,7 @@ import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { getLikedCompanies } from "@apis/company/getLikedCompanies";
 import { useToggleLike } from "./hooks/useToggleLike";
 import useAuthStore from "@/store/authStore";
+import { getMyProfile } from "@apis/member/auth";
 
 const MapPage = () => {
   const [showIntroModal, setShowIntroModal] = useState(false);
@@ -37,7 +38,12 @@ const MapPage = () => {
     showOnlyLiked,
     selectedPlace,
     setSelectedPlace,
+    onRequireLogin: () => setShowLoginModal(true),
   });
+
+  useEffect(() => {
+    useAuthStore.getState().checkAuth(); // 전역 로그인 상태 초기화
+  }, []);
 
   useEffect(() => {
     if (!sessionStorage.getItem("seenIntro")) {
@@ -53,7 +59,6 @@ const MapPage = () => {
       watchId = navigator.geolocation.watchPosition(
         ({ coords }) => {
           setUserCoords({ lat: coords.latitude, lng: coords.longitude });
-          if (isTrackingLocation) setMoveToCurrentLocation(true);
         },
         (err) => console.error("실시간 위치 추적 실패:", err),
         { enableHighAccuracy: true, maximumAge: 0 }
@@ -63,7 +68,12 @@ const MapPage = () => {
     return () => {
       if (watchId) navigator.geolocation.clearWatch(watchId);
     };
-  }, [isTrackingLocation]);
+  }, []);
+
+  useEffect(() => {
+    if (!userCoords || !isTrackingLocation || !isMapReady) return;
+    setMoveToCurrentLocation(true);
+  }, [userCoords, isTrackingLocation, isMapReady]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -83,16 +93,6 @@ const MapPage = () => {
     };
     fetchCompanies();
   }, []);
-
-  useEffect(() => {
-    if (location.state?.resetMap) {
-      setSelectedPlace(null);
-      setMoveToCurrentLocation(false);
-      setShowOnlyLiked(false);
-      setPlaces(originalPlaces);
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location, navigate, originalPlaces]);
 
   const enrichedPlaces = useMemo(() => {
     return places.map((p) => {
@@ -117,44 +117,46 @@ const MapPage = () => {
   const handleSearchClick = () => navigate("/map/search");
 
   const handleCategorySelect = (englishCategory) => {
+    setSelectedPlace(null);
+    setShowOnlyLiked(false);
+
+    if (englishCategory === "ALL") {
+      setPlaces(originalPlaces);
+      return;
+    }
+
     const filtered = originalPlaces
       .filter((p) => p.companyCategory === englishCategory)
       .map((p) => ({ ...p, isSearchResult: true }));
 
-    setSelectedPlace(null);
-    setShowOnlyLiked(false);
     setPlaces(filtered);
   };
 
   const handleToggleLikedFilter = async () => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
+    try {
+      const profile = await getMyProfile();
+      if (!profile?.name) throw new Error("Unauthenticated");
 
-    const next = !showOnlyLiked;
-    setShowOnlyLiked(next);
-    setSelectedPlace(null);
+      const next = !showOnlyLiked;
+      setShowOnlyLiked(next);
+      setSelectedPlace(null);
 
-    if (next) {
-      try {
+      if (next) {
         const likedCompanies = await getLikedCompanies();
         const likedIds = likedCompanies.map((c) => c.companyId);
-
         const updated = originalPlaces.map((p) => ({
           ...p,
           liked: likedIds.includes(p.id),
         }));
-
         setPlaces(updated);
-      } catch (err) {
-        console.error("찜 목록 불러오기 실패:", err);
+      } else {
+        setPlaces(originalPlaces);
       }
-    } else {
-      setPlaces(originalPlaces);
+    } catch (err) {
+      console.error("로그인 확인 실패:", err);
+      setShowLoginModal(true);
     }
   };
-
   const handleMarkerClick = async (place) => {
     try {
       const preview = await getCompanyPreview(place.id);
@@ -229,7 +231,6 @@ const MapPage = () => {
           userCoords={userCoords}
           moveToCurrentLocation={moveToCurrentLocation}
           onMoveComplete={() => setMoveToCurrentLocation(false)}
-          resetMap={location.state?.resetMap}
           selectedPlace={selectedPlace}
           showOnlyLiked={showOnlyLiked}
           onMapReady={() => setIsMapReady(true)}

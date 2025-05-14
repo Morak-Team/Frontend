@@ -1,18 +1,31 @@
+import useDragScroll from "@hooks/useDragScroll";
 import {
   businessTypeIconMap,
   businessTypeNameMap,
   reverseBusinessNameMap,
 } from "@constants/categoryMap";
 
-const categories = Object.entries(businessTypeNameMap).map(([en, ko]) => ({
-  name: ko,
-  icon: businessTypeIconMap[ko],
-}));
-
 const CategoryBar = ({ onSelect }) => {
+  const scrollRef = useDragScroll();
+
+  const allCategory = {
+    name: "전체",
+    icon: businessTypeIconMap["전체"],
+  };
+  const otherCategories = Object.entries(businessTypeNameMap)
+    .filter(([_, ko]) => ko !== "전체")
+    .map(([en, ko]) => ({
+      name: ko,
+      icon: businessTypeIconMap[ko],
+    }));
+  const categories = [allCategory, ...otherCategories];
+
   return (
-    <div className="absolute top-36 sm:top-44 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-40 px-4 sm:px-0">
-      <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
+    <div className="absolute top-36 sm:top-44 left-1/2 -translate-x-1/2 w-full max-w-[760px] z-40">
+      <div
+        className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide"
+        ref={scrollRef}
+      >
         {categories.map((cate) => (
           <button
             key={cate.name}

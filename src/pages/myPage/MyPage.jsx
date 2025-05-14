@@ -7,6 +7,8 @@ import { useGetLikeCountOfMember } from "@/apis/member/queries";
 import api from "@/apis/instance/api";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
+import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
+import ToastModal from "@/components/common/ToastModal";
 
 const LogoutSuccessModal = ({ onClose }) => (
   <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
@@ -33,6 +35,16 @@ const MyPage = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { logout: setLoggedOut, isLogout } = useAuthStore();
 
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    icon: null,
+  });
+  const fireToast = (message, icon = ErrorIcon, duration = 4000) => {
+    setToast({ show: true, message, icon });
+    setTimeout(() => setToast((t) => ({ ...t, show: false })), duration);
+  };
+
   const nickname = data?.name ?? "";
   const location = data?.address ?? "";
   const counts = {
@@ -53,13 +65,14 @@ const MyPage = () => {
       setLoggedOut();
       setShowLogoutModal(true);
     } catch (e) {
-      alert("로그아웃에 실패하였습니다.");
+      fireToast("로그아웃에 실패하였습니다.", ErrorIcon);
     }
   };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
-        <p>로딩 중…</p>
+        <p className="b4">로딩 중…</p>
       </div>
     );
   }
@@ -78,15 +91,6 @@ const MyPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-2 flex flex-col items-center pt-32 relative p-5">
-      {/* {showLoginModal && (
-        <HaveToLoginModal
-          message="로그인이 필요한 서비스입니다"
-          subMessage=""
-          showButton={true}
-          showClose={false} // 닫기 아이콘 숨기기
-          onClose={() => {}} // 내부 close는 더 이상 호출되지 않음
-        />
-      )} */}
       {/* 로그아웃 완료 모달 */}
       {showLogoutModal && <LogoutSuccessModal onClose={() => navigate("/")} />}
       {/* 카드 */}
@@ -129,6 +133,15 @@ const MyPage = () => {
           로그아웃
         </button>
       </div>
+
+      {toast.show && (
+        <ToastModal
+          message={toast.message}
+          icon={toast.icon}
+          duration={2000}
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        />
+      )}
     </div>
   );
 };
