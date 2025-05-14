@@ -8,6 +8,12 @@ import { useFinancialProducts } from "../hooks/useFinancialProducts";
 import { companyTypeNameMap } from "@constants/categoryMap";
 import { ENUM_TO_KOR_MAP } from "../constants/consumerMap";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "@/styles/swiper.css";
+
 const ConsumerTab = () => {
   const [topCategory, setTopCategory] = useState(null);
   const navigate = useNavigate();
@@ -63,23 +69,43 @@ const ConsumerTab = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-          {filteredProducts.map((item, _) => (
-            <div key={item.id} className="w-80 h-56 flex-shrink-0">
-              <RecommendationCard
-                key={item.id}
-                productId={item.id}
-                bank={item.bankName}
-                title={item.productName}
-                description={item.productDescription}
-                productType={item.productType}
-                benefit={item.benefit}
-                recommendedCategory={item.recommendedCategory}
-                defaultCategory={item.defaultCategory}
-              />
-            </div>
+        <Swiper
+          modules={[Autoplay, Pagination]}
+          spaceBetween={12}
+          slidesPerView={"auto"}
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: true,
+            pauseOnMouseEnter: true,
+          }}
+          pagination={{
+            el: ".custom-pagination",
+            clickable: true,
+            bulletClass: "custom-bullet",
+            bulletActiveClass: "custom-bullet-active",
+          }}
+          className="w-full"
+        >
+          {filteredProducts.map((item) => (
+            <SwiperSlide key={item.id} className="!w-[320px]">
+              <div className="w-80 h-56 mr-3">
+                <RecommendationCard
+                  productId={item.id}
+                  bank={item.bankName}
+                  title={item.productName}
+                  description={item.productDescription}
+                  productType={item.productType}
+                  benefit={item.benefit}
+                  recommendedCategory={item.recommendedCategory}
+                  defaultCategory={item.defaultCategory}
+                />
+              </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
+
+        <div className="custom-pagination flex justify-center gap-2 mt-4" />
       </div>
     </div>
   );

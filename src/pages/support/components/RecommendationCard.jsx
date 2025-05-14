@@ -33,7 +33,7 @@ const RecommendationCard = ({
       <div className="flex items-center gap-2">
         {productType && recommendedCategory && defaultCategory && (
           <>
-            <span className="text-caption2 font-medium text-error bg-errorContainer px-2 py-1 rounded">
+            <span className="text-caption2 font-medium text-gray-11 bg-gray-3 px-2 py-1 rounded">
               {productType}
             </span>
             <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
