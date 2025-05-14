@@ -6,7 +6,10 @@ import Spinner from "@components/common/Spinner";
 import { useConsumptionData } from "../hooks/useConsumptionData";
 import { useFinancialProducts } from "../hooks/useFinancialProducts";
 import { companyTypeNameMap } from "@constants/categoryMap";
-import { ENUM_TO_KOR_MAP } from "../constants/consumerMap";
+import {
+  ENUM_TO_KOR_MAP,
+  RECOMMEND_MESSAGE_MAP,
+} from "../constants/consumerMap";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -45,7 +48,7 @@ const ConsumerTab = () => {
     })) || [];
 
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-14">
       <div>
         <h1 className="text-h3 font-semibold mb-6">
           {consumptionData?.name || "모락 사용자"}님의 소비 가치
@@ -59,7 +62,7 @@ const ConsumerTab = () => {
 
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-h3 font-semibold">소비 가치에 맞는 금융상품</h2>
+          <h2 className="text-h3 font-semibold">추천</h2>
           <div
             className="flex items-center gap-1 cursor-pointer"
             onClick={() => navigate("/consumer/list")}
@@ -68,6 +71,24 @@ const ConsumerTab = () => {
             <img src="/svgs/Ic_All.svg" className="w-3 h-3" alt="전체 보기" />
           </div>
         </div>
+        {topCategory && (
+          <div
+            className="mb-4 px-4 py-1.5 w-fit rounded-2xl flex items-center gap-2 shadow-[0px_2px_12px_rgba(46,45,43,0.05)]"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(255, 111, 49, 0.20) 0%, rgba(255, 255, 255, 0.20) 100%), #FFF",
+            }}
+          >
+            <img
+              src="/svgs/support/consumer/Ic_SupportMessage.svg"
+              alt="추천 금융상품 안내 아이콘"
+              className="w-4 h-4"
+            />
+            <p className="text-b4 font-semibold text-primary-8">
+              {RECOMMEND_MESSAGE_MAP[ENUM_TO_KOR_MAP[topCategory]]}
+            </p>
+          </div>
+        )}
 
         <Swiper
           modules={[Autoplay, Pagination]}

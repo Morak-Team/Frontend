@@ -21,8 +21,8 @@ const RecommendationCard = ({
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      aria-label={`${title} 상품 상세정보`}
-      className="relative w-full h-full p-5 rounded-xl bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
+      aria-label={`${title} 상품 정보`}
+      className="relative w-full h-full py-5 px-6 bg-white flex flex-col gap-2 cursor-pointer transition-shadow shadow-shadow hover:shadow-md"
     >
       <img
         src="/svgs/support/company/forwardIcon.svg"
@@ -33,13 +33,13 @@ const RecommendationCard = ({
       <div className="flex items-center gap-2">
         {productType && recommendedCategory && defaultCategory && (
           <>
-            <span className="text-caption2 font-medium text-gray-11 bg-gray-3 px-2 py-1 rounded">
+            <span className="text-caption2 font-medium text-gray-11 bg-gray-3 px-2 py-1 rounded-lg">
               {productType}
             </span>
-            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
               {recommendedCategory}
             </span>
-            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded">
+            <span className="text-caption2 font-medium text-secondary bg-secondaryBackground px-2 py-1 rounded-lg">
               {defaultCategory}
             </span>
           </>

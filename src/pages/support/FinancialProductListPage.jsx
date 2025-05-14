@@ -1,14 +1,29 @@
 import { useEffect, useState } from "react";
 import RecommendationCard from "@/pages/support/components/RecommendationCard";
 import { useNavigate } from "react-router-dom";
-import { useFinancialProducts } from "@/pages/support/hooks/useFinancialProducts";
 import Spinner from "@components/common/Spinner";
+import { useFinancialProducts } from "@/pages/support/hooks/useFinancialProducts";
 import { getConsumptionDetail } from "@apis/consumer/getConsumptionDetail";
+import { getMyProfile } from "@apis/member/auth";
 import { KOR_TO_ENUM_MAP } from "@pages/support/constants/consumerMap";
 
 const FinancialProductList = () => {
   const navigate = useNavigate();
   const { data: products, isLoading, error } = useFinancialProducts();
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await getMyProfile();
+        setUserName(res?.name || "사용자");
+      } catch (e) {
+        console.error("프로필 로딩 실패:", e);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const [sortedProducts, setSortedProducts] = useState([]);
 
@@ -73,7 +88,10 @@ const FinancialProductList = () => {
 
       <div className="flex items-center justify-between mt-10">
         <p className="b5 text-gray-9">총 {safeProducts.length}개</p>
-        <p className="caption2 text-primary-8">리뷰 건수가 많은 순으로 정렬되어 있습니다.</p>
+        <p className="caption2 text-primary-8">
+          {userName}님이 리뷰를 남긴 기업 특성과 연관된 금융상품 순으로
+          보여드려요!
+        </p>
       </div>
 
       {(isLoading || safeProducts.length === 0) && <Spinner />}
