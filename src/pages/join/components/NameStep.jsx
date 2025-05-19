@@ -21,13 +21,11 @@ const NameStep = ({ onNext, onBack }) => {
       onSubmit={handleSubmit}
       className="flex flex-col justify-start mt-48 bg-white h-screen overflow-auto relative"
     >
-      <button
-        onClick={onBack}
-        className="absolute top-6 left-4 sm:top-8 sm:left-6 z-10"
-        aria-label="뒤로가기"
-      >
-        <img src={BackIcon} alt="뒤로가기 버튼" className="w-6 h-6" />
-      </button>
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 sm:px-6 z-50">
+        <button onClick={onBack} aria-label="뒤로가기" className="w-8 h-8">
+          <img src={BackIcon} alt="뒤로가기 버튼" className="w-8 h-8" />
+        </button>
+      </div>
 
       <section className="px-8">
         <h1 className="h1 text-gray-12">이름을 입력해주세요.</h1>
@@ -79,9 +77,7 @@ const NameStep = ({ onNext, onBack }) => {
           type="submit"
           disabled={!name.trim()}
           className={`w-full py-6 text-center b1 ${
-            name.trim()
-              ? "bg-primary-8 text-white"
-              : "bg-gray-4 text-white"
+            name.trim() ? "bg-primary-8 text-white" : "bg-gray-4 text-white"
           }`}
         >
           확인
