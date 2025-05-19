@@ -3,11 +3,10 @@ import useUIStore from "@/store/uiStore";
 
 const BottomTab = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // ✅ 현재 URL 경로 가져오기
+  const location = useLocation();
   const { turnOnCamera, isBottomSheetOpen, isWriteReview, isStoryDetail } =
     useUIStore();
 
-  // BottomSheet 확장 or 카메라 켜짐 상태면 숨김
   if (isBottomSheetOpen || turnOnCamera || isWriteReview || isStoryDetail)
     return null;
 
@@ -51,7 +50,6 @@ const BottomTab = () => {
             onClick={tab.onClick}
             className="flex flex-col flex-1 sm:w-20 h-12 justify-center items-center gap-1 cursor-pointer"
           >
-            {/* ✅ 현재 경로와 tab.path가 같으면 selectedIcon, 아니면 기본 icon */}
             <img
               src={location.pathname === tab.path ? tab.selectedIcon : tab.icon}
               alt={tab.label}

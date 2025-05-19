@@ -11,10 +11,8 @@ const DatePickerSheet = ({ onClose, onConfirm, initialMonth, initialDay }) => {
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-40 flex justify-center items-end">
-      {/* 바깥 클릭 시 닫힘 */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      {/* ✅ motion.div를 시트 전체에 적용 */}
       <motion.div
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
@@ -31,7 +29,6 @@ const DatePickerSheet = ({ onClose, onConfirm, initialMonth, initialDay }) => {
           </button>
         </div>
 
-        {/* ✅ Picker 가운데 정렬 */}
         <div className="flex justify-center gap-4 mb-6">
           <Picker list={months} onSelectedChange={setSelectedMonth} />
           <Picker list={days} onSelectedChange={setSelectedDay} />
