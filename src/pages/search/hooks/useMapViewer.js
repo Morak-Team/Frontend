@@ -40,6 +40,7 @@ const useMapViewer = ({
       }
 
       onMarkerClick?.(place);
+      console.log("marker");
     },
     [onMarkerClick, showOnlyLiked],
   );
@@ -79,20 +80,8 @@ const useMapViewer = ({
 
         window.naver.maps.Event.addListener(marker, "click", () => {
           handleMarkerClick(place);
-          console.log("marker");
         });
       });
-
-      if (markerPosition) {
-        new window.naver.maps.Marker({
-          position: new window.naver.maps.LatLng(
-            markerPosition.lat,
-            markerPosition.lng,
-          ),
-          map: mapInstance.current,
-          icon: createMarkerIcon(true),
-        });
-      }
     });
   }, [
     userCoords,

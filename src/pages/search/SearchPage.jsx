@@ -226,7 +226,7 @@ const SearchPage = () => {
       {step === 5 && (
         <div className="relative w-full h-screen">
           <MapViewer
-            places={selectedPlace ? [selectedPlace] : []}
+            places={[{ ...selectedPlace, isSearchResult: true }]}
             center={selectedPlace?.coords}
             markerPosition={selectedPlace?.coords}
             markerLabel={selectedPlace?.name}
