@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import heart from "/svgs/myPage/heart.svg";
 import cheer from "/svgs/myPage/cheer.svg";
 import review from "/svgs/myPage/review.svg";
@@ -19,7 +18,7 @@ const MyPageDetailPage = () => {
     enabled: kind === "응원",
   });
   //   const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({ enabled: kind === "찜" });
-  console.log(reviewsData);
+
   return (
     <div className="flex flex-col pt-5 container overflow-y-auto scrollbar-hide">
       <div className="mt-10 px-5 mb-4" onClick={() => navigate(-1)}>
@@ -49,7 +48,7 @@ const MyPageDetailPage = () => {
       {kind === "응원" && (
         <div className="flex justify-between items-center px-5">
           <div className="flex gap-2 items-center">
-            <img src={review} className="w-12 h-12" />
+            <img src={cheer} className="w-12 h-12" />
             <p className="h3">내가 응원한 이야기</p>
           </div>
           <p className="b5 text-gray-9">총 {cheersData?.length}개</p>

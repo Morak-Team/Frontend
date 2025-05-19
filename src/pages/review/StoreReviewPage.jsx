@@ -27,9 +27,9 @@ const StoreReviewPage = () => {
   const handleBack = () => {
     const prev = sessionStorage.getItem("prevPath");
     if (prev === "/writeReview") {
-      navigate("/"); // 이전이 /writeReview면 홈으로
+      navigate("/");
     } else {
-      navigate(-1); // 아니면 뒤로가기
+      navigate(-1);
     }
   };
 

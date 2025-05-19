@@ -10,6 +10,7 @@ import useAuthStore from "@/store/authStore";
 import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
 import ToastModal from "@/components/common/ToastModal";
 import Spinner from "@/components/common/Spinner";
+import useUserInfoStore from "@/store/userInfoStore";
 
 const LogoutSuccessModal = ({ onClose }) => (
   <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
@@ -29,6 +30,14 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useMyProfile();
+  const { setUserInfo } = useUserInfoStore();
+
+  useEffect(() => {
+    if (data) {
+      setUserInfo(data.name, data.address, data.profileColor);
+    }
+  }, [data]);
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { data: reviewCount } = useGetReviewCountOfMember();
   const { data: cheerCount } = useGetCheerCountOfMember();
