@@ -8,7 +8,6 @@ import StoreReviewPage from "@pages/review/StoreReviewPage";
 import SearchPage from "@pages/search/SearchPage";
 import StoryPage from "@pages/story/StoryPage";
 import SupportPage from "@pages/support/SupportPage";
-import ErrorPage from "@pages/error/ErrorPage";
 import StoryDetail from "@pages/story/components/StoryDetail";
 import WriteReviewPage from "@/pages/writeReview/WriteReviewPage";
 import SignUp from "@pages/join/SignUp";
@@ -17,11 +16,11 @@ import SupportItemPage from "@pages/support/SupportItemPage";
 import SupportRecommendPage from "@pages/support/SupportRecommendPage";
 import FinancialProductList from "@pages/support/FinancialProductListPage";
 import FinancialProductDetailPage from "@pages/support/FinancialProductDetailPage";
+import MyPageDetailPage from "@/pages/myPageDetail/MyPageDetailPage";
 
 const router = createBrowserRouter([
   {
     element: <LayoutWithTab />, // 하단 탭이 있는 Layout
-    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -42,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <MyPage />,
+      },
+      {
+        path: "/mypage/detail",
+        element: <MyPageDetailPage />,
       },
       {
         path: "/review/:companyId",

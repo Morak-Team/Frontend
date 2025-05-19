@@ -19,10 +19,8 @@ const TimePickerSheet = ({
 
   return (
     <div className="fixed inset-0 z-[99999] bg-black bg-opacity-40 flex justify-center items-end">
-      {/* 바깥 영역 클릭 시 닫기 */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      {/* ✅ 슬라이드 애니메이션 바텀시트 */}
       <motion.div
         initial={{ y: "100%" }}
         animate={{ y: 0 }}

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import ReviewContent from "@/pages/map/components/review/ReviewContent";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetStoreReviewCount, useStoreReviews } from "@/apis/review/queries";
 import { getMyProfile } from "@/apis/member/auth";
 import HaveToLoginModal from "@/components/common/HaveToLoginModal";
 
 const ReviewList = ({ setTurnOnCamera, companyId }) => {
-  const navigate = useNavigate();
   const { data: count, isLoading } = useGetStoreReviewCount(companyId);
   const { data: preview } = useStoreReviews(companyId);
-  const [loginModalConfig, setLoginModalConfig] = useState(null); // 모달 상태를 객체로 관리
+  const [loginModalConfig, setLoginModalConfig] = useState(null);
 
   const handleClickWrite = async () => {
     try {

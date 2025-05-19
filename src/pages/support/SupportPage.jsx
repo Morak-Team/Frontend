@@ -36,7 +36,7 @@ const SupportPage = () => {
   }, [category]);
 
   return (
-    <div className="flex flex-col px-5 pt-24 pb-16 container overflow-y-auto bg-gray-2">
+    <div className="flex flex-col px-5 pt-24 pb-16 container overflow-y-auto bg-gray-2 scrollbar-hide">
       <div className="flex gap-2">
         <button
           onClick={() => handleTabChange("consumer")}

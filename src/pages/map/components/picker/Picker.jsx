@@ -53,7 +53,6 @@ const Picker = ({ list, onSelectedChange }) => {
         onScroll={handleScroll}
         className="list-none p-0 m-0 w-full h-[250px] overflow-y-scroll scroll-smooth no-scrollbar"
       >
-        {/* 가운데 선택 라인 */}
         <div className="absolute top-[100px] w-full border-t border-b border-gray-300 h-[50px] z-10 pointer-events-none" />
 
         {paddedList.map((item, index) => {

@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
 import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
 import ToastModal from "@/components/common/ToastModal";
+import Spinner from "@/components/common/Spinner";
+import useUserInfoStore from "@/store/userInfoStore";
 
 const LogoutSuccessModal = ({ onClose }) => (
   <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
@@ -28,6 +30,14 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useMyProfile();
+  const { setUserInfo } = useUserInfoStore();
+
+  useEffect(() => {
+    if (data) {
+      setUserInfo(data.name, data.address, data.profileColor);
+    }
+  }, [data]);
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { data: reviewCount } = useGetReviewCountOfMember();
   const { data: cheerCount } = useGetCheerCountOfMember();
@@ -71,8 +81,8 @@ const MyPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <p className="b4">로딩 중…</p>
+      <div className="min-h-screen flex justify-center items-center flex-col">
+        <Spinner />
       </div>
     );
   }
@@ -91,32 +101,34 @@ const MyPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-2 flex flex-col items-center pt-32 relative p-5">
-      {/* 로그아웃 완료 모달 */}
       {showLogoutModal && <LogoutSuccessModal onClose={() => navigate("/")} />}
-      {/* 카드 */}
+
       <div className="w-full bg-white rounded-2xl shadow-sm pt-20 pb-6 px-5 flex flex-col items-center relative z-10">
-        {/* 수정 아이콘 */}
         <button className="absolute top-4 right-4 opacity-50">
           <img src="/svgs/myPage/edit.svg" alt="edit" className="w-6 h-6" />
         </button>
-        {/* 닉네임 & 지역 */}
+
         <p className="h2">{nickname}</p>
         <p className="b4 text-gray-8 mt-1">{location}</p>
 
-        {/* 구분선 */}
         <div className="w-full bg-gray-3 h-[0.1px] my-4" />
 
-        {/* 찜/리뷰/응원 */}
         <div className="w-full flex justify-around text-center">
           {Object.entries(counts).map(([label, count]) => (
-            <div key={label}>
+            <div
+              key={label}
+              onClick={() =>
+                navigate("/mypage/detail", { state: { kind: label } })
+              }
+              className="cursor-pointer"
+            >
               <p className="text-primary-8 font-bold text-lg">{count}</p>
               <p className="text-sm font-semibold">{label}</p>
             </div>
           ))}
         </div>
       </div>
-      {/* 프로필 이미지 (카드 위로 걸치기) */}
+
       <div className="absolute top-21 z-20">
         <img
           src={profileColorMap[data?.profileColor] ?? profileColorMap.gray}
@@ -124,7 +136,7 @@ const MyPage = () => {
           className="w-24 h-24 rounded-full border-4 border-white shadow-md"
         />
       </div>
-      {/* 로그아웃 버튼 (화면 하단 오른쪽) */}
+
       <div
         className="flex justify-end items-end w-full py-2 px-3"
         onClick={logout}

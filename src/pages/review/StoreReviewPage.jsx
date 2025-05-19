@@ -24,11 +24,19 @@ const StoreReviewPage = () => {
     error: placeError,
   } = useGetCompanyPreview(companyId);
 
+  const handleBack = () => {
+    const prev = sessionStorage.getItem("prevPath");
+    if (prev === "/writeReview") {
+      navigate("/");
+    } else {
+      navigate(-1);
+    }
+  };
+
   if (placeLoading) {
     return (
       <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
         <div className="loader"></div>
-        <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
       </div>
     );
   }
@@ -47,7 +55,7 @@ const StoreReviewPage = () => {
         <img
           src="/svgs/storeReview/backIcon.svg"
           className="w-8 h-8"
-          onClick={() => navigate("/")}
+          onClick={handleBack}
         />
       </div>
 

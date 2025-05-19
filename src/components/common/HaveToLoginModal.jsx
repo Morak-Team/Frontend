@@ -23,7 +23,6 @@ const HaveToLoginModal = ({
         {showClose && (
           <button
             className="absolute top-2 right-2 p-1 text-gray-500"
-            // close icon removed when showClose is false
             onClick={onClose}
           >
             <img src="/svgs/review/xIcon.svg" className="w-5 h-5" alt="닫기" />
