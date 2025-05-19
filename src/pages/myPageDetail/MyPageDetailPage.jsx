@@ -19,7 +19,7 @@ const MyPageDetailPage = () => {
     enabled: kind === "응원",
   });
   //   const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({ enabled: kind === "찜" });
-
+  console.log(reviewsData);
   return (
     <div className="flex flex-col pt-5 container overflow-y-auto scrollbar-hide">
       <div className="mt-10 px-5 mb-4" onClick={() => navigate(-1)}>
@@ -59,7 +59,9 @@ const MyPageDetailPage = () => {
       <div className="flex flex-col gap-4 w-full bg-gray-2 p-5 min-h-screen">
         {kind === "리뷰" && (
           <>
-            <ReviewItem />
+            {reviewsData?.map((item, idx) => (
+              <ReviewItem data={item} key={idx} />
+            ))}
           </>
         )}
 

@@ -1,5 +1,5 @@
 import ReviewContent from "@/pages/map/components/review/ReviewContent";
-
+import { useNavigate } from "react-router-dom";
 const dummyReviewItem = {
   name: "김소영",
   profileColor: "pink",
@@ -9,9 +9,13 @@ const dummyReviewItem = {
   reviewCategories: ["GOOD_QUALITY", "CLEAN", "REVISIT"],
 };
 
-const ReviewItem = () => {
+const ReviewItem = ({ data }) => {
+  const navigate = useNavigate();
   return (
-    <div className="flex flex-col rounded-md pt-6 px-5 bg-white">
+    <div
+      className="flex flex-col rounded-md pt-6 px-5 bg-white"
+      onClick={() => navigate(`/review/${data.companyId}`)}
+    >
       <div className="flex justify-between border-b-[2px] border-gray-3 pb-6">
         <div className="flex flex-col gap-2">
           <div className="flex gap-1 items-center">

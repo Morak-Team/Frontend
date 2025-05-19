@@ -24,6 +24,15 @@ const StoreReviewPage = () => {
     error: placeError,
   } = useGetCompanyPreview(companyId);
 
+  const handleBack = () => {
+    const prev = sessionStorage.getItem("prevPath");
+    if (prev === "/writeReview") {
+      navigate("/"); // 이전이 /writeReview면 홈으로
+    } else {
+      navigate(-1); // 아니면 뒤로가기
+    }
+  };
+
   if (placeLoading) {
     return (
       <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
@@ -46,7 +55,7 @@ const StoreReviewPage = () => {
         <img
           src="/svgs/storeReview/backIcon.svg"
           className="w-8 h-8"
-          onClick={() => navigate("/")}
+          onClick={handleBack}
         />
       </div>
 
