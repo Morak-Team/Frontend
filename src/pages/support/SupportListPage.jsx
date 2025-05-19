@@ -7,7 +7,7 @@ const SupportListPage = () => {
 
   const { data, isLoading } = useGetAnnouncement();
   return (
-    <div className="flex flex-col pr-5 pl-5 h-[calc(100vh-5.25rem)] overflow-y-auto pb-5 mb-5">
+    <div className="flex flex-col pr-5 pl-5 h-[calc(100vh-5.25rem)] overflow-y-auto pb-5 mb-5 scrollbar-hide">
       <div className="mt-16 flex justify-between items-center">
         <p className="h3">진행 중인 지원사업</p>
         <img
