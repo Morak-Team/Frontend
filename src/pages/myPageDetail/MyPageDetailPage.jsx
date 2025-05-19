@@ -65,7 +65,7 @@ const MyPageDetailPage = () => {
         )}
 
         {kind === "응원" &&
-          cheersData.map((item) => (
+          cheersData?.map((item) => (
             <StoryItem item={item} key={item.storyId} />
           ))}
       </div>
