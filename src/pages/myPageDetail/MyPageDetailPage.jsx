@@ -5,6 +5,7 @@ import review from "/svgs/myPage/review.svg";
 import { useGetReviews, useGetCheers } from "@/apis/myPage/queries";
 import ReviewItem from "@/pages/myPageDetail/components/ReviewItem";
 import StoryItem from "@/pages/myPageDetail/components/StoryItem";
+import noResult from "/svgs/myPage/noResult.svg";
 
 const MyPageDetailPage = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const MyPageDetailPage = () => {
 
       {kind === "리뷰" && (
         <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center my-2">
             <img src={review} className="w-8 h-8" />
             <p className="h3">내가 작성한 리뷰</p>
           </div>
@@ -58,16 +59,39 @@ const MyPageDetailPage = () => {
       <div className="flex flex-col gap-4 w-full bg-gray-2 p-5 min-h-screen">
         {kind === "리뷰" && (
           <>
-            {reviewsData?.map((item, idx) => (
-              <ReviewItem data={item} key={idx} />
-            ))}
+            {reviewsData?.length > 0 ? (
+              reviewsData.map((item, idx) => (
+                <ReviewItem data={item} key={idx} />
+              ))
+            ) : (
+              <div className="flex flex-col justify-center items-center mt-36">
+                <img src={noResult} />
+                <p className="h4 text-gray-9 text-center py-8">
+                  아직 작성한 리뷰가
+                  <br /> 없어요
+                </p>
+              </div>
+            )}
           </>
         )}
 
-        {kind === "응원" &&
-          cheersData?.map((item) => (
-            <StoryItem item={item} key={item.storyId} />
-          ))}
+        {kind === "응원" && (
+          <>
+            {cheersData?.length > 0 ? (
+              cheersData.map((item) => (
+                <StoryItem item={item} key={item.storyId} />
+              ))
+            ) : (
+              <div className="flex flex-col justify-center items-center mt-36">
+                <img src={noResult} />
+                <p className="h4 text-gray-9 text-center py-8">
+                  아직 응원한 이야기가
+                  <br /> 없어요
+                </p>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
