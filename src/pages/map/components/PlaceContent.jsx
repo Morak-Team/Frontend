@@ -129,9 +129,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
               <FireIcon className="w-4 h-4 mr-1" />
               {temperature}도
             </span>
-            <span className="text-gray-12 b6">
-              방문자 리뷰 {reviewCount}
-            </span>
+            <span className="text-gray-12 b6">방문자 리뷰 {reviewCount}</span>
           </p>
         </div>
       </div>
@@ -176,7 +174,11 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           className="w-14 h-14 flex items-center justify-center rounded-md bg-gray-2"
         >
           <img
-            src={liked ? "/svgs/Ic_Heart_Fill.svg" : "/svgs/Ic_Heart-Empty.svg"}
+            src={
+              liked
+                ? "/svgs/common/Ic_Heart_Fill.svg"
+                : "/svgs/common/Ic_Heart-Empty.svg"
+            }
             alt="좋아요 버튼"
             className="w-6 h-6"
           />

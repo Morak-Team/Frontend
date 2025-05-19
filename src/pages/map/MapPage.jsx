@@ -190,8 +190,8 @@ const MapPage = () => {
           <img
             src={
               showOnlyLiked
-                ? "/svgs/Ic_Heart_Fill.svg"
-                : "/svgs/Ic_Heart-Empty.svg"
+                ? "/svgs/common/Ic_Heart_Fill.svg"
+                : "/svgs/common/Ic_Heart-Empty.svg"
             }
             alt="찜 필터"
             className="w-6 h-6"
