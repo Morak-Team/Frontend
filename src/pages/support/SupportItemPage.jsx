@@ -34,7 +34,6 @@ const SupportItemPage = () => {
       {isLoading && (
         <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
           <div className="loader"></div>
-          <p className="mt-4 text-gray-500 b5">잠시만 기다려주세요…</p>
         </div>
       )}
       {/* 이미지 영역 */}

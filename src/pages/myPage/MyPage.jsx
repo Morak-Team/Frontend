@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
 import ErrorIcon from "/public/svgs/modal/errorIcon.svg?react";
 import ToastModal from "@/components/common/ToastModal";
+import Spinner from "@/components/common/Spinner";
 
 const LogoutSuccessModal = ({ onClose }) => (
   <div className="fixed inset-0 z-[10001] flex justify-center items-center bg-black bg-opacity-30">
@@ -71,8 +72,8 @@ const MyPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <p className="b4">로딩 중…</p>
+      <div className="min-h-screen flex justify-center items-center flex-col">
+        <Spinner />
       </div>
     );
   }
@@ -110,6 +111,7 @@ const MyPage = () => {
               onClick={() =>
                 navigate("/mypage/detail", { state: { kind: label } })
               }
+              className="cursor-pointer"
             >
               <p className="text-primary-8 font-bold text-lg">{count}</p>
               <p className="text-sm font-semibold">{label}</p>

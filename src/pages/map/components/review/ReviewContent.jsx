@@ -12,8 +12,8 @@ const ReviewContent = ({ item, hasBorder = true }) => {
 
   return (
     <div
-      className={`flex flex-col mt-5 mb-5 items-start gap-3 ${
-        hasBorder ? "border-b-[1.6px] sm:border-b-[3px] border-gray-3" : ""
+      className={`flex flex-col mt-5 items-start gap-3 ${
+        hasBorder ? "border-b-[1.6px] sm:border-b-[3px] border-gray-3 mb-5" : ""
       }`}
     >
       <div className="flex gap-2 justify-center items-center">
@@ -32,7 +32,7 @@ const ReviewContent = ({ item, hasBorder = true }) => {
 
       <div
         ref={scrollRef}
-        className="w-full overflow-x-auto scrollbar-hide mb-5 cursor-grab"
+        className={`w-full overflow-x-auto scrollbar-hide mb-5 cursor-grab`}
       >
         <div className="flex gap-2 w-max">
           {matchedTags.map((tag, idx) => (

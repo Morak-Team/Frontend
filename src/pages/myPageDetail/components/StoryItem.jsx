@@ -1,10 +1,17 @@
-const StoryItem = () => {
+import { useNavigate } from "react-router-dom";
+
+const StoryItem = ({ item }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col rounded-md px-3 pt-3 pb-5 bg-white">
+    <div
+      className="flex flex-col rounded-md px-3 pt-3 pb-5 bg-white"
+      onClick={() => navigate(`/story/${item.storyId}`)}
+    >
       <div className="relative">
         <img
           className="rounded-md w-full h-32 object-cover"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4xQzSL6xgDF7X-pThKFLvYxRkNpUFr_Jtp4tvvtCxAif110ZjiXOo2n4&s"
+          src={item.imageUrl}
         />
 
         <div className="absolute bottom-3 left-3">
@@ -14,7 +21,7 @@ const StoryItem = () => {
               className="w-4 h-4"
               alt="like"
             />
-            <span className="b4">{344}</span>
+            <span className="b4">{item?.storyLikes}</span>
           </button>
         </div>
       </div>
