@@ -5,6 +5,7 @@ import cheer from "/svgs/myPage/cheer.svg";
 import review from "/svgs/myPage/review.svg";
 import { useGetReviews } from "@/apis/myPage/queries";
 import ReviewItem from "@/pages/myPageDetail/components/ReviewItem";
+import StoryItem from "@/pages/myPageDetail/components/StoryItem";
 
 const MyPageDetailPage = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const MyPageDetailPage = () => {
             <img src={review} className="w-12 h-12" />
             <p className="h3">내가 작성한 리뷰</p>
           </div>
-          <p className="b5 text-gray-9">총 0개</p>
+          <p className="b5 text-gray-9">총 {reviewsData.length}개</p>
         </div>
       )}
 
@@ -54,11 +55,25 @@ const MyPageDetailPage = () => {
       )}
 
       <div className="flex flex-col gap-4 w-full pb-12 bg-gray-2 p-5">
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
+        {kind === "리뷰" && (
+          <>
+            <ReviewItem />
+            <ReviewItem />
+            <ReviewItem />
+            <ReviewItem />
+            <ReviewItem />
+          </>
+        )}
+
+        {kind === "응원" && (
+          <>
+            <StoryItem />
+            <StoryItem />
+            <StoryItem />
+            <StoryItem />
+            <StoryItem />
+          </>
+        )}
       </div>
     </div>
   );
