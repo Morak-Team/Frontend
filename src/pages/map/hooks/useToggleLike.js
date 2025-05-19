@@ -28,32 +28,20 @@ export const useToggleLike = ({
       return;
     }
 
-    const currentPlace = placesWithDistance.find((p) => p.id === targetId);
+    const currentPlace =
+      placesWithDistance.find((p) => p.id === targetId) || selectedPlace;
+
     if (!currentPlace || isProcessing) return;
 
     setIsProcessing(true);
     setLoading(true);
 
     try {
-      // 서버 liked 상태 확인 (불일치 방지용)
+      // 서버 liked 상태 확인
       const likedList = await getLikedCompanies();
       const isActuallyLiked = likedList.some(
         (c) => String(c.companyId) === String(targetId),
       );
-
-      // 로컬 상태와 서버 상태 불일치 시 보정
-      if (currentPlace.liked !== isActuallyLiked) {
-        const corrected = placesWithDistance.map((p) =>
-          p.id === targetId ? { ...p, liked: isActuallyLiked } : p,
-        );
-        setPlacesWithDistance(corrected);
-        if (selectedPlace?.id === targetId) {
-          setSelectedPlace({
-            ...selectedPlace,
-            liked: isActuallyLiked,
-          });
-        }
-      }
 
       // 서버 상태 기준으로 실제 토글 실행
       if (isActuallyLiked) {
