@@ -6,7 +6,7 @@ const StoryItem = ({ item }) => {
   return (
     <div
       className="flex flex-col rounded-md px-3 pt-3 pb-5 bg-white"
-      onClick={() => navigate(`/story/${item.storyId}`)}
+      onClick={() => navigate(`/story/${item?.storyId}`)}
     >
       <div className="relative">
         <img

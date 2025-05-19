@@ -28,7 +28,7 @@ const MyPageDetailPage = () => {
       {kind === "리뷰" && (
         <div className="flex justify-between items-center px-5">
           <div className="flex gap-2 items-center">
-            <img src={review} className="w-12 h-12" />
+            <img src={review} className="w-8 h-8" />
             <p className="h3">내가 작성한 리뷰</p>
           </div>
           <p className="b5 text-gray-9">총 {reviewsData?.length}개</p>
@@ -38,7 +38,7 @@ const MyPageDetailPage = () => {
       {kind === "찜" && (
         <div className="flex justify-between items-center px-5">
           <div className="flex gap-2 items-center">
-            <img src={heart} className="w-12 h-12" />
+            <img src={heart} className="w-8 h-8" />
             <p className="h3">저장한 장소</p>
           </div>
           <p className="b5 text-gray-9">총 0개</p>
@@ -48,7 +48,7 @@ const MyPageDetailPage = () => {
       {kind === "응원" && (
         <div className="flex justify-between items-center px-5">
           <div className="flex gap-2 items-center">
-            <img src={cheer} className="w-12 h-12" />
+            <img src={cheer} className="w-8 h-8" />
             <p className="h3">내가 응원한 이야기</p>
           </div>
           <p className="b5 text-gray-9">총 {cheersData?.length}개</p>
