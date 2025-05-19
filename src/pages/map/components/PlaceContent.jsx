@@ -127,7 +127,7 @@ const PlaceContent = ({ place, onToggleLike, showMapLink = true }) => {
           <p className="b4 flex items-center gap-2 mt-1">
             <span className="flex items-center text-primary-8 font-bold">
               <FireIcon className="w-4 h-4 mr-1" />
-              {temperature}도
+              {temperature.toFixed(0)}도
             </span>
             <span className="text-gray-12 b6">방문자 리뷰 {reviewCount}</span>
           </p>
