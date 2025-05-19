@@ -1,21 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetFOADetail } from "@/apis/announcement/queries";
-
-// 날짜 형식 확인 함수 (YYYY-MM-DD)
-const isValidDateFormat = (dateStr) => {
-  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
-};
-
-// D-day 계산 함수
-const calculateDday = (dateStr) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const endDate = new Date(dateStr);
-  endDate.setHours(0, 0, 0, 0);
-  const diffTime = endDate.getTime() - today.getTime();
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-};
+import { isValidDateFormat } from "@/pages/support/utils/dateFunc";
+import { calculateDday } from "@/pages/support/utils/dateFunc";
 
 const SupportItemPage = () => {
   const navigate = useNavigate();
@@ -69,7 +56,7 @@ const SupportItemPage = () => {
         </div>
 
         <p className="h2 mt-4">{data?.title}</p>
-        <p className="b5 text-gray-9 mt-2">{data?.agency}</p>
+        <p className="b5 text-gray-9 mt-2">{data?.organization}</p>
 
         <div className="bg-gray-2 w-full mt-5 h-21 rounded-md p-5">
           <p className="b4 text-gray-8">신청기간</p>

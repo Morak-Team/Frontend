@@ -38,7 +38,7 @@ const MyPageDetailPage = () => {
 
       {kind === "찜" && (
         <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center my-2">
             <img src={heart} className="w-8 h-8" />
             <p className="h3">저장한 장소</p>
           </div>
@@ -48,7 +48,7 @@ const MyPageDetailPage = () => {
 
       {kind === "응원" && (
         <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center my-2">
             <img src={cheer} className="w-8 h-8" />
             <p className="h3">내가 응원한 이야기</p>
           </div>

@@ -6,9 +6,11 @@ const FOAItem = ({ data }) => {
   const formattedEndDate = formatEndDate(data.endDate);
   const dday = calculateDday(data.endDate);
 
+  console.log(data);
+
   return (
     <div
-      className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full"
+      className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full cursor-pointer"
       onClick={() => {
         if (data?.id) {
           navigate(`/support/list/${data.id}`);
@@ -38,8 +40,8 @@ const FOAItem = ({ data }) => {
 
       {/* 본문: 텍스트 내용 */}
       <div className="px-5 flex flex-col gap-2 mb-4 mt-4">
-        <p className="h3 leading-snug line-clamp-2">{data.title}</p>
-        <p className="b5 text-gray-6">{data.agency}</p>
+        <p className="h3 leading-snug line-clamp-2">{data?.title}</p>
+        <p className="b5 text-gray-6">{data?.organization}</p>
       </div>
     </div>
   );
