@@ -5,12 +5,14 @@ import useUIStore from "@/store/uiStore";
 import { useGetBestStoryDetail } from "@/apis/story/queries";
 import { usePatchStoryLike } from "@/apis/story/queries";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
+import ToastModal from "@/components/common/ToastModal";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
   const { storyId } = useParams();
   const { setIsStoryDetail } = useUIStore();
   const { data, isLoading } = useGetBestStoryDetail(storyId);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     setIsStoryDetail(true);
@@ -22,6 +24,10 @@ const StoryDetail = () => {
 
   const handleLike = () => {
     likeStory(undefined, {
+      onSuccess: () => {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      },
       onError: (error) => {
         const status = error?.response?.status;
 
@@ -117,6 +123,13 @@ const StoryDetail = () => {
           <p className="b1">응원하기</p>
         </button>
       </div>
+
+      {showToast && (
+        <ToastModal
+          message="응원이 모락모락, 사회적 가치를 더해갑니다!"
+          onClose={() => setShowToast(false)}
+        />
+      )}
 
       {errorModal.open && (
         <HaveToLoginModal
