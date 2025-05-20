@@ -24,6 +24,7 @@ const KakaoAuth = () => {
         if (isNewUser) {
           navigate("/signup");
         } else {
+          useAuthStore.getState().completeSignup(); // 기존 유저라면 바로 가입 완료
           navigate("/");
         }
       } catch (err) {

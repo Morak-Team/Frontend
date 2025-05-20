@@ -26,7 +26,7 @@ const RecentSearchList = ({ recentSearches, onSearch, setRecentSearches }) => {
             }}
           >
             <img
-              src="/svgs/Ic_X.svg"
+              src="/svgs/common/Ic_X.svg"
               alt="삭제"
               className="w-4 h-4 opacity-60"
             />
