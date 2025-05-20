@@ -104,15 +104,15 @@ const MyPage = () => {
       {showLogoutModal && <LogoutSuccessModal onClose={() => navigate("/")} />}
 
       <div className="w-full bg-white rounded-2xl shadow-sm pt-20 pb-6 px-5 flex flex-col items-center relative z-10">
-        <button className="absolute top-4 right-4 opacity-50">
+        <button
+          className="absolute top-4 right-4 opacity-50"
+          onClick={() => navigate("/mypage/edit")}
+        >
           <img src="/svgs/myPage/edit.svg" alt="edit" className="w-6 h-6" />
         </button>
-
         <p className="h2">{nickname}</p>
         <p className="b4 text-gray-8 mt-1">{location}</p>
-
         <div className="w-full bg-gray-3 h-[0.1px] my-4" />
-
         <div className="w-full flex justify-around text-center">
           {Object.entries(counts).map(([label, count]) => (
             <div

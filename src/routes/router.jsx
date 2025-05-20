@@ -18,6 +18,7 @@ import FinancialProductList from "@pages/support/FinancialProductListPage";
 import FinancialProductDetailPage from "@pages/support/FinancialProductDetailPage";
 import MyPageDetailPage from "@/pages/myPageDetail/MyPageDetailPage";
 import MapCompanyPage from "@/pages/myPageDetail/components/MapCompanyPage";
+import MyPageEdit from "@/pages/myPage/components/MyPageEdit";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
   {
     path: "/signup", // 탭 없는 별도 페이지
     element: <SignUp />,
+  },
+  {
+    path: "/mypage/edit",
+    element: <MyPageEdit />,
   },
 ]);
 
