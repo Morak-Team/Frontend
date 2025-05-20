@@ -125,7 +125,7 @@ const PlaceInfo = ({ placeInfo }) => {
             src={
               isLoggedIn && isLiked
                 ? "/svgs/storeReview/fullHeartIcon.svg"
-                : "/svgs/Ic_Heart-Empty.svg"
+                : "/svgs/common/Ic_Heart-Empty.svg"
             }
             alt="좋아요 버튼"
             className="w-6 h-6"
