@@ -6,6 +6,7 @@ import { useGetReviews, useGetCheers } from "@/apis/myPage/queries";
 import ReviewItem from "@/pages/myPageDetail/components/ReviewItem";
 import StoryItem from "@/pages/myPageDetail/components/StoryItem";
 import noResult from "/svgs/myPage/noResult.svg";
+import Spinner from "@/components/common/Spinner";
 
 const MyPageDetailPage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,14 @@ const MyPageDetailPage = () => {
     enabled: kind === "응원",
   });
   //   const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({ enabled: kind === "찜" });
+
+  if (isLoadingReviews || isLoadingCheers) {
+    return (
+      <div className="flex justify-center items-center container">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col pt-5 container overflow-y-auto scrollbar-hide">
