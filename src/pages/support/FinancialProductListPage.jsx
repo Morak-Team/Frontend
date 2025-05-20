@@ -75,7 +75,7 @@ const FinancialProductList = () => {
   const safeProducts = Array.isArray(sortedProducts) ? sortedProducts : [];
 
   return (
-    <div className="flex flex-col pr-5 pl-5 conatiner overflow-y-auto pb-5 mb-5">
+    <div className="flex flex-col pr-5 pl-5 container overflow-y-auto pb-5 mb-5">
       <div className="mt-16 flex justify-between items-center">
         <p className="h3">소비한 가치에 맞는 금융상품</p>
         <img

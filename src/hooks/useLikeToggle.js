@@ -8,7 +8,7 @@ import useAuthStore from "@/store/authStore";
 import useLikeStore from "@/store/useLikeStore";
 
 export const useLikeToggle = (companyId) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn } = useAuthStore();
   const [isLiked, setIsLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -18,10 +18,7 @@ export const useLikeToggle = (companyId) => {
   // 로그인 및 좋아요 여부 확인
   useEffect(() => {
     const check = async () => {
-      const authenticated = await useAuthStore.getState().checkAuth();
-      setIsLoggedIn(authenticated);
-
-      if (authenticated && companyId) {
+      if (isLoggedIn && companyId) {
         const likedList = await getLikedCompanies();
         const liked = likedList.some(
           (c) => String(c.companyId) === String(companyId),
@@ -37,10 +34,7 @@ export const useLikeToggle = (companyId) => {
 
   // 좋아요 토글 함수
   const toggleLike = async () => {
-    const authenticated = await useAuthStore.getState().checkAuth();
-    setIsLoggedIn(authenticated);
-
-    if (!authenticated) {
+    if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
     }

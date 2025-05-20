@@ -1,8 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetFOADetail } from "@/apis/announcement/queries";
-import { isValidDateFormat } from "@/pages/support/utils/dateFunc";
-import { calculateDday } from "@/pages/support/utils/dateFunc";
+import {
+  isValidDateFormat,
+  calculateDday,
+} from "@/pages/support/utils/dateFunc";
 
 const SupportItemPage = () => {
   const navigate = useNavigate();
