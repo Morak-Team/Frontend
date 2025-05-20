@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { getAllCompanies } from "@apis/company/getAllCompanies";
@@ -10,6 +10,8 @@ import MapViewer from "@/pages/search/components/MapViewer";
 
 const MapCompanyPage = () => {
   const { companyId } = useParams();
+  const navigate = useNavigate();
+
   const [place, setPlace] = useState(null);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
@@ -68,6 +70,17 @@ const MapCompanyPage = () => {
 
   return (
     <div className="relative w-full h-screen">
+      <div
+        className="absolute mt-10 px-5 mb-4 z-[10001]"
+        onClick={() => navigate(-1)}
+      >
+        <img
+          src="/svgs/myPage/backIcon.svg"
+          alt="뒤로가기"
+          className="w-10 h-10 cursor-pointer"
+        />
+      </div>
+
       <MapViewer
         places={[place]}
         center={place.coords}
