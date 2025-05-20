@@ -49,7 +49,7 @@ const SupportItemPage = () => {
         <div className="flex gap-1 mt-9">
           {isDdayAvailable && (
             <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
-              D-{dday}
+              {dday}
             </div>
           )}
           <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">

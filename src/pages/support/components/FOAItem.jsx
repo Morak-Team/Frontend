@@ -20,6 +20,9 @@ const FOAItem = ({ data }) => {
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
+          <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">
+            {data?.announcementType}
+          </div>
           <div className="b4 text-gray-11 bg-gray-3 px-2 py-1 w-fit rounded-md">
             {formattedEndDate}
           </div>
