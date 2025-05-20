@@ -2,16 +2,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 import heart from "/svgs/myPage/heart.svg";
 import cheer from "/svgs/myPage/cheer.svg";
 import review from "/svgs/myPage/review.svg";
-import { useGetReviews, useGetCheers } from "@/apis/myPage/queries";
+import {
+  useGetHearts,
+  useGetReviews,
+  useGetCheers,
+} from "@/apis/myPage/queries";
 import ReviewItem from "@/pages/myPageDetail/components/ReviewItem";
 import StoryItem from "@/pages/myPageDetail/components/StoryItem";
 import noResult from "/svgs/myPage/noResult.svg";
 import Spinner from "@/components/common/Spinner";
+import HeartItem from "./components/HeartItem";
 
 const MyPageDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const kind = location.state.kind;
+
+  const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({
+    enabled: kind === "찜",
+  });
 
   const { data: reviewsData, isLoading: isLoadingReviews } = useGetReviews({
     enabled: kind === "리뷰",
@@ -19,7 +28,6 @@ const MyPageDetailPage = () => {
   const { data: cheersData, isLoading: isLoadingCheers } = useGetCheers({
     enabled: kind === "응원",
   });
-  //   const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({ enabled: kind === "찜" });
 
   if (isLoadingReviews || isLoadingCheers) {
     return (
@@ -47,11 +55,11 @@ const MyPageDetailPage = () => {
 
       {kind === "찜" && (
         <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center my-2">
+          <div className="flex gap-4 items-center my-2">
             <img src={heart} className="w-8 h-8" />
             <p className="h3">저장한 장소</p>
           </div>
-          <p className="b5 text-gray-9">총 0개</p>
+          <p className="b5 text-gray-9">총 {heartsData?.length}개</p>
         </div>
       )}
 
@@ -65,7 +73,23 @@ const MyPageDetailPage = () => {
         </div>
       )}
 
-      <div className="flex flex-col gap-4 w-full bg-gray-2 p-5 min-h-screen">
+      <div className="flex flex-col gap-4 w-full bg-gray-2 p-5">
+        {kind === "찜" && (
+          <>
+            {!isLoadingHearts && heartsData?.length > 0 ? (
+              heartsData.map((item, idx) => <HeartItem data={item} key={idx} />)
+            ) : !isLoadingHearts && heartsData?.length === 0 ? (
+              <div className="flex flex-col justify-center items-center mt-36">
+                <img src={noResult} />
+                <p className="h4 text-gray-9 text-center py-8">
+                  아직 저장한 장소가
+                  <br /> 없어요
+                </p>
+              </div>
+            ) : null}
+          </>
+        )}
+
         {kind === "리뷰" && (
           <>
             {!isLoadingReviews && reviewsData?.length > 0 ? (
