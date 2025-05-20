@@ -36,13 +36,39 @@ const MyPageDetailPage = () => {
       </div>
 
       {kind === "리뷰" && (
-        <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center my-2">
-            <img src={review} className="w-8 h-8" />
-            <p className="h3">내가 작성한 리뷰</p>
-          </div>
-          <p className="b5 text-gray-9">총 {reviewsData?.length}개</p>
-        </div>
+        <>
+          {!isLoadingReviews && reviewsData?.length > 0 ? (
+            reviewsData?.map((item, idx) => (
+              <ReviewItem data={item} key={idx} />
+            ))
+          ) : !isLoadingReviews && reviewsData?.length === 0 ? (
+            <div className="flex flex-col justify-center items-center mt-36">
+              <img src={noResult} />
+              <p className="h4 text-gray-9 text-center py-8">
+                아직 작성한 리뷰가
+                <br /> 없어요
+              </p>
+            </div>
+          ) : null}
+        </>
+      )}
+
+      {kind === "응원" && (
+        <>
+          {!isLoadingCheers && cheersData?.length > 0 ? (
+            cheersData?.map((item) => (
+              <StoryItem item={item} key={item.storyId} />
+            ))
+          ) : !isLoadingCheers && cheersData?.length === 0 ? (
+            <div className="flex flex-col justify-center items-center mt-36">
+              <img src={noResult} />
+              <p className="h4 text-gray-9 text-center py-8">
+                아직 응원한 이야기가
+                <br /> 없어요
+              </p>
+            </div>
+          ) : null}
+        </>
       )}
 
       {kind === "찜" && (
@@ -52,16 +78,6 @@ const MyPageDetailPage = () => {
             <p className="h3">저장한 장소</p>
           </div>
           <p className="b5 text-gray-9">총 0개</p>
-        </div>
-      )}
-
-      {kind === "응원" && (
-        <div className="flex justify-between items-center px-5">
-          <div className="flex gap-2 items-center my-2">
-            <img src={cheer} className="w-8 h-8" />
-            <p className="h3">내가 응원한 이야기</p>
-          </div>
-          <p className="b5 text-gray-9">총 {cheersData?.length}개</p>
         </div>
       )}
 
