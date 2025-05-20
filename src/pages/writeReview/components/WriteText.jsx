@@ -14,7 +14,7 @@ const WriteText = ({ onNext, onBack }) => {
   const { reviewInfo } = usePaymentStore();
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
-  const { data, isLoading } = useMyProfile();
+  const { data } = useMyProfile();
 
   const [toast, setToast] = useState({
     show: false,

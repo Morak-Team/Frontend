@@ -6,8 +6,6 @@ const FOAItem = ({ data }) => {
   const formattedEndDate = formatEndDate(data.endDate);
   const dday = calculateDday(data.endDate);
 
-  console.log(data);
-
   return (
     <div
       className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full cursor-pointer"
