@@ -49,7 +49,6 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
     error: reviewsError,
   } = useInfiniteReviews(companyId);
 
-  // 3) 스크롤 관찰자 세팅 (threshold, rootMargin)
   const { ref, inView } = useInView({
     threshold: 0.5,
     rootMargin: "0px",
@@ -61,7 +60,6 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // 5) 로딩 & 에러 처리
   if (countLoading || reviewsLoading) {
     return <p className="text-center py-8">로딩 중...</p>;
   }
@@ -80,7 +78,6 @@ const Reviews = ({ setTurnOnCamera, companyId }) => {
     );
   }
 
-  // 모든 페이지를 flatten
   const allReviews = data?.pages
     ? data.pages.flatMap((page) => page.content || [])
     : [];

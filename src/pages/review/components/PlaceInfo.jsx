@@ -3,70 +3,25 @@ import {
   companyTypeNameMap,
   companyTypeIconMap,
 } from "@constants/categoryMap";
-import { useState, useEffect } from "react";
 import { usePaymentStore } from "@/store/paymentStore";
-import {
-  getLikedCompanies,
-  likeCompany,
-  unlikeCompany,
-} from "@apis/company/getLikedCompanies";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import { openNaverMapRoute } from "@pages/map/utils/openNaverMapRoute";
 import { useUserCoords } from "@pages/search/hooks/useUserCoords";
-import useAuthStore from "@/store/authStore";
+import Spinner from "@/components/common/Spinner";
+import { useLikeToggle } from "@/hooks/useLikeToggle";
 
 const PlaceInfo = ({ placeInfo }) => {
   const userCoords = useUserCoords();
-
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-
   const { companyId } = usePaymentStore();
 
-  // 로그인 여부 + 찜 여부 확인
-  useEffect(() => {
-    const checkLoginAndLiked = async () => {
-      const isAuthenticated = await useAuthStore.getState().checkAuth();
-      setIsLoggedIn(isAuthenticated);
-
-      if (isAuthenticated && companyId) {
-        const likedList = await getLikedCompanies();
-        const liked = likedList.some(
-          (c) => String(c.companyId) === String(companyId)
-        );
-        setIsLiked(liked);
-      }
-      setLoading(false);
-    };
-
-    if (companyId) checkLoginAndLiked();
-  }, [companyId]);
-
-  const handleLikeClick = async () => {
-    const isAuthenticated = await useAuthStore.getState().checkAuth();
-    setIsLoggedIn(isAuthenticated);
-
-    if (!isAuthenticated) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      if (isLiked) {
-        await unlikeCompany(companyId);
-      } else {
-        await likeCompany(companyId);
-      }
-      setIsLiked((prev) => !prev);
-    } catch (e) {
-      console.error("좋아요 토글 실패:", e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    isLiked,
+    isLoggedIn,
+    loading,
+    toggleLike,
+    showLoginModal,
+    setShowLoginModal,
+  } = useLikeToggle(companyId);
 
   const handleRouteClick = (e) => {
     e.preventDefault();
@@ -89,6 +44,13 @@ const PlaceInfo = ({ placeInfo }) => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center container">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div className="w-full px-5">
       <div className="flex justify-between items-start mt-4 w-full">
@@ -153,14 +115,17 @@ const PlaceInfo = ({ placeInfo }) => {
         </a>
 
         <button
-          onClick={handleLikeClick}
+          onClick={(e) => {
+            e.preventDefault();
+            toggleLike();
+          }}
           className="w-12 h-12 flex items-center justify-center rounded-md bg-[#FAFAF9] shrink-0"
         >
           <img
             src={
               isLoggedIn && isLiked
                 ? "/svgs/storeReview/fullHeartIcon.svg"
-                : "/svgs/Ic_Heart-Empty.svg"
+                : "/svgs/common/Ic_Heart-Empty.svg"
             }
             alt="좋아요 버튼"
             className="w-6 h-6"

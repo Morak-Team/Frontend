@@ -1,21 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetFOADetail } from "@/apis/announcement/queries";
-
-// 날짜 형식 확인 함수 (YYYY-MM-DD)
-const isValidDateFormat = (dateStr) => {
-  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
-};
-
-// D-day 계산 함수
-const calculateDday = (dateStr) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const endDate = new Date(dateStr);
-  endDate.setHours(0, 0, 0, 0);
-  const diffTime = endDate.getTime() - today.getTime();
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-};
+import {
+  isValidDateFormat,
+  calculateDday,
+} from "@/pages/support/utils/dateFunc";
 
 const SupportItemPage = () => {
   const navigate = useNavigate();
@@ -30,7 +19,7 @@ const SupportItemPage = () => {
   const dday = isDdayAvailable ? calculateDday(data.endDate) : null;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5.25rem)] overflow-y-auto">
+    <div className="flex flex-col container overflow-y-auto">
       {isLoading && (
         <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
           <div className="loader"></div>
@@ -60,7 +49,7 @@ const SupportItemPage = () => {
         <div className="flex gap-1 mt-9">
           {isDdayAvailable && (
             <div className="text-error bg-errorContainer caption1 px-2 py-1 w-fit rounded-md">
-              D-{dday}
+              {dday}
             </div>
           )}
           <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">
@@ -69,7 +58,7 @@ const SupportItemPage = () => {
         </div>
 
         <p className="h2 mt-4">{data?.title}</p>
-        <p className="b5 text-gray-9 mt-2">{data?.agency}</p>
+        <p className="b5 text-gray-9 mt-2">{data?.organization}</p>
 
         <div className="bg-gray-2 w-full mt-5 h-21 rounded-md p-5">
           <p className="b4 text-gray-8">신청기간</p>

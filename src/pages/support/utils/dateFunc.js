@@ -18,3 +18,7 @@ export const calculateDday = (raw) => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays >= 0 ? `D-${diffDays}` : null;
 };
+
+export const isValidDateFormat = (dateStr) => {
+  return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+};

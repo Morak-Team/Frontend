@@ -9,7 +9,7 @@ const Complete = () => {
       <div className="w-full max-w-[760px] px-5 pt-8 sm:pt-14 pb-24 overflow-y-auto">
         {/* 닫기 버튼 */}
         <div
-          className="flex justify-end"
+          className="flex justify-end cursor-pointer"
           onClick={() => navigate(`/review/${companyId}`)}
         >
           <img src="/svgs/review/xIcon.svg" className="w-8 h-8" />

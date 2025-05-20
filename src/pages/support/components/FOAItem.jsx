@@ -8,7 +8,7 @@ const FOAItem = ({ data }) => {
 
   return (
     <div
-      className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full"
+      className="flex flex-col rounded-md shadow-surface bg-white shrink-0 snap-center w-full cursor-pointer"
       onClick={() => {
         if (data?.id) {
           navigate(`/support/list/${data.id}`);
@@ -20,6 +20,9 @@ const FOAItem = ({ data }) => {
       {/* 상단: 날짜 & D-day */}
       <div className="p-5 flex justify-between">
         <div className="flex gap-2">
+          <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">
+            {data?.announcementType}
+          </div>
           <div className="b4 text-gray-11 bg-gray-3 px-2 py-1 w-fit rounded-md">
             {formattedEndDate}
           </div>
@@ -38,8 +41,8 @@ const FOAItem = ({ data }) => {
 
       {/* 본문: 텍스트 내용 */}
       <div className="px-5 flex flex-col gap-2 mb-4 mt-4">
-        <p className="h3 leading-snug line-clamp-2">{data.title}</p>
-        <p className="b5 text-gray-6">{data.agency}</p>
+        <p className="h3 leading-snug line-clamp-2">{data?.title}</p>
+        <p className="b5 text-gray-6">{data?.organization}</p>
       </div>
     </div>
   );

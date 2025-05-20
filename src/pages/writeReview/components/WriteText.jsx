@@ -14,7 +14,7 @@ const WriteText = ({ onNext, onBack }) => {
   const { reviewInfo } = usePaymentStore();
   const companyId = usePaymentStore((s) => s.companyId);
   const [isUploading, setIsUploading] = useState(false);
-  const { data, isLoading } = useMyProfile();
+  const { data } = useMyProfile();
 
   const [toast, setToast] = useState({
     show: false,
@@ -27,15 +27,15 @@ const WriteText = ({ onNext, onBack }) => {
   };
 
   const handleClick = async () => {
-    setIsUploading(true); // 모달 띄우기
+    setIsUploading(true);
 
     try {
       await postReview(reviewInfo, companyId, text);
-      setIsUploading(false); // 성공 시 닫기
+      setIsUploading(false);
       onNext();
     } catch (e) {
       console.log(e);
-      setIsUploading(false); // 실패 시도 닫기
+      setIsUploading(false);
       fireToast("리뷰 등록에 실패했습니다.\n다시 시도해 주세요.", ErrorIcon);
     }
   };

@@ -8,7 +8,7 @@ const ReviewContent = ({ item, hasBorder = true }) => {
     item.reviewCategories?.includes(tag.value)
   );
 
-  const profileIconSrc = `/svgs/profile/${item.profileColor || "gray"}.svg`;
+  const profileIconSrc = `/svgs/profile/${item?.profileColor || "gray"}.svg`;
 
   return (
     <div

@@ -42,7 +42,7 @@ const FOACard = ({ data }) => {
       {/* 본문: 텍스트 내용 */}
       <div className="px-5 flex flex-col gap-2 mb-4 mt-9">
         <div className="bg-secondaryBackground py-1 w-fit rounded-md text-center b4 text-secondary px-2">
-          {data.announcementType}
+          {data?.announcementType}
         </div>
         <p className="h3 leading-snug line-clamp-2">{data.title}</p>
         <p className="b5 text-gray-6">{data.organization}</p>
