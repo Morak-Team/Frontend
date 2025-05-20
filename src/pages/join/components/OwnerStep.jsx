@@ -1,5 +1,5 @@
 import { useState } from "react";
-import BackIcon from "/svgs/Ic_Arrow_Left.svg";
+import BackIcon from "/svgs/common/Ic_Arrow_Left.svg";
 import { IcCheck, IcUnselected } from "@assets/svgs/signup";
 
 const OwnerStep = ({ onNext, onBack }) => {

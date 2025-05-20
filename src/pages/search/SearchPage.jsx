@@ -8,10 +8,11 @@ import { formatDistance } from "../map/utils/formatDistance";
 import { getCompanyPreview } from "@apis/company/getCompanyPreview";
 import { useCompanyData } from "./hooks/useCompanyData";
 import { useUserCoords } from "./hooks/useUserCoords";
-import useAuthStore from "@/store/authStore";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import MapViewer from "./components/MapViewer";
 import { useToggleLike } from "../map/hooks/useToggleLike";
+import useAuthStore from "@/store/authStore";
+import { getLikedCompanies } from "@/apis/company/getLikedCompanies";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -21,7 +22,6 @@ const SearchPage = () => {
   const [isSearched, setIsSearched] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [moveToCurrentLocation, setMoveToCurrentLocation] = useState(false);
-
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [step, setStep] = useState(1);
@@ -29,24 +29,22 @@ const SearchPage = () => {
   const [bottomSheetHeight, setBottomSheetHeight] = useState(220);
   const [isDesktop, setIsDesktop] = useState(false);
 
+  const { companies: allPlaces } = useCompanyData();
+  const userCoords = useUserCoords();
+
   useEffect(() => {
-    const updateSize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
+    const updateSize = () => setIsDesktop(window.innerWidth >= 1024);
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  const { companies: allPlaces, loading: isCompanyLoading } = useCompanyData();
-  const userCoords = useUserCoords();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
-      setRecentSearches(JSON.parse(stored));
-      setStep(JSON.parse(stored).length > 0 ? 2 : 1);
+      const parsed = JSON.parse(stored);
+      setRecentSearches(parsed);
+      setStep(parsed.length > 0 ? 2 : 1);
     }
   }, []);
 
@@ -63,7 +61,6 @@ const SearchPage = () => {
 
   const filteredPlaces = useMemo(() => {
     if (!isSearched || !keyword.trim()) return [];
-
     const searchText = keyword.toLowerCase();
 
     return allPlaces
@@ -91,10 +88,7 @@ const SearchPage = () => {
         };
       })
       .filter(Boolean)
-      .sort((a, b) => {
-        if (a.distance == null || b.distance == null) return 0;
-        return a.distance - b.distance;
-      });
+      .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
   }, [allPlaces, keyword, isSearched, userCoords]);
 
   useEffect(() => {
@@ -118,7 +112,6 @@ const SearchPage = () => {
     setKeyword(text);
     setIsSearched(true);
     setStep(4);
-
     setSelectedPlace(null);
     setIsBottomSheetVisible(false);
     setIsBottomSheetExpanded(false);
@@ -130,15 +123,24 @@ const SearchPage = () => {
   const handleSelectPlace = async (place) => {
     try {
       const preview = await getCompanyPreview(place.id);
+
+      // 찜 여부 재확인
+      let liked = false;
+      const isAuthenticated = await useAuthStore.getState().checkAuth();
+      if (isAuthenticated) {
+        const likedList = await getLikedCompanies();
+        liked = likedList.some((c) => c.companyId === place.id);
+      }
+
       const enriched = {
         ...place,
         ...preview,
-        liked: preview.isSaved ?? false,
+        liked,
       };
       setSelectedPlace(enriched);
       setIsBottomSheetVisible(true);
       setIsBottomSheetExpanded(false);
-      setStep?.(5); // SearchPage인 경우
+      setStep?.(5);
     } catch (err) {
       console.error("기업 상세 정보 불러오기 실패:", err);
     }
@@ -223,6 +225,7 @@ const SearchPage = () => {
           showEmptyMessage={true}
         />
       )}
+
       {step === 5 && (
         <div className="relative w-full h-screen">
           <MapViewer

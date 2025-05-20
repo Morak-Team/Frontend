@@ -155,14 +155,17 @@ const PlaceBottomSheet = ({
               className="absolute top-3 right-3 p-2 z-10"
               aria-label="닫기"
             >
-              <img src="/svgs/Ic_X.svg" alt="닫기 버튼" className="w-6 h-6" />
+              <img
+                src="/svgs/common/Ic_X.svg"
+                alt="닫기 버튼"
+                className="w-6 h-6"
+              />
             </button>
           </div>
         )}
 
         <PlaceContent
           place={place}
-          liked={place.liked}
           onToggleLike={onToggleLike}
           showMapLink={isExpanded}
         />

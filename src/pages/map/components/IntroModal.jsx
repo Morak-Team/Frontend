@@ -7,7 +7,7 @@ const IntroModal = ({ onClose }) => {
         aria-label="닫기"
       >
         <img
-          src="/svgs/Ic_X.svg"
+          src="/svgs/common/Ic_X.svg"
           alt="닫기"
           className="w-6 h-6 sm:w-7 sm:h-7"
         />

@@ -8,6 +8,7 @@ import LocationStep from "./components/LocationStep";
 import OwnerStep from "./components/OwnerStep";
 import GoHome from "./components/GoHome";
 import { signup } from "@apis/member/signup";
+import useAuthStore from "@/store/authStore";
 
 const SignUpPage = () => {
   const [step, setStep] = useState(1);
@@ -37,6 +38,7 @@ const SignUpPage = () => {
     };
     try {
       await signup(finalData);
+      useAuthStore.getState().completeSignup();
       setStep((prev) => prev + 1);
     } catch (error) {
       console.error("회원가입 실패:", error);
