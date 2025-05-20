@@ -17,7 +17,7 @@ const SupportItemPage = () => {
   const dday = isDdayAvailable ? calculateDday(data.endDate) : null;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5.25rem)] overflow-y-auto">
+    <div className="flex flex-col container overflow-y-auto">
       {isLoading && (
         <div className="absolute inset-0 z-50 bg-white bg-opacity-80 flex flex-col justify-center items-center">
           <div className="loader"></div>

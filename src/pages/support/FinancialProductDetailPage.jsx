@@ -31,15 +31,13 @@ const FinancialProductDetailPage = () => {
   if (!data) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-5.25rem)]">
-        <p className="b3 text-gray-10">
-          해당 상품 정보를 찾을 수 없습니다.
-        </p>
+        <p className="b3 text-gray-10">해당 상품 정보를 찾을 수 없습니다.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5.25rem)] overflow-y-auto">
+    <div className="flex flex-col container overflow-y-auto">
       <div className="relative w-full">
         <img
           src="/svgs/support/consumer/Img_FinancialProduct.svg"
@@ -88,21 +86,15 @@ const FinancialProductDetailPage = () => {
           </div>
           <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
             <p className="b4 text-gray-8 mb-1">방식</p>
-            <p className="b2 text-gray-12 font-medium">
-              {data.method || "-"}
-            </p>
+            <p className="b2 text-gray-12 font-medium">{data.method || "-"}</p>
           </div>
           <div className="bg-gray-2 rounded-md px-5 py-4 break-keep">
             <p className="b4 text-gray-8 mb-1">기본 금리</p>
-            <p className="b2 text-gray-12 font-medium">
-              {data.benefit || "-"}
-            </p>
+            <p className="b2 text-gray-12 font-medium">{data.benefit || "-"}</p>
           </div>
         </div>
 
-        <p className="b4 mt-8 ml-5 text-primary-8 break-keep">
-          금융상품 소개
-        </p>
+        <p className="b4 mt-8 ml-5 text-primary-8 break-keep">금융상품 소개</p>
         <div className="bg-gray-2 w-full rounded-md mt-2 pt-6 pb-6 px-4">
           <p className="b2 text-gray-12 whitespace-pre-wrap">
             {data.productDescription || "상품 설명이 없습니다."}
@@ -131,9 +123,7 @@ const FinancialProductDetailPage = () => {
               className="w-6 h-6"
               alt="바로가기"
             />
-            <p className="b1 text-white text-center">
-              바로가기
-            </p>
+            <p className="b1 text-white text-center">바로가기</p>
           </button>
         )}
       </div>

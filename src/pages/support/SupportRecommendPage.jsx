@@ -33,7 +33,7 @@ const SupportRecommendPage = () => {
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-5.25rem)] overflow-y-auto scrollbar-hide">
+    <div className="relative w-full conatiner overflow-y-auto scrollbar-hide">
       <div className="px-5 pt-3 flex justify-between items-center">
         <div className="w-1/3" />
         <img
