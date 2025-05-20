@@ -24,7 +24,7 @@ const HeartItem = ({ data }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/map/:companyId");
+    navigate(`/map/${companyId}`);
   };
 
   const formattedDistance =

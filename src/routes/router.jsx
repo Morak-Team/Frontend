@@ -17,6 +17,7 @@ import SupportRecommendPage from "@pages/support/SupportRecommendPage";
 import FinancialProductList from "@pages/support/FinancialProductListPage";
 import FinancialProductDetailPage from "@pages/support/FinancialProductDetailPage";
 import MyPageDetailPage from "@/pages/myPageDetail/MyPageDetailPage";
+import MapCompanyPage from "@/pages/myPageDetail/components/MapCompanyPage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/map/search",
         element: <SearchPage />,
+      },
+      {
+        path: "/map/:companyId",
+        element: <MapCompanyPage />,
       },
       {
         path: "/mypage",
