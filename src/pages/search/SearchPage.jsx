@@ -11,6 +11,8 @@ import { useUserCoords } from "./hooks/useUserCoords";
 import HaveToLoginModal from "@components/common/HaveToLoginModal";
 import MapViewer from "./components/MapViewer";
 import { useToggleLike } from "../map/hooks/useToggleLike";
+import useAuthStore from "@/store/authStore";
+import { getLikedCompanies } from "@/apis/company/getLikedCompanies";
 
 const LOCAL_STORAGE_KEY = "recentSearches";
 
@@ -121,10 +123,19 @@ const SearchPage = () => {
   const handleSelectPlace = async (place) => {
     try {
       const preview = await getCompanyPreview(place.id);
+
+      // 찜 여부 재확인
+      let liked = false;
+      const isAuthenticated = await useAuthStore.getState().checkAuth();
+      if (isAuthenticated) {
+        const likedList = await getLikedCompanies();
+        liked = likedList.some((c) => c.companyId === place.id);
+      }
+
       const enriched = {
         ...place,
         ...preview,
-        liked: preview.isSaved ?? false,
+        liked,
       };
       setSelectedPlace(enriched);
       setIsBottomSheetVisible(true);
@@ -162,7 +173,6 @@ const SearchPage = () => {
         />
       )}
 
-      {/* Search Bar */}
       {step === 5 ? (
         <div className="absolute top-0 left-0 right-0 z-50 px-[1.6rem] pt-16 bg-transparent">
           <SearchBar
@@ -188,7 +198,6 @@ const SearchPage = () => {
         </div>
       )}
 
-      {/* 단계별 뷰 */}
       {step === 1 && (
         <div className="flex flex-col items-center justify-center text-center h-full my-44 h4 text-gray-9">
           <img
@@ -233,7 +242,6 @@ const SearchPage = () => {
             disableAutoUserPan={true}
           />
 
-          {/* 현위치 버튼 */}
           {!isBottomSheetExpanded && (
             <div
               className="absolute left-1/2 -translate-x-1/2 w-full max-w-[760px] px-4 z-[10003] flex justify-end transition-all duration-300"

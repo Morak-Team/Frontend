@@ -57,12 +57,13 @@ export const useToggleLike = ({
       setPlacesWithDistance(updated);
 
       if (selectedPlace?.id === targetId) {
-        setSelectedPlace({
+        const newSelected = {
           ...selectedPlace,
           liked: !isActuallyLiked,
           distance: currentPlace.distance,
           formattedDistance: currentPlace.formattedDistance,
-        });
+        };
+        requestAnimationFrame(() => setSelectedPlace(newSelected));
       }
 
       if (setFilteredPlaces) {

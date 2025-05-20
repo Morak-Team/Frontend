@@ -160,7 +160,15 @@ const MapPage = () => {
   const handleMarkerClick = async (place) => {
     try {
       const preview = await getCompanyPreview(place.id);
-      setSelectedPlace({ ...place, ...preview });
+
+      let liked = false;
+      const isAuthenticated = await useAuthStore.getState().checkAuth();
+      if (isAuthenticated) {
+        const likedList = await getLikedCompanies();
+        liked = likedList.some((c) => c.companyId === place.id);
+      }
+
+      setSelectedPlace({ ...place, ...preview, liked });
     } catch (err) {
       console.error("프리뷰 불러오기 실패:", err);
     }

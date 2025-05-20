@@ -166,7 +166,6 @@ const PlaceBottomSheet = ({
 
         <PlaceContent
           place={place}
-          liked={place.liked}
           onToggleLike={onToggleLike}
           showMapLink={isExpanded}
         />
