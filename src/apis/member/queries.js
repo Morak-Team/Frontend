@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getMyProfile } from "@/apis/member/auth";
 import { getReviewCountOfMember } from "@/apis/member/getReviewCountOfMember";
 import { getCheerCountOfMember } from "@/apis/member/getCheerCountOfMember";
 import { getLikeCountOfMember } from "@/apis/member/getLikeCountOfMember";
+import { postUpdateProfile } from "./postUpdateProfile";
 
 export const useMyProfile = () => {
   return useQuery({
@@ -32,5 +33,11 @@ export const useGetLikeCountOfMember = () => {
   return useQuery({
     queryKey: ["likeCountOfMember"],
     queryFn: () => getLikeCountOfMember(),
+  });
+};
+
+export const useUpdateProfile = () => {
+  return useMutation({
+    mutationFn: postUpdateProfile,
   });
 };

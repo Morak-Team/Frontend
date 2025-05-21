@@ -1,6 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReviews } from "@/apis/myPage/getDetail";
-import { getCheers } from "@/apis/myPage/getDetail";
+import { getHearts, getReviews, getCheers } from "@/apis/myPage/getDetail";
+
+export const useGetHearts = ({ enabled }) => {
+  return useQuery({
+    queryKey: ["userHearts"],
+    queryFn: getHearts,
+    enabled,
+  });
+};
 
 export const useGetReviews = () => {
   return useQuery({ queryKey: ["userReview"], queryFn: () => getReviews() });
