@@ -104,8 +104,8 @@ const MyPageEdit = () => {
         <h1 className="h3 text-gray-12">프로필 편집</h1>
         <div className="w-8 h-8" />
       </div>
-      <div className="pt-28 px-5 max-w-[760px] mx-auto">
-        <div className="flex justify-center mb-6">
+      <div className="pt-28 max-w-[760px] overflow-x-scroll">
+        <div className="flex justify-center mb-6 px-5">
           <div className="w-32 h-32 sm:w-36 sm:h-36">
             <SelectedProfile className="w-full h-full" />
           </div>
@@ -128,7 +128,7 @@ const MyPageEdit = () => {
           ))}
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 px-5">
           <label className="b4 text-gray-8">이름</label>
           <input
             className={`w-full b2 mt-3 rounded-lg p-3 bg-gray-3 text-gray-11 outline-none border-2 transition-colors ${
@@ -141,7 +141,7 @@ const MyPageEdit = () => {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 px-5">
           <label className="b4 text-gray-8">주소</label>
           <div
             className={`relative w-full mt-3 flex items-center rounded-lg px-3 py-3 border-2 transition-colors bg-gray-3 text-gray-11 ${
@@ -184,7 +184,7 @@ const MyPageEdit = () => {
           </button>
         </div>
       </div>
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] bg-white px-4 pb-6 pt-4 border-t">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] bg-white px-5 pb-6 pt-4 border-t">
         <button
           onClick={handleSubmit}
           className="w-full h-12 px-4 py-3 bg-primary-8 text-white b1 rounded-xl"
