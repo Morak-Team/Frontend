@@ -12,14 +12,37 @@ import StoryItem from "@/pages/myPageDetail/components/StoryItem";
 import noResult from "/svgs/myPage/noResult.svg";
 import Spinner from "@/components/common/Spinner";
 import HeartItem from "./components/HeartItem";
+import { useEffect, useMemo, useState } from "react";
+import { getAllCompanies } from "@/apis/company/getAllCompanies";
 
 const MyPageDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const kind = location.state.kind;
 
+  const [allCompanies, setAllCompanies] = useState([]);
+
   const { data: heartsData, isLoading: isLoadingHearts } = useGetHearts({
     enabled: kind === "찜",
+  });
+
+  useEffect(() => {
+    if (kind === "찜") {
+      getAllCompanies().then(setAllCompanies);
+    }
+  }, [kind]);
+
+  const companyMap = useMemo(() => {
+    return new Map(allCompanies.map((c) => [c.companyId, c]));
+  }, [allCompanies]);
+
+  const enrichedHeartsData = heartsData?.map((heart) => {
+    const matched = companyMap.get(heart.companyId);
+    return {
+      ...heart,
+      latitude: matched?.latitude,
+      longitude: matched?.longitude,
+    };
   });
 
   const { data: reviewsData, isLoading: isLoadingReviews } = useGetReviews({
@@ -76,9 +99,11 @@ const MyPageDetailPage = () => {
       <div className="flex flex-col gap-4 w-full bg-gray-2 p-5">
         {kind === "찜" && (
           <>
-            {!isLoadingHearts && heartsData?.length > 0 ? (
-              heartsData.map((item, idx) => <HeartItem data={item} key={idx} />)
-            ) : !isLoadingHearts && heartsData?.length === 0 ? (
+            {!isLoadingHearts && enrichedHeartsData?.length > 0 ? (
+              enrichedHeartsData.map((item, idx) => (
+                <HeartItem data={item} key={idx} />
+              ))
+            ) : !isLoadingHearts && enrichedHeartsData?.length === 0 ? (
               <div className="flex flex-col justify-center items-center mt-36">
                 <img src={noResult} />
                 <p className="h4 text-gray-9 text-center py-8">

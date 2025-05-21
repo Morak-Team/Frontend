@@ -7,8 +7,10 @@ import HeartIcon from "/svgs/common/Ic_Heart_Fill.svg";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { unlikeCompany } from "@apis/company/getLikedCompanies";
 import ToastModal from "@components/common/ToastModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserCoords } from "@pages/search/hooks/useUserCoords";
+import { getDistanceFromLatLon } from "@pages/map/utils/getDistanceFromLatLon";
 
 const HeartItem = ({ data }) => {
   const {
@@ -18,17 +20,38 @@ const HeartItem = ({ data }) => {
     companyType,
     companyLocation,
     business,
-    distance,
+    latitude,
+    longitude,
   } = data;
 
   const navigate = useNavigate();
+  const userCoords = useUserCoords();
+  console.log("userCoords", userCoords);
 
   const handleClick = () => {
     navigate(`/map/${companyId}`);
   };
 
-  const formattedDistance =
-    typeof distance === "number" ? `${distance.toFixed(1)}km` : null;
+  const [distance, setDistance] = useState(null);
+
+  useEffect(() => {
+    if (userCoords && latitude && longitude) {
+      const d = getDistanceFromLatLon(
+        userCoords.lat,
+        userCoords.lng,
+        latitude,
+        longitude
+      );
+      setDistance(d);
+    }
+  }, [userCoords, latitude, longitude]);
+
+  const formatDistance = (distanceInMeters) => {
+    if (distanceInMeters < 1000) {
+      return `${Math.round(distanceInMeters)}m`;
+    }
+    return `${(distanceInMeters / 1000).toFixed(1)}km`;
+  };
 
   const queryClient = useQueryClient();
   const [toastVisible, setToastVisible] = useState(false);
@@ -53,23 +76,33 @@ const HeartItem = ({ data }) => {
         className="bg-white rounded-xl p-5 flex flex-col gap-3 shadow-sm cursor-pointer"
         onClick={handleClick}
       >
-        <div className="flex justify-between">
-          <div>
-            <p className="h4 text-gray-12">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0 flex-1">
+            <p className="h4 text-gray-12 truncate">
               {companyName}
               <span className="ml-1 b5 text-gray-6">
                 {businessTypeNameMap[companyCategory] ?? companyCategory}
               </span>
             </p>
-            {formattedDistance && (
-              <p className="text-sm font-medium text-primary-8 mt-1">
-                {formattedDistance}
-              </p>
+
+            {distance !== null && (
+              <div className="flex items-center gap-1 mt-1 min-w-0 flex-nowrap">
+                <p className="b4 text-gray-12 whitespace-nowrap">
+                  {formatDistance(distance)}
+                </p>
+                <span className="b4 text-gray-6">·</span>
+                <p className="b6 text-gray-12 w-full truncate">
+                  {companyLocation}
+                </p>
+              </div>
             )}
-            <p className="text-sm text-gray-10">{companyLocation}</p>
           </div>
 
-          <button onClick={handleUnlike} aria-label="찜 버튼">
+          <button
+            onClick={handleUnlike}
+            aria-label="찜 버튼"
+            className="flex-shrink-0 ml-2"
+          >
             <img src={HeartIcon} alt="찜 아이콘" className="w-6 h-6" />
           </button>
         </div>
