@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useMyProfile, useUpdateProfile } from "@/apis/member/queries";
 import ToastModal from "@components/common/ToastModal";
 import BackIcon from "/svgs/common/Ic_Arrow_Left.svg";
+import { IcWarnning } from "@assets/svgs/modal";
+
 import {
   IcCheck,
   IcNonCheck,
@@ -27,6 +29,7 @@ const MyPageEdit = () => {
   const [isNameFocused, setIsNameFocused] = useState(false);
   const [isLocationFocused, setIsLocationFocused] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     if (data) {
@@ -38,6 +41,15 @@ const MyPageEdit = () => {
   }, [data]);
 
   const handleSubmit = () => {
+    if (!name.trim()) {
+      setToastVisible(true);
+      setToastMessage("이름을 입력해주세요.");
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 1800);
+      return;
+    }
+
     const fullLocation = checked
       ? "서울 외 지역 거주"
       : location.trim().startsWith("서울특별시")
@@ -53,6 +65,7 @@ const MyPageEdit = () => {
       {
         onSuccess: () => {
           setToastVisible(true);
+          setToastMessage("프로필이 저장되었습니다!");
           setTimeout(() => {
             setToastVisible(false);
             navigate("/mypage");
@@ -83,7 +96,7 @@ const MyPageEdit = () => {
   const SelectedProfile = profileSvgs[selectedIndex] ?? ImgGray;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-2 overflow-hidden relative">
+    <div className="min-h-screen bg-gray-2 pb-32">
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] h-24 pb-4 bg-white z-50 flex items-end justify-between px-4 sm:px-6 border-b">
         <button onClick={() => navigate(-1)} className="w-8 h-8">
           <img src={BackIcon} alt="뒤로가기" className="w-8 h-8" />
@@ -91,32 +104,31 @@ const MyPageEdit = () => {
         <h1 className="h3 text-gray-12">프로필 편집</h1>
         <div className="w-8 h-8" />
       </div>
-
-      <div className="mt-24 sm:mt-28 pt-12 flex justify-center items-center">
-        <div className="w-32 h-32 sm:w-36 sm:h-36">
-          <SelectedProfile className="w-full h-full" />
-        </div>
-      </div>
-
-      <div className="flex w-full gap-3 sm:gap-4 overflow-x-auto justify-center no-scrollbar mt-6">
-        {profileSvgs.map((SvgComponent, index) => (
-          <div
-            key={index}
-            className="relative rounded-full cursor-pointer shrink-0"
-            onClick={() => setProfileColor(profileColors[index])}
-          >
-            <SvgComponent className="w-20 h-20 sm:w-24 sm:h-24 rounded-full" />
-            {profileColor === profileColors[index] && (
-              <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8">
-                <IcCheck className="w-full h-full text-primary-8" />
-              </div>
-            )}
+      <div className="pt-28 px-5 max-w-[760px] mx-auto">
+        <div className="flex justify-center mb-6">
+          <div className="w-32 h-32 sm:w-36 sm:h-36">
+            <SelectedProfile className="w-full h-full" />
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="flex flex-col gap-4 w-full px-5 mt-10">
-        <div className="w-full">
+        <div className="flex w-full gap-3 sm:gap-4 overflow-x-auto justify-center no-scrollbar mb-10">
+          {profileSvgs.map((SvgComponent, index) => (
+            <div
+              key={index}
+              className="relative rounded-full cursor-pointer shrink-0"
+              onClick={() => setProfileColor(profileColors[index])}
+            >
+              <SvgComponent className="w-20 h-20 sm:w-24 sm:h-24 rounded-full" />
+              {profileColor === profileColors[index] && (
+                <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8">
+                  <IcCheck className="w-full h-full text-primary-8" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-6">
           <label className="b4 text-gray-8">이름</label>
           <input
             className={`w-full b2 mt-3 rounded-lg p-3 bg-gray-3 text-gray-11 outline-none border-2 transition-colors ${
@@ -129,7 +141,7 @@ const MyPageEdit = () => {
           />
         </div>
 
-        <div className="w-full">
+        <div className="mb-6">
           <label className="b4 text-gray-8">주소</label>
           <div
             className={`relative w-full mt-3 flex items-center rounded-lg px-3 py-3 border-2 transition-colors bg-gray-3 text-gray-11 ${
@@ -172,10 +184,7 @@ const MyPageEdit = () => {
           </button>
         </div>
       </div>
-
-      <div className="flex-grow" />
-
-      <div className="w-full flex justify-center pb-6 px-4 mb-8">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[760px] bg-white px-4 pb-6 pt-4 border-t">
         <button
           onClick={handleSubmit}
           className="w-full h-12 px-4 py-3 bg-primary-8 text-white b1 rounded-xl"
@@ -183,10 +192,10 @@ const MyPageEdit = () => {
           저장
         </button>
       </div>
-
       {toastVisible && (
         <ToastModal
-          message="프로필이 저장되었습니다."
+          message={toastMessage}
+          icon={toastMessage === "이름을 입력해주세요." ? IcWarnning : null}
           duration={1800}
           onClose={() => setToastVisible(false)}
         />
